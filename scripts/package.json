@@ -1,0 +1,20 @@
+{
+  "name": "cnr-webpack-template-scripts",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "babel-core": "^6.13.2",
+    "babel-loader": "^6.2.4",
+    "bluebird": "^3.4.1",
+    "commander": "^2.9.0",
+    "del": "^2.2.2",
+    "es-7z": "^0.4.7",
+    "gulp": "^3.9.1",
+    "gulp-install": "^0.6.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-util": "^3.0.7",
+    "mkdirp": "^0.5.1",
+    "webpack-stream": "^3.2.0"
+  }
+}
