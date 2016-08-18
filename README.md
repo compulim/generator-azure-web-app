@@ -121,7 +121,7 @@ There are three ways to host your project:
 * Webpack development server
   * Bundle on-the-fly, shorter build time
   * Support [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html) (supersede [LiveReload](http://livereload.com/))
-  * Not recommended to serve over network
+  * Local host only, not recommended to serve over network
 * Express production server (standalone)
   * Production ready
 * Express production server (on IIS using [iisnode](https://github.com/tjanczuk/iisnode))
