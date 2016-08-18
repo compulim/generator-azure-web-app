@@ -68,7 +68,10 @@ module.exports = function (gulp) {
     return gulp
       .src(config.PROD_SERVER_SRC)
       .pipe(gulp.dest(config.IISAPP_INTERMEDIATE_PATH))
-      .pipe(install({ production: true }));
+      .pipe(install({
+        ignoreScripts: true,
+        production: true
+      }));
   }
 
   function buildWebpack() {

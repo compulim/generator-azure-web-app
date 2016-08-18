@@ -19,6 +19,6 @@ case 'development':
   break;
 }
 
-require('./build')(gulp);
-require('./clean')(gulp);
-require('./pack')(gulp);
+require('./scripts/build')(gulp);
+require('./scripts/clean')(gulp);
+require('./scripts/pack')(gulp);
