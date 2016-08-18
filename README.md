@@ -47,7 +47,7 @@ Do not save dependencies on the root [`package.json`](package.json). These packa
 | `dist/packages/web.zip` | Web server packed by MSDeploy and ready to deploy to Azure Web Apps |
 | [`prodserver/`](prodserver) | Express production server, serve content from `dist/iisapp/public` |
 | [`prodserver/controllers/api.js`](prodserver/controllers/api.js) | RESTful API for [http://localhost/api](http://localhost/api) |
-| [`prodserver/web.config`](prodserver/web.config) | `Web.config` for hosting the server under IIS with iisnode |
+| [`prodserver/web.config`](prodserver/web.config) | `Web.config` for hosting the server under IIS with [iisnode](https://github.com/tjanczuk/iisnode) |
 | [`scripts/`](scripts) | Gulpfile for building and packing the project |
 | [`web/public/`](web/public) | Static web content (before build) |
 | [`web/src/`](web/src) | Source JavaScript files (before bundle) |
