@@ -2,9 +2,8 @@
 
 const path = require('path');
 
-const
-  OUTPUT_PATH = path.resolve(__dirname, '../dist/webpack/dist'),
-  PUBLIC_PATH = '/dist/';
+const PUBLIC_PATH = 'dist/';
+const OUTPUT_PATH = path.resolve(__dirname, '../dist/webpack/', PUBLIC_PATH);
 
 const
   BABEL_OPTIONS = {
@@ -23,7 +22,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: OUTPUT_PATH,
-    publicPath: PUBLIC_PATH
+    publicPath: `/${ PUBLIC_PATH }`
   },
   module: {
     loaders: [
