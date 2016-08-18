@@ -2,6 +2,27 @@
 
 Web site template with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html), and [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy).
 
+## Introduction
+
+Modern websites are not bunches of plain text files. Build process increases page load efficiency and overall page performance. This process involves:
+
+* Concatenating multiple JavaScript files into a single file (a.k.a. bundling)
+* Obfuscate and minify JavaScript files
+* Re-compress JPEG and PNG files for better compression ratio
+* Remove dead code or code that is only used in development mode
+
+We use Webpack as a bundler for our build process. And the folder structure is designed to be able to host under IIS on [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
+
+## Work in progress
+
+These are items we are working on or under consideration:
+
+* [ ] Add [pngout](http://www.advsys.net/ken/utils.htm) to `npm run build`
+* [ ] Continuous deployment on Azure Web Apps
+  * `npm install` should build
+  * `.deployment` file for Kudu to specify project folder at `dist/iisapp/`
+* [ ] Use a single `package.json` if possible
+
 ## First time preparation
 
 Run `npm install`. This will install all dependencies for the following package manifests:
@@ -21,7 +42,7 @@ Do not save dependencies on the root [`package.json`](package.json). These packa
 | `dist/` | Build output |
 | `dist/iisapp/` | Compiled web server ready to run by itself or hosted on IIS |
 | `dist/iisapp/public/` | Bundled content and static assets |
-| `dist/packages/web.zip` | Web server packed by MSDeploy and ready to deploy to Azure Web App |
+| `dist/packages/web.zip` | Web server packed by MSDeploy and ready to deploy to Azure Web Apps |
 | [`prodserver/`](prodserver) | Express production server |
 | [`prodserver/controllers/api.js`](prodserver/controllers/api.js) | RESTful API for [http://localhost/api](http://localhost/api) |
 | [`prodserver/web.config`](prodserver/web.config) | `Web.config` for hosting the server under IIS with iisnode |
@@ -38,16 +59,16 @@ There are multiple NPM scripts help building the project.
 * `npm run hostprod` will host a production server using bundled files
 * `npm run pack` will pack production server and bundled files into a ZIP file using MSDeploy
 
-## Building the project
+## Building the website
 
-To build the project, `npm run build`. The build output will be located at `dist/iisapp/`.
+To build the website, `npm run build`. The build output will be located at `dist/iisapp/`.
 
 You can specify production build by:
 
 * Set environment variable `NODE_ENV` to `production`, or
 * Run `npm run build -- --build production`
 
-The build favor (either `development` or `production`) is used by [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/). It helps reducing bundle size by excluding developer-frinedly error messages in production build.
+Currently, the build favor (either `development` or `production`) is only used by [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/). It helps reducing bundle size by excluding developer-friendly error messages in production build.
 
 ### What the build do
 
@@ -96,8 +117,13 @@ When running under development server, we will add the following to [`webpack.co
 There are three ways to host your project:
 
 * Webpack development server
+  * Bundle on-the-fly, shorter build time
+  * Support [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html) (supersede [LiveReload](http://livereload.com/))
+  * Not recommended to serve over network
 * Express production server (standalone)
+  * Production ready
 * Express production server (on IIS using [iisnode](https://github.com/tjanczuk/iisnode))
+  * Host on [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/) or on-premise
 
 ### Webpack development server
 
@@ -151,13 +177,13 @@ iisnode configuration is located at `prodserver/web.config`. We have overrode so
   * We assume hosting the site in IIS is always in production mode
   * Express is faster when environment variable `NODE_ENV` is set to `production`, details [here](http://apmblog.dynatrace.com/2015/07/22/the-drastic-effects-of-omitting-node_env-in-your-express-js-applications/)
 * Look for Node.js binaries at `C:\Program Files\nodejs\6.1.0\node.exe`
-  * To support multiple Node.js versions on Azure Web App
+  * To support multiple Node.js versions on Azure Web Apps
 
 ## Packing for Azure Web App
 
 To pack the content and production server, `npm run pack`.
 
-MSDeploy is used to pack everything under `dist/iisapp/` plus additional metadata needed for Azure Web App.
+MSDeploy is used to pack everything under `dist/iisapp/` plus additional metadata needed for [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
 
 | name                     | defaultValue       | tags     | kind           | scope    |
 |--------------------------|--------------------|----------|---------------|----------|
