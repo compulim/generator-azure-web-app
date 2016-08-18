@@ -23,7 +23,9 @@ module.exports = {
     scope: 'IisApp'
   },
 
-  PROD_SERVER_SRC: globIgnoreNodeModules('../prodserver'),
+  PROD_SERVER_SRC: globIgnoreNodeModules('../prodserver').concat(
+    path.resolve(__dirname, '../package.json')
+  ),
 
   WEBPACK_CONTENT_SRC: path.join(WEB_ROOT, 'public/**'),
   WEBPACK_CONFIG_PATH: path.join(WEB_ROOT, 'webpack.config.js')

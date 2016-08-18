@@ -9,7 +9,7 @@
     "hostdev": "cd devserver & node server.js",
     "hostprod": "cd prodserver & node server.js --content-path ../dist/iisapp/public",
     "pack": "cd scripts & node node_modules/gulp/bin/gulp.js pack",
-    "postinstall": "npm run postinstall:devserver & npm run postinstall:prodserver & npm run postinstall:scripts & npm run postinstall:web & npm run build",
+    "xpostinstall": "npm run postinstall:devserver & npm run postinstall:prodserver & npm run postinstall:scripts & npm run postinstall:web & npm run build",
     "postinstall:devserver": "cd devserver & npm install",
     "postinstall:prodserver": "cd prodserver & npm install",
     "postinstall:scripts": "cd scripts & npm install",
@@ -17,5 +17,10 @@
     "rebuild": "cd scripts & node node_modules/gulp/bin/gulp.js rebuild",
     "repack": "cd scripts & node node_modules/gulp/bin/gulp.js repack"
   },
-  "dependencies": {}
+  "dependencies": {
+    "commander": "^2.9.0",
+    "debug": "^2.2.0",
+    "express": "^4.14.0",
+    "serve-static": "^1.11.1"
+  }
 }

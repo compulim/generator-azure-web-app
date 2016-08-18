@@ -12,7 +12,5 @@
     "express": "^4.14.0",
     "serve-static": "^1.11.1"
   },
-  "devDependencies": {
-    "webpack": "^1.13.1"
-  }
+  "devDependencies": {}
 }
