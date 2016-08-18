@@ -1,2 +1,3 @@
 [config]
+command = npm install
 project = dist\iisapp
