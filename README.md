@@ -6,10 +6,10 @@ Web site template with [React](https://facebook.github.io/react/), [Webpack](htt
 
 Run `npm install`. This will install all dependencies for the following package manifests:
 
-* `devserver/package.json`
-* `prodserver/package.json`
-* `scripts/package.json`
-* `web/package.json`
+* [`devserver/package.json`](devserver/package.json)
+* [`prodserver/package.json`](prodserver/package.json)
+* [`scripts/package.json`](scripts/package.json)
+* [`web/package.json`](web/package.json)
 
 Do not save dependencies on the root `package.json`. These packages will not be packed into MSDeploy, and thus, will become missing dependencies when deployed.
 
