@@ -8,7 +8,10 @@ import './index.less';
 class Index extends Component {
   render() {
     return (
-      <h1>Hello, World!</h1>
+      <div>
+        <h1>Hello, World!</h1>
+        <samp>NODE_ENV = "{ process.env.NODE_ENV }"</samp>
+      </div>
     );
   }
 }

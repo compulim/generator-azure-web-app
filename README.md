@@ -92,7 +92,7 @@ The configuration file is located at [`web/webpack.config.js`](web/webpack.confi
     * Escape ES3 reserved keywords
       * [`transform-es3-member-expression-literals`](https://babeljs.io/docs/plugins/transform-es3-member-expression-literals/)
       * [`transform-es3-property-literals`](https://babeljs.io/docs/plugins/transform-es3-property-literals/)
-    * Transform `process.env.node_env` into `"development"` or `"production"` with [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/)
+    * Transform `process.env.NODE_ENV` into `"development"` or `"production"` with [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/)
   * Entrypoint is [`web/src/index.js`](web/src/index.js)
 * [`web/src/*.css`](web/src) and [`web/src/*.less`](web/src)
   * Bundled by [`less-loader`](https://www.npmjs.com/package/less-loader), then
