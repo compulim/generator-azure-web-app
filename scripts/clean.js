@@ -20,11 +20,11 @@ module.exports = function (gulp) {
   }
 
   function cleanPackage() {
-    gutil.log('[clean:package]', `Cleaning package at ${ path.relative('.', config.MSDEPLOY_PACKAGE_PATH) }`);
+    gutil.log('[clean:package]', `Cleaning package at ${ path.relative('.', config.IISAPP_PACKAGE_PATH) }`);
 
-    return del(config.MSDEPLOY_PACKAGE_PATH)
+    return del(config.IISAPP_PACKAGE_PATH)
       .catch(err => {
-        gutil.log('[clean:package]', `Failed to clean package ${ path.relative('.', config.MSDEPLOY_PACKAGE_PATH) }`);
+        gutil.log('[clean:package]', `Failed to clean package ${ path.relative('.', config.IISAPP_PACKAGE_PATH) }`);
         return Promise.reject(err);
       });
   }
