@@ -40,12 +40,12 @@ Do not save dependencies on the root [`package.json`](package.json). These packa
 
 | Filename | Description |
 |----------------|-------------|
-| [`devserver/`](devserver) | Webpack development server, serving content from [`web/public/`](web/public) and [`web/src/`](web/src) |
+| [`devserver/`](devserver) | Webpack development server, serve content from [`web/public/`](web/public) and [`web/src/`](web/src) |
 | `dist/` | Build output |
 | `dist/iisapp/` | Compiled web server ready to run by itself or hosted on IIS |
 | `dist/iisapp/public/` | Bundled content and static assets |
 | `dist/packages/web.zip` | Web server packed by MSDeploy and ready to deploy to Azure Web Apps |
-| [`prodserver/`](prodserver) | Express production server |
+| [`prodserver/`](prodserver) | Express production server, serve content from `dist/iisapp/public` |
 | [`prodserver/controllers/api.js`](prodserver/controllers/api.js) | RESTful API for [http://localhost/api](http://localhost/api) |
 | [`prodserver/web.config`](prodserver/web.config) | `Web.config` for hosting the server under IIS with iisnode |
 | [`scripts/`](scripts) | Gulpfile for building and packing the project |
