@@ -1,6 +1,6 @@
 # webpack-template
 
-Web site template with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html), and [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy).
+Web site template with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html), and [Express](https://expressjs.com/). [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to prepare deployment for [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
 
 ## Introduction
 
