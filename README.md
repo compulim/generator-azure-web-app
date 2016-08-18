@@ -56,9 +56,9 @@ Do not save dependencies on the root [`package.json`](package.json). These packa
 
 There are multiple NPM scripts help building the project.
 
-* `npm run build` will use Webpack to bundle source files
-* `npm run hostdev` will host a development server and compile on-the-fly
-* `npm run hostprod` will host a production server using bundled files
+* `npm run build` will kickoff the build process
+* `npm run hostdev` will host a development server and bundle on-the-fly
+* `npm run hostprod` will host a production server using pre-bundled files
 * `npm run pack` will pack production server and bundled files into a ZIP file using MSDeploy
 
 ## Building the website
