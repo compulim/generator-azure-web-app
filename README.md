@@ -74,7 +74,7 @@ Currently, the build favor (either `development` or `production`) is only used b
 ### What the build do
 
 * Copy server code from [`prodserver/`](prodserver) to `dist/iisapp/`, exclude `node_modules` folder
-  * After copy complete, will run `npm install` again to install fresh npm packages
+  * After copy complete, will run `npm install` to install fresh npm packages
 * Bundle source files from [`web/src/`](web/src) to `dist/iisapp/public/dist/bundle.js`
   * Will use existing npm packages from `web/node_modules` (Should we refresh packages too?)
 * Copy static assets from [`web/public/`](web/public) to `dist/iisapp/public/`
@@ -82,7 +82,7 @@ Currently, the build favor (either `development` or `production`) is only used b
 
 ### Webpack configuration
 
-The configuration file is located at [`web/webpack.config.js`](web/webpack.config.js). It controls how files are getting bundled into `dist/bundle.js`.
+The configuration file is located at [`web/webpack.config.js`](web/webpack.config.js). It controls how files are getting bundled into a monolithic `dist/bundle.js`.
 
 * [`web/src/*.js`](web/src) and [`web/src/*.jsx`](web/src)
   * Bundled by [`babel-loader`](https://www.npmjs.com/package/babel-loader)
