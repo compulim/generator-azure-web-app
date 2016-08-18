@@ -23,6 +23,7 @@ These are items we are working on or under consideration:
   * `.deployment` file for Kudu to specify project folder at `dist/iisapp/`
 * [ ] Scaffold with [Yeoman](http://yeoman.io/)
 * [ ] Use a single `package.json` if possible
+* [ ] Host development server programmatically
 
 ## First time preparation
 
@@ -107,7 +108,7 @@ The configuration file is located at [`devserver/webpack.dev.config.js`](devserv
 When running under development server, we will add the following to [`webpack.config.js`](web/webpack.config.js):
 
 * Serve assets from [`web/public/`](web/public)
-* Enable source map
+* Enable [source map](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/#toc-tools)
   * Use absolute path for source map for compatibility with Edge
 * Also write a copy of `bundle.js` to `dist/webpack/bundle.js` for debugging purpose
 * Hot module replacement
