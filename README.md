@@ -64,13 +64,12 @@ The configuration file is located at [`web/webpack.config.js`](web/webpack.confi
 
 * [`web/src/*.js`](web/src) and [`web/src/*.jsx`](web/src)
   * Bundled by [`babel-loader`](https://www.npmjs.com/package/babel-loader)
-    * Enable React JSX
-    * Enable ES2015
+    * Enable React JSX with [`preset-react`](https://babeljs.io/docs/plugins/preset-react/)
+    * Enable ES2015 with [`preset-es2015`](http://babeljs.io/docs/plugins/preset-es2015/)
     * Escape ES3 reserved keywords
       * [`transform-es3-member-expression-literals`](https://babeljs.io/docs/plugins/transform-es3-member-expression-literals/)
       * [`transform-es3-property-literals`](https://babeljs.io/docs/plugins/transform-es3-property-literals/)
-    * Transform `process.env.node_env` into `"development"` or `"production"`
-      * [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/)
+    * Transform `process.env.node_env` into `"development"` or `"production"` with [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/)
   * Entrypoint is [`web/src/index.js`](web/src/index.js)
 * [`web/src/*.css`](web/src) and [`web/src/*.less`](web/src)
   * Bundled by [`less-loader`](https://www.npmjs.com/package/less-loader), then
