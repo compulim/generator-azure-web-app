@@ -21,6 +21,7 @@ These are items we are working on or under consideration:
 * [ ] Continuous deployment on Azure Web Apps
   * `npm install` should build
   * `.deployment` file for Kudu to specify project folder at `dist/iisapp/`
+* [ ] Scaffold with [Yeoman](http://yeoman.io/)
 * [ ] Use a single `package.json` if possible
 
 ## First time preparation
