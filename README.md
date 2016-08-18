@@ -17,17 +17,17 @@ Do not save dependencies on the root `package.json`. These packages will not be 
 
 | Filename | Description |
 |----------------|-------------|
-| `devserver/` | Webpack development server, serving content from `web/public/` and `web/src/` |
+| [`devserver/`](devserver) | Webpack development server, serving content from [`web/public/`](web/public) and [`web/src/`](web/src) |
 | `dist/` | Build output |
 | `dist/iisapp/` | Compiled web server ready to run by itself or hosted on IIS |
 | `dist/iisapp/public/` | Bundled content and static assets |
 | `dist/packages/web.zip` | Web server packed by MSDeploy and ready to deploy to Azure Web App |
-| `prodserver/` | Express production server |
-| `prodserver/controllers/api.js` | RESTful API for [http://localhost/api](http://localhost/api) |
-| `prodserver/web.config` | `Web.config` for hosting the server under IIS with iisnode |
-| `scripts/` | Gulpfile for building and packing the project |
-| `web/public/` | Static web content (before build) |
-| `web/src/` | Source JavaScript files (before bundle) |
+| [`prodserver/`](prodserver) | Express production server |
+| [`prodserver/controllers/api.js`](prodserver/controllers/api.js) | RESTful API for [http://localhost/api](http://localhost/api) |
+| [`prodserver/web.config`](prodserver/web.config) | `Web.config` for hosting the server under IIS with iisnode |
+| [`scripts/`](scripts) | Gulpfile for building and packing the project |
+| [`web/public/`](web/public) | Static web content (before build) |
+| [`web/src/`](web/src) | Source JavaScript files (before bundle) |
 
 ## How to run the project
 
