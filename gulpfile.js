@@ -7,7 +7,12 @@ const
 program
   .version('0.0.1')
   .allowUnknownOption()
-  .option('-b, --build <type>', 'Specifies the build type: "production", or "development". Will override NODE_ENV. (Default = "development")', /^(production|development)$/i, 'development')
+  .option(
+    '-b, --build <type>',
+    'Specifies the build type: "production", or "development". Will override NODE_ENV. (Default = "development")',
+    /^(production|development)$/i,
+    process.env.NODE_ENV === 'production' ? 'production' : 'development'
+  )
   .parse(process.argv);
 
 const build = (program.build || '').toLowerCase();
