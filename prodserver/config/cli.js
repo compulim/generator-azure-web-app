@@ -1,6 +1,13 @@
 'use strict';
 
-const packageJSON = require('../../package.json');
+let packageJSON;
+
+try {
+  packageJSON = require('../../package.json');
+} catch (err) {
+  packageJSON = require('../package.json');
+}
+
 const program = require('commander');
 
 program
