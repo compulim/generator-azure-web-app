@@ -114,7 +114,7 @@ call :SelectNodeVersion
 :: 2. Copy source files to intermediate folder
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   ROBOCOPY "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_INTERMEDIATE%" /E
-  IF !ERRORLEVEL! GTE 8 (
+  IF !ERRORLEVEL! GEQ 8 (
     echo Failed exitCode=%ERRORLEVEL%, command=ROBOCOPY "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_INTERMEDIATE%" /E
     goto error
   )
