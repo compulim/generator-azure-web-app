@@ -15,9 +15,6 @@ IF %ERRORLEVEL% NEQ 0 (
   goto error
 )
 
-:: DEBUG
-SET
-
 :: Setup
 :: -----
 
@@ -50,6 +47,11 @@ IF NOT DEFINED KUDU_SYNC_CMD (
   :: Locally just running "kuduSync" would also work
   SET KUDU_SYNC_CMD=%appdata%\npm\kuduSync.cmd
 )
+
+IF NOT DEFINED INTERMEDIATE_PATH (
+  SET INTERMEDIATE_PATH=%DEPLOYMENT_TEMP\source
+)
+
 goto Deployment
 
 :: Utility Functions
@@ -95,22 +97,43 @@ echo Handling node.js deployment.
 SET
 DIR %DEPLOYMENT_TEMP%
 
-:: 1. KuduSync
+:: 1. Copy source files to intermediate folder
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-  call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+  ROBOCOPY "%DEPLOYMENT_SOURCE%" "%INTERMEDIATE_PATH%" /E
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-:: 2. Select node version
-call :SelectNodeVersion
-
-:: 3. Install npm packages
-IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
+:: 2. Install npm packages
+IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
+  pushd "%INTERMEDIATE_PATH%"
+) ELSE (
   pushd "%DEPLOYMENT_TARGET%"
-  call :ExecuteCmd !NPM_CMD! install --production
-  IF !ERRORLEVEL! NEQ 0 goto error
-  popd
 )
+
+call :ExecuteCmd !NPM_CMD! install
+IF !ERRORLEVEL! NEQ 0 goto error
+popd
+
+:: 3. Copy intermediate files to target
+call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%INTERMEDIATE_PATH%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+IF !ERRORLEVEL! NEQ 0 goto error
+
+REM :: 1. KuduSync
+REM IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
+REM   call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+REM   IF !ERRORLEVEL! NEQ 0 goto error
+REM )
+
+REM :: 2. Select node version
+REM call :SelectNodeVersion
+
+REM :: 3. Install npm packages
+REM IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
+REM   pushd "%DEPLOYMENT_TARGET%"
+REM   call :ExecuteCmd !NPM_CMD! install --production
+REM   IF !ERRORLEVEL! NEQ 0 goto error
+REM   popd
+REM )
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
