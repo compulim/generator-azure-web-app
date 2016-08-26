@@ -113,8 +113,11 @@ call :SelectNodeVersion
 
 :: 2. Copy source files to intermediate folder
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-  call :ExecuteCmd ROBOCOPY "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_INTERMEDIATE%" /E
-  IF !ERRORLEVEL! NEQ 0 goto error
+  ROBOCOPY "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_INTERMEDIATE%" /E
+  IF !ERRORLEVEL! GTE 8 (
+    echo Failed exitCode=%ERRORLEVEL%, command=ROBOCOPY "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_INTERMEDIATE%" /E
+    goto error
+  )
 )
 
 :: 3. Install npm packages
