@@ -15,6 +15,9 @@ IF %ERRORLEVEL% NEQ 0 (
   goto error
 )
 
+:: DEBUG
+SET
+
 :: Setup
 :: -----
 
@@ -88,7 +91,9 @@ goto :EOF
 :Deployment
 echo Handling node.js deployment.
 
+:: DEBUG
 SET
+DIR %DEPLOYMENT_TEMP%
 
 :: 1. KuduSync
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
