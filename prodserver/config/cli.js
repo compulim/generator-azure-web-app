@@ -1,6 +1,6 @@
 'use strict';
 
-const packageJSON = require('../package.json');
+const packageJSON = require('../../package.json');
 const program = require('commander');
 
 program
