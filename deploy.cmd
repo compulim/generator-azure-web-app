@@ -48,8 +48,19 @@ IF NOT DEFINED KUDU_SYNC_CMD (
   SET KUDU_SYNC_CMD=%appdata%\npm\kuduSync.cmd
 )
 
-IF NOT DEFINED INTERMEDIATE_PATH (
-  SET INTERMEDIATE_PATH=%DEPLOYMENT_TEMP\source
+IF NOT DEFINED DEPLOYMENT_TEMP (
+  SET DEPLOYMENT_TEMP=%temp%\___deployTemp%random%
+  SET CLEAN_LOCAL_DEPLOYMENT_TEMP=true
+)
+
+IF DEFINED CLEAN_LOCAL_DEPLOYMENT_TEMP (
+  IF EXIST "%DEPLOYMENT_TEMP%" rd /s /q "%DEPLOYMENT_TEMP%"
+  mkdir "%DEPLOYMENT_TEMP%"
+)
+
+IF NOT DEFINED DEPLOYMENT_INTERMEDIATE (
+  SET DEPLOYMENT_INTERMEDIATE=%DEPLOYMENT_TEMP%\source
+  IF NOT EXIST "%DEPLOYMENT_INTERMEDIATE%" mkdir "%DEPLOYMENT_INTERMEDIATE%"
 )
 
 goto Deployment
@@ -97,25 +108,28 @@ echo Handling node.js deployment.
 SET
 DIR %DEPLOYMENT_TEMP%
 
-:: 1. Copy source files to intermediate folder
+:: 1. Select node version
+call :SelectNodeVersion
+
+:: 2. Copy source files to intermediate folder
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-  ROBOCOPY "%DEPLOYMENT_SOURCE%" "%INTERMEDIATE_PATH%" /E
+  call :ExecuteCmd ROBOCOPY "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_INTERMEDIATE%" /E
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-:: 2. Install npm packages
+:: 3. Install npm packages
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-  pushd "%INTERMEDIATE_PATH%"
+  pushd "%DEPLOYMENT_INTERMEDIATE%"
 ) ELSE (
   pushd "%DEPLOYMENT_TARGET%"
 )
 
-call :ExecuteCmd !NPM_CMD! install
+call :ExecuteCmd !NPM_CMD! install --quiet
 IF !ERRORLEVEL! NEQ 0 goto error
 popd
 
-:: 3. Copy intermediate files to target
-call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%INTERMEDIATE_PATH%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+:: 4. KuduSync
+call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_INTERMEDIATE%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
 IF !ERRORLEVEL! NEQ 0 goto error
 
 REM :: 1. KuduSync
