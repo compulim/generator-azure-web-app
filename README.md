@@ -29,14 +29,20 @@ These are items we are working on or under consideration:
 
 ## First time preparation
 
-Run `npm install`. This will install all dependencies for the following package manifests:
+Run `npm install`.
 
-* [`devserver/package.json`](devserver/package.json)
-* [`prodserver/package.json`](prodserver/package.json)
-* [`scripts/package.json`](scripts/package.json)
-* [`web/package.json`](web/package.json)
+If you have dependencies that is required for the server code, save it as production dependencies (using `--save`), e.g.
 
-Do not save dependencies on the root [`package.json`](package.json). These packages will not be packed into MSDeploy, and thus, will become missing dependencies when deployed.
+* [Express](http://expressjs.com/)
+  * [serve-static](https://www.npmjs.com/package/serve-static)
+
+If you have dependencies that is used by Webpack or only for development, save it as development dependencies (using `--save-dev`), e.g.
+
+* [Babel](https://babeljs.io/)
+* [Immutable](https://facebook.github.io/immutable-js/)
+* [React](https://facebook.github.io/react/)
+  * [react-dom](https://www.npmjs.com/package/react-dom)
+* [Webpack](https://webpack.github.io/)
 
 ## Important files and directories
 
@@ -58,7 +64,7 @@ Do not save dependencies on the root [`package.json`](package.json). These packa
 
 There are multiple NPM scripts help building the project.
 
-* `npm run build` will kickoff the build process
+* `npm run build` will start the build process
 * `npm run deploy` will deploy the website to Azure Web App
 * `npm run hostdev` will host a development server and bundle on-the-fly
 * `npm run hostprod` will host a production server using pre-bundled files
@@ -78,11 +84,10 @@ Currently, the build favor (either `development` or `production`) is only used b
 ### What the build do
 
 * Copy server code from [`prodserver/`](prodserver) to `dist/iisapp/`, exclude `node_modules` folder
-  * After copy complete, will run `npm install` to install fresh npm packages
+  * After copy complete, will run `npm install` to install fresh production-only packages
 * Bundle source files from [`web/src/`](web/src) to `dist/iisapp/public/dist/bundle.js`
-  * Will use existing npm packages from `web/node_modules` (Should we refresh packages too?)
+  * Will use existing npm packages from `web/node_modules`
 * Copy static assets from [`web/public/`](web/public) to `dist/iisapp/public/`
-  * (Need to add `pngout`)
 
 ### Webpack configuration
 
@@ -167,7 +172,7 @@ Because the server serve contents from `dist/iisapp/public/`. After you modify y
 #### Serving order
 
 * `*` if matching file exists, will be served from `dist/iisapp/public/*`
-  * Also serve bundled `dist/bundle.js`
+  * Also serve bundle `dist/bundle.js` from `dist/iisapp/public/dist/bundle.js`
 * `api/` will be served by Express router at [`prodserver/controllers/api.js`](prodserver/controllers/api.js)
 * Otherwise, will be redirected to [`web/public/index.html`](web/public/index.html)
   * To support single-page application
@@ -182,25 +187,50 @@ iisnode configuration is located at `prodserver/web.config`. We have overrode so
   * We assume hosting the site in IIS is always in production mode
   * Express is faster when environment variable `NODE_ENV` is set to `production`, details [here](http://apmblog.dynatrace.com/2015/07/22/the-drastic-effects-of-omitting-node_env-in-your-express-js-applications/)
 * Look for Node.js binaries at `C:\Program Files\nodejs\6.1.0\node.exe`
-  * To support multiple Node.js versions on Azure Web Apps
+  * To support multiple Node.js versions on Azure Web App
 
 ## Packing for Azure Web App
 
-(This command is only supported on Windows because it requires MSDeploy)
+(This command is only supported on Windows because it requires [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy))
 
 To pack the content and production server, `npm run pack`.
 
-MSDeploy is used to pack everything under `dist/iisapp/` plus additional metadata needed for [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
+It will create a MSDeploy ZIP file that can be deployed to any IIS server, including [Azure Web App](https://azure.microsoft.com/en-us/services/app-service/web/). This ZIP file contains Express production server and website contents.
+
+Additional parameters added to MSDeploy ZIP file:
 
 | name                     | defaultValue       | tags     | kind           | scope    |
 |--------------------------|--------------------|----------|---------------|----------|
 | IIS Web Application Name | `Default Web Site` | `IisApp` | `ProviderPath` | `IisApp` |
 
-Before packing the project, make sure your current build is up to date, run `npm run build`.
+Before packing the project, make sure your current build is up-to-date, run `npm run build`.
 
 MSDeploy can be installed using [Web Platform Installer](https://www.microsoft.com/web/downloads/platform.aspx).
 
-## Manual deploy to Azure Web App
+## Deployment
+
+There are few ways for deployment:
+
+* Manual deploy to any Node.js capable server
+  * Simply copy `dist/iisapp` folder to your server and run `server.js` (or with [PM2](npmjs.com/package/pm2))
+* Continuous deployment to Azure Web App
+  * Recommended for agile teams
+* Manual deploy to Azure Web App
+  * Recommended for projects that requires release management
+
+### Continuous deployment for Azure Web App
+
+This project can be deployed to [Azure Web App](https://azure.microsoft.com/en-us/services/app-service/web/) using continuous deployment with GitHub. Azure Web App is powered by [Project Kudu](https://github.com/projectkudu/kudu).
+
+To deploy to Azure, please click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/), or refer to this [article](https://azure.microsoft.com/en-us/documentation/articles/app-service-continous-deployment/).
+
+To run Webpack on Azure, we prepared a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) (a.k.a. `deploy.cmd`).
+
+* Copy source files to temporary folder (under `D:\local\Temp\`)
+* Build the project (by running `npm install`)
+* Copy server and bundles from `D:\local\Temp\...\dist\iisapp\` to `D:\home\site\wwwroot\`
+
+### Manual deploy to Azure Web App
 
 (This command is only supported on Windows because it requires MSDeploy)
 
@@ -209,15 +239,3 @@ To deploy to Azure Web App, `npm run deploy -- --publishsettings=<yoursettings>.
 The publish settings file can be downloaded from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx).
 
 Although this command is only supported on Windows, you can deploy the project by continuous deployment from GitHub and other popular repositories.
-
-## Continuous deployment to Azure Web App
-
-This project can be deployed to [Azure Web App](https://azure.microsoft.com/en-us/services/app-service/web/) using continuous deployment with GitHub. Azure Web App is powered by [Project Kudu](https://github.com/projectkudu/kudu).
-
-To deploy to Azure, please click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/), or refer to this [article](https://azure.microsoft.com/en-us/documentation/articles/app-service-continous-deployment/).
-
-To run Webpack on Azure, we prepared a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) (a.k.a. `deploy.cmd`).
-
-* Copy source files to temp folder (under `D:\local\Temp\`)
-* Build the project (by running `npm install`)
-* Copy server and bundles from `D:\local\Temp\...\dist\iisapp\` to `D:\home\site\wwwroot\`
