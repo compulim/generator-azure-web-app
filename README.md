@@ -1,5 +1,7 @@
 # webpack-template
 
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+
 Web site template with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html), and [Express](https://expressjs.com/). [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to prepare deployment for [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
 
 ## Introduction
@@ -18,11 +20,11 @@ We use Webpack as a bundler for our build process. And the folder structure is d
 These are items we are working on or under consideration:
 
 * [ ] Add [pngout](http://www.advsys.net/ken/utils.htm) to `npm run build`
-* [ ] Continuous deployment on Azure Web Apps
+* [x] Continuous deployment on Azure Web Apps
   * `npm install` should build
   * `.deployment` file for Kudu to specify project folder at `dist/iisapp/`
 * [ ] Scaffold with [Yeoman](http://yeoman.io/)
-* [ ] Use a single `package.json` if possible
+* [x] Use a single `package.json` if possible
 * [ ] Host development server programmatically
 
 ## First time preparation
@@ -57,6 +59,7 @@ Do not save dependencies on the root [`package.json`](package.json). These packa
 There are multiple NPM scripts help building the project.
 
 * `npm run build` will kickoff the build process
+* `npm run deploy` will deploy the website to Azure Web App
 * `npm run hostdev` will host a development server and bundle on-the-fly
 * `npm run hostprod` will host a production server using pre-bundled files
 * `npm run pack` will pack production server and bundled files into a ZIP file using MSDeploy
@@ -183,6 +186,8 @@ iisnode configuration is located at `prodserver/web.config`. We have overrode so
 
 ## Packing for Azure Web App
 
+(This command is only supported on Windows because it requires MSDeploy)
+
 To pack the content and production server, `npm run pack`.
 
 MSDeploy is used to pack everything under `dist/iisapp/` plus additional metadata needed for [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
@@ -194,3 +199,24 @@ MSDeploy is used to pack everything under `dist/iisapp/` plus additional metadat
 Before packing the project, make sure your current build is up to date, run `npm run build`.
 
 MSDeploy can be installed using [Web Platform Installer](https://www.microsoft.com/web/downloads/platform.aspx).
+
+## Manual deploy to Azure Web App
+
+(This command is only supported on Windows because it requires MSDeploy)
+
+To deploy to Azure Web App, `npm run deploy -- --publishsettings=<yoursettings>.PublishSettings`.
+
+The publish settings file can be downloaded from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx).
+
+Although this command is only supported on Windows, you can deploy the project by continuous deployment from GitHub and other popular repositories.
+
+## Continuous deployment to Azure Web App
+
+This project can be deployed to Azure Web App using continuous deployment with GitHub. Azure Web App is powered by [Project Kudu](https://github.com/projectkudu/kudu).
+
+We provided a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) (a.k.a. `deploy.cmd`) to:
+
+* Build the project (run `npm install`)
+* Deploy the project to `D:\home\site\wwwroot` (or other destination defined by Project Kudu)
+
+To deploy to Azure, please refer to this [article](https://azure.microsoft.com/en-us/documentation/articles/app-service-continous-deployment/).
