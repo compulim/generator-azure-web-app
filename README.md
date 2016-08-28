@@ -21,8 +21,8 @@ These are items we are working on or under consideration:
 
 * [ ] Add [pngout](http://www.advsys.net/ken/utils.htm) to `npm run build`
 * [x] Continuous deployment on Azure Web Apps
-  * `npm install` should build
-  * `.deployment` file for Kudu to specify project folder at `dist/iisapp/`
+  * [x] `npm install` should build
+  * [x] `.deployment` file for Kudu to specify project folder at `dist/iisapp/`
 * [ ] Scaffold with [Yeoman](http://yeoman.io/)
 * [x] Use a single `package.json` if possible
 * [ ] Host development server programmatically

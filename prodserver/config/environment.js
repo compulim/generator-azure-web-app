@@ -1,7 +1,7 @@
 'use strict';
 
-const { PORT } = process.env;
+const { env } = process;
 
 module.exports = {
-  PORT
+  PORT: env.PORT
 };

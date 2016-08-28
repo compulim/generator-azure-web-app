@@ -6,7 +6,7 @@ const program = require('commander');
 
 program
   .version(packageJSON.version)
-  .option('-h, --hot <hot>', 'Toggles Hot Module Replacement (default = true)', parseBool, true)
+  .option('-h, --hot <hot>', 'Toggles hot module replacement (default = true)', parseBool, true)
   .option('-p, --port <port>', 'Listens to specific port (default = 80)')
   .parse(process.argv);
 

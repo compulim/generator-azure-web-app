@@ -4,7 +4,7 @@ const config = require('./config');
 
 const
   debug = require('debug'),
-  Express = require('express'),
+  express = require('express'),
   fs = require('fs'),
   parseURL = require('url').parse,
   path = require('path'),
@@ -12,8 +12,8 @@ const
 
 class ProdServer {
   constructor() {
-    this.app = Express()
-      .use('api', require('./controllers/api'))
+    this.app = express()
+      .use('/api', require('./controllers/api')())
       .use((req, res, next) => {
         const url = parseURL(req.url);
 
@@ -23,7 +23,7 @@ class ProdServer {
 
         next();
       })
-      .use(Express.static(config.CONTENT_PATH));
+      .use(express.static(config.CONTENT_PATH));
   }
 
   listen(port) {

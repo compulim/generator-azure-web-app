@@ -11,6 +11,9 @@ class Index extends Component {
       <div>
         <h1>Hello, World!</h1>
         <samp>NODE_ENV = "{ process.env.NODE_ENV }"</samp>
+        <p>
+          <a href="/api/health">Health check</a>
+        </p>
       </div>
     );
   }
