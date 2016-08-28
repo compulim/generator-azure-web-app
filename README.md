@@ -31,19 +31,6 @@ These are items we are working on or under consideration:
 
 Run `npm install`.
 
-If you have dependencies that is required for the server code, save it as production dependencies (using `--save`), e.g.
-
-* [Express](http://expressjs.com/)
-  * [serve-static](https://www.npmjs.com/package/serve-static)
-
-If you have dependencies that is used by Webpack or only for development, save it as development dependencies (using `--save-dev`), e.g.
-
-* [Babel](https://babeljs.io/)
-* [Immutable](https://facebook.github.io/immutable-js/)
-* [React](https://facebook.github.io/react/)
-  * [react-dom](https://www.npmjs.com/package/react-dom)
-* [Webpack](https://webpack.github.io/)
-
 ## Important files and directories
 
 | Filename | Description |
@@ -239,3 +226,22 @@ To deploy to Azure Web App, `npm run deploy -- --publishsettings=<yoursettings>.
 The publish settings file can be downloaded from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx).
 
 Although this command is only supported on Windows, you can deploy the project by continuous deployment from GitHub and other popular repositories.
+
+## Building your site
+
+Now you have a Webpack project running on your server. There are few tips to help your development:
+
+### Saving package dependencies
+
+If you have dependencies that is required for the server code, save it as production dependencies (using `--save`), e.g.
+
+* [Express](http://expressjs.com/)
+  * [serve-static](https://www.npmjs.com/package/serve-static)
+
+If you have dependencies that is used by Webpack or only for development, save it as development dependencies (using `--save-dev`), e.g.
+
+* [Babel](https://babeljs.io/)
+* [Immutable](https://facebook.github.io/immutable-js/)
+* [React](https://facebook.github.io/react/)
+  * [react-dom](https://www.npmjs.com/package/react-dom)
+* [Webpack](https://webpack.github.io/)
