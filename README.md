@@ -212,11 +212,12 @@ Although this command is only supported on Windows, you can deploy the project b
 
 ## Continuous deployment to Azure Web App
 
-This project can be deployed to Azure Web App using continuous deployment with GitHub. Azure Web App is powered by [Project Kudu](https://github.com/projectkudu/kudu).
+This project can be deployed to [Azure Web App](https://azure.microsoft.com/en-us/services/app-service/web/) using continuous deployment with GitHub. Azure Web App is powered by [Project Kudu](https://github.com/projectkudu/kudu).
 
-We provided a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) (a.k.a. `deploy.cmd`) to:
+To deploy to Azure, please click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/), or refer to this [article](https://azure.microsoft.com/en-us/documentation/articles/app-service-continous-deployment/).
 
-* Build the project (run `npm install`)
-* Deploy the project to `D:\home\site\wwwroot` (or other destination defined by Project Kudu)
+To run Webpack on Azure, we prepared a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) (a.k.a. `deploy.cmd`).
 
-To deploy to Azure, please refer to this [article](https://azure.microsoft.com/en-us/documentation/articles/app-service-continous-deployment/).
+* Copy source files to temp folder (under `D:\local\Temp\`)
+* Build the project (by running `npm install`)
+* Copy server and bundles from `D:\local\Temp\...\dist\iisapp\` to `D:\home\site\wwwroot\`
