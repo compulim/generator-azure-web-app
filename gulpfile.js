@@ -1,18 +1,20 @@
 'use strict';
 
 const
+  config = require('./scripts/config'),
   gulp = require('gulp'),
   program = require('commander');
 
 program
-  .version('0.0.1')
   .allowUnknownOption()
+  .option('-b, --build <type>', 'Specifies the build type: "production", or "development". Will override NODE_ENV. (Default = "development")', /^(production|development)$/i, 'development')
   .option(
     '-b, --build <type>',
     'Specifies the build type: "production", or "development". Will override NODE_ENV. (Default = "development")',
     /^(production|development)$/i,
     process.env.NODE_ENV === 'production' ? 'production' : 'development'
   )
+  .option('--publishsettings <publish settings file>', 'Specifies the *.PublishSettings file for deployment')
   .parse(process.argv);
 
 const build = (program.build || '').toLowerCase();
@@ -24,6 +26,11 @@ case 'development':
   break;
 }
 
+if (program.publishsettings) {
+  config.DEPLOY_PUBLISH_SETTINGS = program.publishsettings;
+}
+
 require('./scripts/build')(gulp);
 require('./scripts/clean')(gulp);
+require('./scripts/deploy')(gulp);
 require('./scripts/pack')(gulp);

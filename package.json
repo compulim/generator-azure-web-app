@@ -9,6 +9,7 @@
   "scripts": {
     "build": "gulp build",
     "clean": "gulp clean",
+    "deploy": "gulp deploy",
     "hostdev": "node devserver/server.js",
     "hostprod": "node prodserver/server.js --content-path dist/iisapp/public",
     "pack": "gulp pack",
@@ -19,6 +20,7 @@
   "dependencies": {
     "commander": "^2.9.0",
     "debug": "^2.2.0",
+    "deep-assign": "^2.0.0",
     "express": "^4.14.0",
     "serve-static": "^1.11.1"
   },
@@ -35,11 +37,11 @@
     "commander": "^2.9.0",
     "css-loader": "^0.23.1",
     "debug": "^2.2.0",
-    "deep-assign": "^2.0.0",
     "del": "^2.2.2",
     "es-7z": "^0.4.7",
     "express": "^4.14.0",
     "gulp": "^3.9.1",
+    "gulp-command": "^0.1.2",
     "gulp-install": "^0.6.0",
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.7",
@@ -53,6 +55,7 @@
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.2.0",
-    "write-file-webpack-plugin": "^3.1.8"
+    "write-file-webpack-plugin": "^3.1.8",
+    "xml2js": "^0.4.17"
   }
 }
