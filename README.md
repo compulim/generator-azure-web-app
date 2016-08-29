@@ -27,9 +27,77 @@ These are items we are working on or under consideration:
 * [x] ~~Use a single `package.json` if possible~~
 * [ ] Host development server programmatically
 
-## First time preparation
+## How to use
+
+### First time preparation
 
 Run `npm install`.
+
+### Run development server
+
+Run `npm run hostdev`, the development server will listen to 80 and available at [http://localhost/](http://localhost/).
+
+### Develop your site
+
+#### Adding new contents
+
+For clarity, HTML pages and JavaScript code are separated into different folders.
+
+* HTML pages or assets
+  * Create new HTML file at [`/web/public/`](web/public)
+  * Save assets to [`/web/public/`](web/public)
+* JavaScript code
+  * Create new JavaScript file at [`/web/src/`](web/src)
+  * To import packages, mark them as development dependencies, for example, `npm install react --save-dev`
+
+#### Adding new API endpoints
+
+Add new API endpoints at [`/prodserver/controllers/api.js`](prodserver/controllers/api.js).
+
+To import packages, mark them as production dependencies, for example, `npm install serve-static --save`.
+
+Lastly, restart the development server to pick up your new code.
+
+### Production run
+
+#### Build the project first
+
+Always build the project first by running `npm run build`. This will output the build to `/dist/iisapp/`.
+
+Then, there are few options to host the server:
+
+* Host with Node.js
+* Host with Azure Web App
+  * Continuous integration: deploy via GitHub
+  * Controlled release: deploy using MSDeploy
+* Host with IIS
+
+##### Host with Node.js
+
+Under `/dist/iisapp/`, run `server.js`.
+
+The directory `/dist/iisapp/` contains everything that need to run the production server, including minified HTML files and assets.
+
+For load-balancing and scalability, it is recommended to use process lifecycle management tool to host the server process. For example, [PM2](https://www.npmjs.com/package/pm2).
+
+##### Host with Azure Web App
+
+There are two options to host on Azure Web App:
+
+* Deploy via Github (Recommended)
+  * As you push new commits to GitHub, your Azure Web App will pick them up and deploy immediately
+  * Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/) to start
+* Deploy using MSDeploy
+  * For manual or controlled release (for example, [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx))
+  * Download publish settings file from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx).
+  * Then, run `npm run pack`
+  * Then, run `npm run deploy --publishsettings=yoursite.PublishSettings`
+
+##### Host with IIS
+
+Run `npm run pack`. This will build a MSDeploy ZIP file at `/dist/packages/web.zip`.
+
+Then using MSDeploy, manually deploy `/dist/packages/web.zip` to your IIS.
 
 ## Important files and directories
 
@@ -47,7 +115,7 @@ Run `npm install`.
 | [`web/public/`](web/public) | Asset source files |
 | [`web/src/`](web/src) | JavaScript source files |
 
-## How to run the project
+## Gulpfile scripts
 
 There are multiple NPM scripts help building the project.
 
@@ -57,7 +125,7 @@ There are multiple NPM scripts help building the project.
 * `npm run hostprod` will host a production server using pre-bundled files
 * `npm run pack` will pack production server and bundled files into a ZIP file using MSDeploy
 
-## Building the website
+## Advanced: Building the website
 
 To build the website, `npm run build`. The build output will be located at `dist/iisapp/`.
 
@@ -111,7 +179,7 @@ When running under development server, we will add the following to [`webpack.co
 * Hot module replacement
   * Support React component with [`react-hot`](https://github.com/gaearon/react-hot-loader) loader
 
-## Hosting
+## Advanced: Hosting
 
 There are three ways to host your project:
 
@@ -178,7 +246,7 @@ iisnode configuration is located at `prodserver/web.config`. We have overrode so
 * Look for Node.js binaries at `C:\Program Files\nodejs\6.1.0\node.exe`
   * To support multiple Node.js versions on Azure Web App
 
-## Packing for Azure Web App
+## Advanced: Packing for Azure Web App
 
 (This command is only supported on Windows because it requires [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy))
 
@@ -196,7 +264,7 @@ Before packing the project, make sure your current build is up-to-date, run `npm
 
 MSDeploy can be installed using [Web Platform Installer](https://www.microsoft.com/web/downloads/platform.aspx).
 
-## Deployment
+## Advanced: Deployment
 
 There are few ways for deployment:
 
@@ -228,22 +296,3 @@ To deploy to Azure Web App, `npm run deploy -- --publishsettings=<yoursettings>.
 The publish settings file can be downloaded from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx).
 
 Although this command is only supported on Windows, you can deploy the project by continuous deployment from GitHub and other popular repositories.
-
-## Building your site
-
-Now you have a Webpack project running on your server. There are few tips to help your development:
-
-### Saving package dependencies
-
-If you have dependencies that is required for the server code, save it as production dependencies (using `--save`), e.g.
-
-* [Express](http://expressjs.com/)
-  * [serve-static](https://www.npmjs.com/package/serve-static)
-
-If you have dependencies that is used by Webpack or only for development, save it as development dependencies (using `--save-dev`), e.g.
-
-* [Babel](https://babeljs.io/)
-* [Immutable](https://facebook.github.io/immutable-js/)
-* [React](https://facebook.github.io/react/)
-  * [react-dom](https://www.npmjs.com/package/react-dom)
-* [Webpack](https://webpack.github.io/)
