@@ -31,7 +31,7 @@ Clone it to your dev box. Then run `npm install`.
 
 ### Run development server
 
-Run `npm run hostdev`, the development server will listen to 80 and available at [http://localhost/](http://localhost/).
+Run `npm run hostdev`, the development server will listen to port 80 and available at [http://localhost/](http://localhost/).
 
 ### Develop your site
 
