@@ -15,23 +15,19 @@ Modern websites are not bunches of plain text files. Build process increases pag
 
 We use Webpack as a bundler for our build process. And the folder structure is designed to be able to host under IIS on [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
 
-## Work in progress
+## Try it out in 3 steps
 
-These are items we are working on or under consideration:
+1. Fork this repository
+2. Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+3. Commit your changes and see it continuously deploy to Azure
 
-* [x] ~~Add [pngout](http://www.advsys.net/ken/utils.htm) to `npm run build`~~
-* [x] ~~Continuous deployment on Azure Web Apps~~
-  * [x] ~~`npm install` should build~~
-  * [x] ~~`.deployment` file for Kudu to specify project folder at `dist/iisapp/`~~
-* [ ] Scaffold with [Yeoman](http://yeoman.io/)
-* [x] ~~Use a single `package.json` if possible~~
-* [ ] Host development server programmatically
+It takes about 5-10 minutes to build for the first time (due to large npm install), have a little patience.
 
-## How to use
+## How to develop on it in a professional way
 
 ### First time preparation
 
-Run `npm install`.
+Clone it to your dev box. Then run `npm install`.
 
 ### Run development server
 
@@ -324,3 +320,15 @@ Then, use [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to "syn
 ```
 
 (whitespace added for clarity)
+
+## Work in progress
+
+These are items we are working on or under consideration:
+
+* [x] ~~Add [pngout](http://www.advsys.net/ken/utils.htm) to `npm run build`~~
+* [x] ~~Continuous deployment on Azure Web Apps~~
+  * [x] ~~`npm install` should build~~
+  * [x] ~~`.deployment` file for Kudu to specify project folder at `dist/iisapp/`~~
+* [ ] Scaffold with [Yeoman](http://yeoman.io/)
+* [x] ~~Use a single `package.json` if possible~~
+* [ ] Host development server programmatically
