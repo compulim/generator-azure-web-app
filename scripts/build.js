@@ -4,6 +4,8 @@ const
   config = require('./config'),
   del = require('del'),
   gutil = require('gulp-util'),
+  htmlmin = require('gulp-htmlmin'),
+  imagemin = require('gulp-imagemin'),
   install = require('gulp-install'),
   path = require('path'),
   rename = require('gulp-rename'),
@@ -59,6 +61,8 @@ module.exports = function (gulp) {
 
     return gulp
       .src(config.WEBPACK_CONTENT_SRC)
+      .pipe(htmlmin())
+      .pipe(imagemin())
       .pipe(gulp.dest(CONTENT_DEST));
   }
 

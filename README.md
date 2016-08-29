@@ -19,12 +19,12 @@ We use Webpack as a bundler for our build process. And the folder structure is d
 
 These are items we are working on or under consideration:
 
-* [ ] Add [pngout](http://www.advsys.net/ken/utils.htm) to `npm run build`
-* [x] Continuous deployment on Azure Web Apps
-  * [x] `npm install` should build
-  * [x] `.deployment` file for Kudu to specify project folder at `dist/iisapp/`
+* [x] ~~Add [pngout](http://www.advsys.net/ken/utils.htm) to `npm run build`~~
+* [x] ~~Continuous deployment on Azure Web Apps~~
+  * [x] ~~`npm install` should build~~
+  * [x] ~~`.deployment` file for Kudu to specify project folder at `dist/iisapp/`~~
 * [ ] Scaffold with [Yeoman](http://yeoman.io/)
-* [x] Use a single `package.json` if possible
+* [x] ~~Use a single `package.json` if possible~~
 * [ ] Host development server programmatically
 
 ## First time preparation
@@ -75,6 +75,8 @@ Currently, the build favor (either `development` or `production`) is only used b
 * Bundle source files from [`web/src/`](web/src) to `dist/iisapp/public/dist/bundle.js`
   * Will use existing npm packages from `web/node_modules`
 * Copy static assets from [`web/public/`](web/public) to `dist/iisapp/public/`
+  * Will minify image with [gulp-imagemin](https://www.npmjs.com/package/gulp-imagemin/)
+  * Will minify HTML with [gulp-htmlmin](https://www.npmjs.com/package/gulp-htmlmin/)
 
 ### Webpack configuration
 
