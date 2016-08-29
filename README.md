@@ -2,7 +2,7 @@
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-Web site template with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html), and [Express](https://expressjs.com/). [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to prepare deployment for [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
+Website template with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html), and [Express](https://expressjs.com/). [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to prepare deployment for [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
 
 ## Introduction
 
@@ -78,7 +78,7 @@ Under `/dist/iisapp/`, run `server.js`.
 
 The directory `/dist/iisapp/` contains everything that need to run the production server, including minified HTML files and assets.
 
-For load-balancing and scalability, it is recommended to use process lifecycle management tool to host the server process. For example, [PM2](https://www.npmjs.com/package/pm2).
+For load-balancing and scalability, it is recommended to use a process lifecycle manager to manage the server process. For example, [PM2](https://www.npmjs.com/package/pm2).
 
 ##### Host with Azure Web App
 
@@ -166,7 +166,7 @@ The configuration file is located at [`web/webpack.config.js`](web/webpack.confi
 
 ### Webpack development mode configuration
 
-When running Webpack development server, additional configurations are required, e.g. hot module replacement.
+When running Webpack development server, additional configurations are required, for example, hot module replacement.
 
 The configuration file is located at [`devserver/webpack.dev.config.js`](devserver/webpack.dev.config.js).
 
@@ -205,7 +205,7 @@ The server targets local development environment where network speed is not a co
 
 Instead of serving a monolithic bundle `dist/bundle.js`, the development server will serve each source files separately. This also enables hot module replacement, when a source file is modified, the browser will only reload that source file and/or re-render related React component.
 
-#### Serving order
+#### File serving order
 
 * `dist/bundle.js` will be bundled by Webpack on-the-fly
 * `*` if matching file exists, will be served from [`web/public/*`](web/public)
@@ -226,7 +226,7 @@ You can specify hosting port by:
 
 Because the server serve contents from `dist/iisapp/public/`. After you modify your source files at [`web/src/`](web/src) or assets at [`web/public/`](web/public), you will need to rerun `npm run build` to rebuild the content to `dist/iisapp/public/`.
 
-#### Serving order
+#### File serving order
 
 * `*` if matching file exists, will be served from `dist/iisapp/public/*`
   * Also serve bundle `dist/bundle.js` from `dist/iisapp/public/dist/bundle.js`
@@ -245,6 +245,10 @@ iisnode configuration is located at `prodserver/web.config`. We have overrode so
   * Express is faster when environment variable `NODE_ENV` is set to `production`, details [here](http://apmblog.dynatrace.com/2015/07/22/the-drastic-effects-of-omitting-node_env-in-your-express-js-applications/)
 * Look for Node.js binaries at `C:\Program Files\nodejs\6.1.0\node.exe`
   * To support multiple Node.js versions on Azure Web App
+
+#### File serving order
+
+This will largely same as hosting with standalone Express server. Except when serving `*`, files will be served directly by IIS and not passing thru iisnode or Express. This helps increase performance by serving and caching static files with [kernel-mode driver](https://technet.microsoft.com/en-us/library/cc740087(v=ws.10).aspx) (http.sys).
 
 ## Advanced: Packing for Azure Web App
 
@@ -269,11 +273,12 @@ MSDeploy can be installed using [Web Platform Installer](https://www.microsoft.c
 There are few ways for deployment:
 
 * Manual deploy to any Node.js capable server
-  * Simply copy `dist/iisapp` folder to your server and run `server.js` (or with [PM2](npmjs.com/package/pm2))
+  * Simply copy `dist/iisapp` folder to your server and run `server.js`
 * Continuous deployment to Azure Web App
   * Recommended for agile teams
 * Manual deploy to Azure Web App
   * Recommended for projects that requires release management
+* Manual deploy to IIS
 
 ### Continuous deployment for Azure Web App
 
@@ -291,8 +296,31 @@ To run Webpack on Azure, we prepared a [custom deployment script](https://github
 
 (This command is only supported on Windows because it requires MSDeploy)
 
-To deploy to Azure Web App, `npm run deploy -- --publishsettings=<yoursettings>.PublishSettings`.
+First, pack the web server, `npm run pack`. This will output a MSDeploy package file at `/dist/packages/web.zip`.
+
+Then, deploy the package file to Azure Web App, `npm run deploy -- --publishsettings=<yoursettings>.PublishSettings`.
 
 The publish settings file can be downloaded from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx).
 
 Although this command is only supported on Windows, you can deploy the project by continuous deployment from GitHub and other popular repositories.
+
+### Manual deploy to IIS
+
+First, pack the web server, `npm run pack`.
+
+Then, use [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to "sync" the package to the server. For example,
+
+```
+"C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe"
+  -verb:sync
+  -source:package="dist\packages\web.zip"
+  -dest:
+    auto,
+    ComputerName="https://<server>:443/msdeploy.axd?site=<appname>",
+    UserName='<username>',
+    Password='<password>',
+    AuthType='Basic'
+  -setParam:name="IIS Web Application Name",value="<appname>"
+```
+
+(whitespace added for clarity)
