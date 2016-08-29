@@ -58,17 +58,17 @@ Lastly, restart the development server to pick up your new code.
 
 #### Build the project first
 
-Always build the project first by running `npm run build`. This will output the build to `/dist/iisapp/`.
+Always build the project first by running `npm run build`. This will output a self-contained build to `/dist/iisapp/`.
 
 Then, there are few options to host the server:
 
-* Host with Node.js
+* Host with vanilla Node.js
 * Host with Azure Web App
   * Continuous integration: deploy via GitHub
   * Controlled release: deploy using MSDeploy
 * Host with IIS
 
-##### Host with Node.js
+##### Host with vanilla Node.js
 
 Under `/dist/iisapp/`, run `server.js`.
 
@@ -84,7 +84,7 @@ There are two options to host on Azure Web App:
   * As you push new commits to GitHub, your Azure Web App will pick them up and deploy immediately
   * Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/) to start
 * Deploy using MSDeploy
-  * For manual or controlled release (for example, [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx))
+  * For manual or controlled release (for example, deploy thru [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx))
   * Download publish settings file from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx).
   * Then, run `npm run pack`
   * Then, run `npm run deploy --publishsettings=yoursite.PublishSettings`
