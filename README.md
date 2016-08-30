@@ -74,7 +74,7 @@ For load-balancing and scalability, it is recommended to use a process lifecycle
 
 ##### Host with Azure Web App
 
-There are two options to host on Azure Web App:
+There are two deployment options for Azure Web App:
 
 * Deploy via GitHub (Recommended)
   * As you push new commits to GitHub, your Azure Web App will pick them up and deploy immediately
@@ -237,14 +237,19 @@ This scenario is designed for deploying server code to [Azure Web Apps](https://
 
 [iisnode](https://github.com/tjanczuk/iisnode) configuration is located at `iisnode.yml`. We have overrode some defaults:
 
+* `debuggingEnabled` is set to `false`
+* `devErrorsEnabled` is set to `false`
+* `loggingEnabled` is set to `false`
+* `nodeProcessCountPerApplication` is set to `0`
+  * One worker process per CPU
 * `node_env` is set to `production`
   * We assume hosting the site in IIS is always in production mode
   * Express is faster when environment variable `NODE_ENV` is set to `production`, details [here](http://apmblog.dynatrace.com/2015/07/22/the-drastic-effects-of-omitting-node_env-in-your-express-js-applications/)
 
 ### Features
 
-* Deployable to [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/), and on-premise IIS
-* IIS control worker process lifecycle
+* Can be deployed  to [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/), and on-premise IIS
+* IIS-managed worker process lifecycle
   * Auto recycle worker process as needed (hitting memory or CPU limit, or after number of hours)
 * Fast and efficient serving on static files using kernel-mode driver (http.sys)
 
