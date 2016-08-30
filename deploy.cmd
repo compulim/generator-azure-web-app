@@ -119,20 +119,27 @@ ECHO NEXT_MANIFEST_PATH=%NEXT_MANIFEST_PATH%
 ECHO PREV_MANIFEST_PATH=%PREV_MANIFEST_PATH%
 
 :: 1. KuduSync source files to intermediate folder
-call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_INTERMEDIATE%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_INTERMEDIATE%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd;.vscode"
 IF !ERRORLEVEL! NEQ 0 goto error
 
-DIR %DEPLOYMENT_INTERMEDIATE% /S
+DIR %DEPLOYMENT_INTERMEDIATE% /S /B
 
 :: 2. Install npm packages
 :: BUG: Currently, we must use Node.js < 6.0.0 to run Webpack, otherwise, memory-fs will fail
 pushd "%DEPLOYMENT_INTERMEDIATE%"
 
+ECHO npm installing on %DEPLOYMENT_INTERMEDIATE%
+
 :: call :ExecuteCmd !NPM_CMD! install --quiet
 call :ExecuteCmd npm install --quiet
 IF !ERRORLEVEL! NEQ 0 goto error
 
+call :ExecuteCmd npm dedupe
+IF !ERRORLEVEL! NEQ 0 goto error
+
 popd
+
+DIR %DEPLOYMENT_INTERMEDIATE% /S /B
 
 :: 3. KuduSync from intermediate folder to target folder
 call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_INTERMEDIATE%\dist\iisapp" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%-intermediate" -p "%PREVIOUS_MANIFEST_PATH%-intermediate" -i ".git;.hg;.deployment;deploy.cmd"
