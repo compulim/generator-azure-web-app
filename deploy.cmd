@@ -30,6 +30,12 @@ IF NOT DEFINED DEPLOYMENT_TARGET (
   SET DEPLOYMENT_TARGET=%ARTIFACTS%\wwwroot
 )
 
+IF NOT DEFINED DEPLOYMENT_INTERMEDIATE (
+  SET DEPLOYMENT_INTERMEDIATE=%DEPLOYMENT_TARGET%\..\intermediate
+
+  IF NOT EXIST "%DEPLOYMENT_INTERMEDIATE%" SET CLEAN_LOCAL_DEPLOYMENT_TEMP=true
+)
+
 IF NOT DEFINED NEXT_MANIFEST_PATH (
   SET NEXT_MANIFEST_PATH=%ARTIFACTS%\manifest
 
@@ -56,11 +62,9 @@ IF NOT DEFINED DEPLOYMENT_TEMP (
 IF DEFINED CLEAN_LOCAL_DEPLOYMENT_TEMP (
   IF EXIST "%DEPLOYMENT_TEMP%" rd /s /q "%DEPLOYMENT_TEMP%"
   mkdir "%DEPLOYMENT_TEMP%"
-)
 
-IF NOT DEFINED DEPLOYMENT_INTERMEDIATE (
-  SET DEPLOYMENT_INTERMEDIATE=%DEPLOYMENT_TEMP%\source
-  IF NOT EXIST "%DEPLOYMENT_INTERMEDIATE%" mkdir "%DEPLOYMENT_INTERMEDIATE%"
+  IF EXIST "%DEPLOYMENT_INTERMEDIATE%" rd /s /q "%DEPLOYMENT_INTERMEDIATE%"
+  mkdir "%DEPLOYMENT_INTERMEDIATE%"
 )
 
 goto Deployment
@@ -104,34 +108,22 @@ goto :EOF
 :Deployment
 echo Handling node.js deployment.
 
-:: DEBUG
-DIR %DEPLOYMENT_TEMP%
-
 :: 1. Copy source files to intermediate folder
-IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-  ROBOCOPY "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_INTERMEDIATE%" /E
-  IF !ERRORLEVEL! GEQ 8 (
-    echo Failed exitCode=%ERRORLEVEL%, command=ROBOCOPY "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_INTERMEDIATE%" /E
-    goto error
-  )
-)
+call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_INTERMEDIATE%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 2. Select node version
 call :SelectNodeVersion
 
 :: 3. Install npm packages
-IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-  pushd "%DEPLOYMENT_INTERMEDIATE%"
-) ELSE (
-  pushd "%DEPLOYMENT_TARGET%"
-)
+pushd "%DEPLOYMENT_INTERMEDIATE%"
 
 call :ExecuteCmd !NPM_CMD! install --quiet
 IF !ERRORLEVEL! NEQ 0 goto error
 popd
 
 :: 4. KuduSync
-call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_INTERMEDIATE%\dist\iisapp" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_INTERMEDIATE%\dist\iisapp" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%.intermediate" -p "%PREVIOUS_MANIFEST_PATH%.intermediate" -i ".git;.hg;.deployment;deploy.cmd;iisnode.yml"
 IF !ERRORLEVEL! NEQ 0 goto error
 
 REM :: 1. KuduSync
