@@ -26,10 +26,7 @@ const
     CONTENT_DEST,
     WEBPACK_CONFIG.output.publicPath.replace(/^\//, '')
   ),
-  ENTRY_PATHS = filter(
-    WEBPACK_CONFIG.entry,
-    entry => /^\./.test(entry)
-  );
+  ENTRY_PATHS = WEBPACK_CONFIG.entry;
 
 module.exports = function (gulp) {
   gulp.task('build', [
@@ -53,11 +50,11 @@ module.exports = function (gulp) {
   gulp.task('rebuild:webpack', ['clean:webroot'], buildWebpack);
 
   function build() {
-    gutil.log('[build]', `Build outputted to ${path.relative('.', config.BUILD_OUTPUT)}`);
+    gutil.log('[build]', `Build with "${ process.env.NODE_ENV }" favor outputted to ${ path.relative('.', config.IISAPP_INTERMEDIATE_PATH) }`);
   }
 
   function buildContent() {
-    gutil.log('[build:content]', `Copying content from ${path.relative('.', config.WEBPACK_CONTENT_SRC)}`);
+    gutil.log('[build:content]', `Copying content from ${ path.relative('.', config.WEBPACK_CONTENT_SRC) }`);
 
     return gulp
       .src(config.WEBPACK_CONTENT_SRC)
@@ -67,7 +64,7 @@ module.exports = function (gulp) {
   }
 
   function buildServer() {
-    gutil.log('[build:server]', `Copying code from ${path.relative('.', config.PROD_SERVER_SRC[0])}`);
+    gutil.log('[build:server]', `Copying code from ${ path.relative('.', config.PROD_SERVER_SRC[0]) }`);
 
     return gulp
       .src(config.PROD_SERVER_SRC)
@@ -79,7 +76,8 @@ module.exports = function (gulp) {
   }
 
   function buildWebpack() {
-    gutil.log('[build:webpack]', 'Packing with entrypoints:', ENTRY_PATHS.join(', '));
+    gutil.log('[build:webpack]', `Using configuration from ${ path.relative('.', config.WEBPACK_CONFIG_PATH) }`);
+    gutil.log('[build:webpack]', 'Packing with entrypoints:', ENTRY_PATHS.map(entry => path.relative('.', entry)).join(', '));
 
     return gulp
       .src(ENTRY_PATHS)
