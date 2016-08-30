@@ -5,6 +5,9 @@ const
   nodeEnv = env.node_env,
   path = require('path');
 
+console.log(__filename);
+console.log(__dirname);
+
 const BUILD_OUTPUT = path.resolve(__dirname, '../dist/');
 const WEB_ROOT = path.resolve(__dirname, '../web/');
 
