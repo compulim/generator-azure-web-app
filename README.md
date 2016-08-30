@@ -281,9 +281,11 @@ To deploy to Azure, please click [![Deploy to Azure](http://azuredeploy.net/depl
 
 To run Webpack on Azure, we prepared a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) for Project Kudu.
 
-* Copy source files to temporary folder (under `D:\local\Temp\`)
+* Copy source files to intermediate folder (under `D:\home\site\intermediate\`)
 * Build the project (by running `npm install`)
-* Copy server and bundles from `D:\local\Temp\...\dist\iisapp\` to `D:\home\site\wwwroot\`
+* Copy server and bundles from `D:\home\site\intermediate\dist\iisapp\` to `D:\home\site\wwwroot\`
+* Update [`iisnode.yml`](iisnode.yml) by selecting Node.js version from engines in [`package.json`](package.json)
+  * Currently, there is a [bug](https://github.com/webpack/memory-fs/issues/23) in Webpack that prevent us to use Node.js >= 6.0.0 to bundle
 
 ## Advanced: Manual deploy to Azure Web App
 
