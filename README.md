@@ -13,7 +13,7 @@ Modern websites are not bunches of plain text files. Build process increases pag
 * Re-compress JPEG and PNG files for better compression ratio
 * Remove dead code or code that is only used in development mode
 
-We use Webpack as a bundler for our build process. And the folder structure is designed to be able to host under IIS on [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
+We use Webpack as a bundler for our build process. And the directory structure is designed to be able to host as a standalone Node.js server or IIS on [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/) and [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/).
 
 ## Try it out in 3 steps
 
@@ -40,25 +40,23 @@ Run `npm run hostdev`, the development server will listen to port 80 and availab
 For clarity, HTML pages and JavaScript code are separated into different folders.
 
 * HTML pages or assets
-  * Create new HTML file at [`/web/public/`](web/public)
-  * Save assets to [`/web/public/`](web/public)
+  * Create new HTML file at [`web/public/`](web/public)
+  * Save assets to [`web/public/`](web/public)
 * JavaScript code
-  * Create new JavaScript file at [`/web/src/`](web/src)
+  * Create new JavaScript file at [`web/src/`](web/src)
   * To import packages, mark them as development dependencies, for example, `npm install react --save-dev`
 
 #### Adding new API endpoints
 
-Add new API endpoints at [`/prodserver/controllers/api.js`](prodserver/controllers/api.js).
+Add new API endpoints at [`prodserver/controllers/api.js`](prodserver/controllers/api.js).
 
 To import packages, mark them as production dependencies, for example, `npm install serve-static --save`.
 
 Lastly, restart the development server to pick up your new code.
 
-### Production run
+### Production deployment
 
 #### Build the project first
-
-Always build the project first by running `npm run build`. This will output a self-contained build to `/dist/iisapp/`.
 
 Then, there are few options to host the server:
 
@@ -70,9 +68,9 @@ Then, there are few options to host the server:
 
 ##### Host with vanilla Node.js
 
-Under `/dist/iisapp/`, run `server.js`.
+Build the website, run `npm run build`. Then under `dist/iisapp/`, run `node server.js`.
 
-The directory `/dist/iisapp/` contains everything that need to run the production server, including minified HTML files and assets.
+The directory `dist/iisapp/` contains everything that need to run the production server, including minified HTML files and assets. It can be directly copied to production server to run.
 
 For load-balancing and scalability, it is recommended to use a process lifecycle manager to manage the server process. For example, [PM2](https://www.npmjs.com/package/pm2).
 
@@ -80,22 +78,25 @@ For load-balancing and scalability, it is recommended to use a process lifecycle
 
 There are two options to host on Azure Web App:
 
-* Deploy via Github (Recommended)
+* Deploy via GitHub (Recommended)
   * As you push new commits to GitHub, your Azure Web App will pick them up and deploy immediately
   * Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/) to start
 * Deploy using MSDeploy
-  * For manual or controlled release (for example, deploy thru [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx))
+  * For manual or controlled release, for example, deploy thru [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
   * Download publish settings file from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx).
-  * Then, run `npm run pack`
+  * Then, run `npm run build`, to build the website and output to `dist/iisapp/`
+  * Then, run `npm run pack`, to pack the website as `dist/packages/web.zip`
   * Then, run `npm run deploy --publishsettings=yoursite.PublishSettings`
 
 ##### Host with IIS
 
-Run `npm run pack`. This will build a MSDeploy ZIP file at `/dist/packages/web.zip`.
+This will use IIS Management Service feature to deploy the site.
 
-Then using MSDeploy, manually deploy `/dist/packages/web.zip` to your IIS.
+1. Run `npm run build`, to build the website and output to `dist/iisapp/`
+2. Then, run `npm run pack`, to pack the website as `dist/packages/web.zip`
+3. Then, use MSDeploy to deploy the package to your IIS
 
-## Important files and directories
+## Advanced: Important files and directories
 
 | Filename | Description |
 |----------------|-------------|
@@ -111,9 +112,9 @@ Then using MSDeploy, manually deploy `/dist/packages/web.zip` to your IIS.
 | [`web/public/`](web/public) | Asset source files |
 | [`web/src/`](web/src) | JavaScript source files |
 
-## Gulpfile scripts
+## Advanced: Gulp tasks
 
-There are multiple NPM scripts help building the project.
+To help building the project, there are several Gulp tasks exposed thru NPM scripts.
 
 * `npm run build` will start the build process
 * `npm run deploy` will deploy the website to Azure Web App
@@ -192,7 +193,7 @@ There are three ways to host your project:
 
 To run the server, `npm run hostdev`. The server will host on port 80 at [http://localhost/](http://localhost/).
 
-You can specify hosting port by:
+You can specify listening port by:
 
 * Set environment variable `PORT` to `8080`, or
 * Command-line switches: `npm run hostdev -- --port 8080`
@@ -215,12 +216,12 @@ To run the server, `npm run hostprod`.
 
 The server is a simple Express server which host on port 80 at [http://localhost/](http://localhost/). All contents are served from `dist/iisapp/public/`.
 
-You can specify hosting port by:
+You can specify listening port by:
 
 * Set environment variable `PORT` to `8080`, or
 * Command-line switches: `npm run hostprod -- --port 8080`
 
-Because the server serve contents from `dist/iisapp/public/`. After you modify your source files at [`web/src/`](web/src) or assets at [`web/public/`](web/public), you will need to rerun `npm run build` to rebuild the content to `dist/iisapp/public/`.
+Because the contents are served from `dist/iisapp/public/`. After you modify your source files at [`web/src/`](web/src) or assets at [`web/public/`](web/public), you will need to rerun `npm run build` to rebuild the content to `dist/iisapp/public/`.
 
 #### File serving order
 
@@ -236,11 +237,12 @@ To run the Express server under IIS, host the folder `dist/iisapp/` under IIS wi
 
 iisnode configuration is located at `prodserver/web.config`. We have overrode some defaults:
 
-* `node_env` set to `production`
+* `system.webServer/iisnode/@node_env` is set to `production`
   * We assume hosting the site in IIS is always in production mode
   * Express is faster when environment variable `NODE_ENV` is set to `production`, details [here](http://apmblog.dynatrace.com/2015/07/22/the-drastic-effects-of-omitting-node_env-in-your-express-js-applications/)
-* Look for Node.js binaries at `C:\Program Files\nodejs\6.1.0\node.exe`
-  * To support multiple Node.js versions on Azure Web App
+* Look for Node.js binaries at `%ProgramFiles(x86)%\nodejs\6.3.0\node.exe`
+  * This is to support multiple Node.js versions on Azure Web App
+  * Currently, only 32-bit binaries are deployed on Azure Web App
 
 #### File serving order
 
@@ -292,7 +294,7 @@ To run Webpack on Azure, we prepared a [custom deployment script](https://github
 
 (This command is only supported on Windows because it requires MSDeploy)
 
-First, pack the web server, `npm run pack`. This will output a MSDeploy package file at `/dist/packages/web.zip`.
+First, pack the web server, `npm run pack`. This will output a MSDeploy package file at `dist/packages/web.zip`.
 
 Then, deploy the package file to Azure Web App, `npm run deploy -- --publishsettings=<yoursettings>.PublishSettings`.
 
