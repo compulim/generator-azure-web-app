@@ -1,2 +1,5 @@
+debuggingEnabled: false
+devErrorsEnabled: false
 loggingEnabled: false
+nodeProcessCountPerApplication: 0
 node_env: production
