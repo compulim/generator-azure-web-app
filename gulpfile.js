@@ -5,14 +5,15 @@ const
   gulp = require('gulp'),
   program = require('commander');
 
+const currentFavor = process.env.NODE_ENV === 'development' ? 'development' : 'production';
+
 program
   .allowUnknownOption()
-  .option('-b, --build <type>', 'Specifies the build type: "production", or "development". Will override NODE_ENV. (Default = "development")', /^(production|development)$/i, 'development')
   .option(
     '-b, --build <type>',
-    'Specifies the build type: "production", or "development". Will override NODE_ENV. (Default = "development")',
+    `Specifies the build type: "production", or "development". Will override NODE_ENV. (Current = "${ currentFavor }")`,
     /^(production|development)$/i,
-    process.env.NODE_ENV === 'production' ? 'production' : 'development'
+    currentFavor
   )
   .option('--publishsettings <publish settings file>', 'Specifies the *.PublishSettings file for deployment')
   .parse(process.argv);
