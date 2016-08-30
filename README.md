@@ -56,9 +56,7 @@ Lastly, restart the development server to pick up your new code.
 
 ### Production deployment
 
-#### Build the project first
-
-Then, there are few options to host the server:
+Then, there are multiple ways to host the server:
 
 * Host with vanilla Node.js
 * Host with Azure Web App
@@ -70,7 +68,7 @@ Then, there are few options to host the server:
 
 Build the website, run `npm run build`. Then under `dist/iisapp/`, run `node server.js`.
 
-The directory `dist/iisapp/` contains everything that need to run the production server, including minified HTML files and assets. It can be directly copied to production server to run.
+The directory `dist/iisapp/` contains everything that need to run the production server, including minified HTML files and assets. It can be copied to production server to run.
 
 For load-balancing and scalability, it is recommended to use a process lifecycle manager to manage the server process. For example, [PM2](https://www.npmjs.com/package/pm2).
 
@@ -82,12 +80,12 @@ There are two options to host on Azure Web App:
   * As you push new commits to GitHub, your Azure Web App will pick them up and deploy immediately
   * Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/) to start
 * Deploy using MSDeploy
-  * For manual or controlled release, for example, deploy thru [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
+  * For manual or controlled release, for example, deploy thru release manager, for example, [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
   * Download publish settings file from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx)
-  * Modify `iisnode.yml`
-    * When deployed thru MSDeploy, `iisnode.yml` is not updated automatically, thus Node.js version is not selected automatically
-    * Add a line: `nodeProcessCommandLine: "D:\Program Files (x86)\nodejs\6.3.0\node.exe"`
-  * Then, run `npm run build`, to build the website and output to `dist/iisapp/`
+  * Modify iisnode configuration to select Node.js version
+    * When deployed thru MSDeploy, [`iisnode.yml`](iisnode.yml) is not updated automatically, thus Node.js version cannot be selected automatically
+    * Add a line to [`iisnode.yml`](iisnode.yml): `nodeProcessCommandLine: "D:\Program Files (x86)\nodejs\6.3.0\node.exe"`
+  * Then, run `npm run build`, to build the website to `dist/iisapp/`
   * Then, run `npm run pack`, to pack the website as `dist/packages/web.zip`
   * Then, run `npm run deploy --publishsettings=yoursite.PublishSettings`
 
@@ -180,35 +178,24 @@ When running under development server, we will add the following to [`webpack.co
 * Hot module replacement
   * Support React component with [`react-hot`](https://github.com/gaearon/react-hot-loader) loader
 
-## Advanced: Hosting
-
-There are three ways to host your project:
-
-* Webpack development server
-  * Local host only, not recommended to serve over network
-* Standalone Express server
-* IIS-hosted Express server
-  * Host on [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/)
-  * Host on [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/) or on-premise IIS
-
-### Webpack development server
+## Advanced: Hosting with Webpack development server
 
 The server targets local development environment where network speed is not a concern.
 
 Instead of serving a monolithic bundle `dist/bundle.js`, the development server will serve each source files separately. This also enables hot module replacement, when a source file is modified, the browser will only reload that source file and/or re-render related React component.
 
-#### Features
+### Features
 
 * Bundle on-the-fly, shorter build time
 * Support [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html) (supersede [LiveReload](http://livereload.com/))
 
-#### Options
+### Options
 
 * Listening port
   * Set environment variable `PORT` to `8080`, or
   * Command-line switches: `npm run hostdev -- --port 8080`
 
-#### File serving order
+### File serving order
 
 * `dist/bundle.js` will be bundled by Webpack on-the-fly
 * `*` if matching file exists, will be served from [`web/public/*`](web/public)
@@ -216,23 +203,23 @@ Instead of serving a monolithic bundle `dist/bundle.js`, the development server 
 * Otherwise, will redirect to [`web/public/index.html`](web/public/index.html)
   * To support single-page application
 
-### Standalone Express server
+## Advanced: Hosting as a standalone Express server
 
 The server is a simple Express server which host on port 80 at [http://localhost/](http://localhost/). All contents are served from `dist/iisapp/public/`.
 
-#### Features
+### Features
 
 * Cross-platform
 * Simple deployment
 * Recommended to host under a process lifecycle manager, for example, [PM2](https://www.npmjs.com/package/pm2)
 
-#### Options
+### Options
 
 * Listening port
   * Set environment variable `PORT` to `8080`, or
   * Command-line switches: `npm run hostprod -- --port 8080`
 
-#### File serving order
+### File serving order
 
 * `*` if matching file exists, will be served from `dist/iisapp/public/*`
   * Also serve bundle `dist/bundle.js` from `dist/iisapp/public/dist/bundle.js`
@@ -240,36 +227,38 @@ The server is a simple Express server which host on port 80 at [http://localhost
 * Otherwise, will be redirected to [`web/public/index.html`](web/public/index.html)
   * To support single-page application
 
-#### Notes
+### Notes
 
 Because the contents are served from `dist/iisapp/public/`. After you modify your source files at [`web/src/`](web/src) or assets at [`web/public/`](web/public), you will need to rerun `npm run build` to rebuild the content to `dist/iisapp/public/`.
 
-### IIS-hosted Express server
+## Advanced: Hosting with IIS and iisnode
 
-iisnode configuration is located at `iisnode.yml`. We have overrode some defaults:
+This scenario is designed for deploying server code to [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/), and on-premise IIS.
+
+[iisnode](https://github.com/tjanczuk/iisnode) configuration is located at `iisnode.yml`. We have overrode some defaults:
 
 * `node_env` is set to `production`
   * We assume hosting the site in IIS is always in production mode
   * Express is faster when environment variable `NODE_ENV` is set to `production`, details [here](http://apmblog.dynatrace.com/2015/07/22/the-drastic-effects-of-omitting-node_env-in-your-express-js-applications/)
 
-#### Features
+### Features
 
 * Deployable to [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/), and on-premise IIS
 * IIS control worker process lifecycle
   * Auto recycle worker process as needed (hitting memory or CPU limit, or after number of hours)
 * Fast and efficient serving on static files using kernel-mode driver (http.sys)
 
-#### File serving order
+### File serving order
 
-Largely same as hosting with standalone Express server. Except when serving `*`, files will be served directly by IIS and not passing thru iisnode or Express. Static files served by IIS will be served and cached by [kernel-mode driver](https://technet.microsoft.com/en-us/library/cc740087(v=ws.10).aspx) (http.sys).
+Largely same as hosting with standalone Express server. Except when serving `*`, files will be served directly by IIS and not passing thru [iisnode](https://github.com/tjanczuk/iisnode) or [Express](https://expressjs.com/). Static files served by IIS will be served and cached by [kernel-mode driver](https://technet.microsoft.com/en-us/library/cc740087(v=ws.10).aspx) (http.sys).
 
 ## Advanced: Packing with MSDeploy
 
-(This command is only supported on Windows because it requires [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy).)
+(This scenario is only supported on Windows because it requires [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy).)
 
 To pack the content and production server, `npm run pack`.
 
-It will create a MSDeploy ZIP file that can be deployed to any IIS server, including [Azure Web App](https://azure.microsoft.com/en-us/services/app-service/web/). This ZIP file contains Express server and website contents in production favor.
+It will create a MSDeploy ZIP file that can be deployed to any IIS server, including [Azure Web App](https://azure.microsoft.com/en-us/services/app-service/web/). This ZIP file contains Express server code and website contents in production favor.
 
 Additional parameters added to MSDeploy ZIP file:
 
@@ -279,19 +268,7 @@ Additional parameters added to MSDeploy ZIP file:
 
 Before packing the project, make sure your current build is up-to-date, or run `npm run build`.
 
-## Advanced: Deployment
-
-There are few ways for deployment:
-
-* Manual deploy to any Node.js capable server
-  * Simply copy `dist/iisapp` folder to your server and run `server.js`
-* Continuous deployment to Azure Web App
-  * Recommended for agile teams
-* Manual deploy to Azure Web App
-  * Recommended for projects that requires release management
-* Manual deploy to IIS
-
-### Continuous deployment for Azure Web App
+## Advanced: Continuous deployment for Azure Web App
 
 This project can be deployed to [Azure Web App](https://azure.microsoft.com/en-us/services/app-service/web/) using continuous deployment with GitHub. Azure Web App is powered by [Project Kudu](https://github.com/projectkudu/kudu).
 
@@ -303,13 +280,17 @@ To run Webpack on Azure, we prepared a [custom deployment script](https://github
 * Build the project (by running `npm install`)
 * Copy server and bundles from `D:\local\Temp\...\dist\iisapp\` to `D:\home\site\wwwroot\`
 
-### Manual deploy to Azure Web App
+## Advanced: Manual deploy to Azure Web App
 
 (This command is only supported on Windows because it requires MSDeploy)
 
-Deployment thru MSDeploy will not trigger Project Kudu. Thus, Node.js version and binary location cannot be automatically selected. Add the followings to `iisnode.yml`:
+This scenario is designed for manual or controlled release. Mostly paired with a release management tool, for example, [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx).
+
+Deployment thru MSDeploy will not trigger Project Kudu. Thus, Node.js version and binary location cannot be automatically selected from [`package.json`](package.json). Please add the followings to `iisnode.yml`:
 
 * `nodeProcessCommandLine: "D:\Program Files (x86)\nodejs\6.3.0\node.exe"`
+
+Then, build the server, `npm run build`. This will output to `dist/iisapp/`.
 
 Then, pack the web server, `npm run pack`. This will output a MSDeploy package file at `dist/packages/web.zip`.
 
@@ -317,11 +298,18 @@ Then, deploy the package file to Azure Web App, `npm run deploy -- --publishsett
 
 The publish settings file can be downloaded from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx).
 
-### Manual deploy to IIS
+## Advanced: Manual deploy to IIS
 
-First, pack the web server, `npm run pack`.
+(This scenario is only supported on Windows because it requires MSDeploy)
 
-Then, use [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to "sync" the package to the server. For example,
+Similar to Azure Web App, the website can also deploy to an on-premise IIS with [iisnode](https://github.com/tjanczuk/iisnode) and [Node.js](https://nodejs.org/) installed.
+
+[iisnode](https://github.com/tjanczuk/iisnode) helps manage Node.js worker process:
+
+* Automatic process recycle
+* Redirect console output to file
+
+After you have packed your website into a MSDeploy ZIP file (`npm run pack`), use [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to "sync" the package to the server. For example,
 
 ```
 "C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe"
@@ -336,7 +324,7 @@ Then, use [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to "syn
   -setParam:name="IIS Web Application Name",value="<appname>"
 ```
 
-(whitespace added for clarity)
+(Whitespace and line breaks added for clarity)
 
 ## Work in progress
 
