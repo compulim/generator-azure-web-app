@@ -1,13 +1,18 @@
 'use strict';
 
 const
-  base = process.cwd(),
   env = process.env,
   nodeEnv = env.node_env,
   path = require('path');
 
-const BUILD_OUTPUT = path.resolve(base, 'dist/');
-const WEB_ROOT = path.resolve(base, 'web/');
+// We cannot use __dirname because it could resolve Z: to UNC path
+// And Webpack memory-fs will fail on UNC path
+
+const
+  __DIRNAME = path.join(process.cwd(), 'scripts');
+
+const BUILD_OUTPUT = path.resolve(__DIRNAME, '../dist/');
+const WEB_ROOT = path.resolve(__DIRNAME, '../web/');
 
 const IISAPP_INTERMEDIATE_PATH = path.resolve(BUILD_OUTPUT, 'iisapp/');
 const IISAPP_PACKAGE_PATH = path.resolve(BUILD_OUTPUT, 'packages/web.zip');
@@ -22,8 +27,8 @@ const MSDEPLOY_IIS_PARAMETERS = {
 };
 
 const PROD_SERVER_SRC = globIgnoreNodeModules('../prodserver').concat(
-  path.resolve(base, 'iisnode.yml'),
-  path.resolve(base, 'package.json')
+  path.resolve(__DIRNAME, '../iisnode.yml'),
+  path.resolve(__DIRNAME, '../package.json')
 );
 
 const WEBPACK_CONFIG_PATH = path.join(WEB_ROOT, 'webpack.config.js');
@@ -49,7 +54,7 @@ module.exports = {
 };
 
 function globIgnoreNodeModules(relativePath) {
-  const absolutePath = path.resolve(__dirname, relativePath);
+  const absolutePath = path.resolve(__DIRNAME, relativePath);
 
   return [
     `${ absolutePath }/**`,
