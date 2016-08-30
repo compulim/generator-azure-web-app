@@ -108,47 +108,25 @@ goto :EOF
 :Deployment
 echo Handling node.js deployment.
 
-:: 1. Copy source files to intermediate folder
+:: 1. KuduSync source files to intermediate folder
 call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_INTERMEDIATE%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
 IF !ERRORLEVEL! NEQ 0 goto error
 
-:: 2. Select node version
-call :SelectNodeVersion
-
-:: 3. Install npm packages
+:: 2. Install npm packages
+:: BUG: Currently, we must use Node.js < 6.0.0 to run Webpack, otherwise, memory-fs will fail
 pushd "%DEPLOYMENT_INTERMEDIATE%"
-
-SET
-CD
 
 call :ExecuteCmd !NPM_CMD! install --quiet
 IF !ERRORLEVEL! NEQ 0 goto error
 
-call :ExecuteCmd !NPM_CMD! run build
-IF !ERRORLEVEL! NEQ 0 goto error
-
 popd
 
-:: 4. KuduSync
-call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_INTERMEDIATE%\dist\iisapp" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%-intermediate" -p "%PREVIOUS_MANIFEST_PATH%-intermediate" -i ".git;.hg;.deployment;deploy.cmd;iisnode.yml"
+:: 3. KuduSync from intermediate folder to target folder
+call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_INTERMEDIATE%\dist\iisapp" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%-intermediate" -p "%PREVIOUS_MANIFEST_PATH%-intermediate" -i ".git;.hg;.deployment;deploy.cmd"
 IF !ERRORLEVEL! NEQ 0 goto error
 
-REM :: 1. KuduSync
-REM IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-REM   call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
-REM   IF !ERRORLEVEL! NEQ 0 goto error
-REM )
-
-REM :: 2. Select node version
-REM call :SelectNodeVersion
-
-REM :: 3. Install npm packages
-REM IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
-REM   pushd "%DEPLOYMENT_TARGET%"
-REM   call :ExecuteCmd !NPM_CMD! install --production
-REM   IF !ERRORLEVEL! NEQ 0 goto error
-REM   popd
-REM )
+:: 4. Select node version
+call :SelectNodeVersion
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end

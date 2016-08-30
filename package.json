@@ -13,6 +13,7 @@
     "hostdev": "node devserver/server.js",
     "hostprod": "node prodserver/server.js --content-path dist/iisapp/public",
     "pack": "gulp pack",
+    "postinstall": "npm run build",
     "rebuild": "gulp rebuild",
     "repack": "gulp repack"
   },
@@ -41,6 +42,8 @@
     "express": "^4.14.0",
     "gulp": "^3.9.1",
     "gulp-command": "^0.1.2",
+    "gulp-htmlmin": "^2.0.0",
+    "gulp-imagemin": "^3.0.3",
     "gulp-install": "^0.6.0",
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.7",
