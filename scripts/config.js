@@ -21,6 +21,7 @@ const MSDEPLOY_IIS_PARAMETERS = {
 };
 
 const PROD_SERVER_SRC = globIgnoreNodeModules('../prodserver').concat(
+  path.resolve(__dirname, '../iisnode.yml'),
   path.resolve(__dirname, '../package.json')
 );
 
