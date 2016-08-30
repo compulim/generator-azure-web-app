@@ -54,7 +54,7 @@ module.exports = function (gulp) {
   }
 
   function buildContent() {
-    gutil.log('[build:content]', `Copying content from ${ path.relative('.', config.WEBPACK_CONTENT_SRC) }`);
+    gutil.log('[build:content]', `Copying content from ${ path.relative('.', config.WEBPACK_CONTENT_SRC) } to ${ path.relative('.', CONTENT_DEST) }`);
 
     return gulp
       .src(config.WEBPACK_CONTENT_SRC)
@@ -64,7 +64,7 @@ module.exports = function (gulp) {
   }
 
   function buildServer() {
-    gutil.log('[build:server]', `Copying code from ${ path.relative('.', config.PROD_SERVER_SRC[0]) }`);
+    gutil.log('[build:server]', `Copying code from ${ path.relative('.', config.PROD_SERVER_SRC[0]) } to ${ path.relative('.', config.IISAPP_INTERMEDIATE_PATH) }`);
 
     return gulp
       .src(config.PROD_SERVER_SRC)
@@ -80,7 +80,7 @@ module.exports = function (gulp) {
     gutil.log('[build:webpack]', 'Packing with entrypoints:', ENTRY_PATHS.map(entry => path.relative('.', entry)).join(', '));
 
     return gulp
-      .src(ENTRY_PATHS)
+      .src([])
       .pipe(webpack(WEBPACK_CONFIG))
       .pipe(gulp.dest(WEBPACK_DEST));
   }

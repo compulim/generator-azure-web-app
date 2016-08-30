@@ -74,7 +74,7 @@ For load-balancing and scalability, it is recommended to use a process lifecycle
 
 ##### Host with Azure Web App
 
-There are two options to host on Azure Web App:
+There are two deployment options for Azure Web App:
 
 * Deploy via GitHub (Recommended)
   * As you push new commits to GitHub, your Azure Web App will pick them up and deploy immediately
@@ -237,14 +237,19 @@ This scenario is designed for deploying server code to [Azure Web Apps](https://
 
 [iisnode](https://github.com/tjanczuk/iisnode) configuration is located at `iisnode.yml`. We have overrode some defaults:
 
+* `debuggingEnabled` is set to `false`
+* `devErrorsEnabled` is set to `false`
+* `loggingEnabled` is set to `false`
+* `nodeProcessCountPerApplication` is set to `0`
+  * One worker process per CPU
 * `node_env` is set to `production`
   * We assume hosting the site in IIS is always in production mode
   * Express is faster when environment variable `NODE_ENV` is set to `production`, details [here](http://apmblog.dynatrace.com/2015/07/22/the-drastic-effects-of-omitting-node_env-in-your-express-js-applications/)
 
 ### Features
 
-* Deployable to [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/), and on-premise IIS
-* IIS control worker process lifecycle
+* Can be deployed  to [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/), and on-premise IIS
+* IIS-managed worker process lifecycle
   * Auto recycle worker process as needed (hitting memory or CPU limit, or after number of hours)
 * Fast and efficient serving on static files using kernel-mode driver (http.sys)
 
@@ -276,9 +281,11 @@ To deploy to Azure, please click [![Deploy to Azure](http://azuredeploy.net/depl
 
 To run Webpack on Azure, we prepared a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) for Project Kudu.
 
-* Copy source files to temporary folder (under `D:\local\Temp\`)
+* Copy source files to intermediate folder (under `D:\home\site\intermediate\`)
 * Build the project (by running `npm install`)
-* Copy server and bundles from `D:\local\Temp\...\dist\iisapp\` to `D:\home\site\wwwroot\`
+* Copy server and bundles from `D:\home\site\intermediate\dist\iisapp\` to `D:\home\site\wwwroot\`
+* Update [`iisnode.yml`](iisnode.yml) by selecting Node.js version from engines in [`package.json`](package.json)
+  * Currently, there is a [bug](https://github.com/webpack/memory-fs/issues/23) in Webpack that prevent us to use Node.js >= 6.0.0 to bundle
 
 ## Advanced: Manual deploy to Azure Web App
 
