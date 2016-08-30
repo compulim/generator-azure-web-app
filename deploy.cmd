@@ -116,7 +116,8 @@ IF !ERRORLEVEL! NEQ 0 goto error
 :: BUG: Currently, we must use Node.js < 6.0.0 to run Webpack, otherwise, memory-fs will fail
 pushd "%DEPLOYMENT_INTERMEDIATE%"
 
-call :ExecuteCmd !NPM_CMD! install --quiet
+:: call :ExecuteCmd !NPM_CMD! install --quiet
+call :ExecuteCmd npm install --quiet
 IF !ERRORLEVEL! NEQ 0 goto error
 
 popd
