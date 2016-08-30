@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": "^6.1.0"
+    "node": "^6.3.0"
   },
   "scripts": {
     "build": "gulp build",
@@ -13,7 +13,6 @@
     "hostdev": "node devserver/server.js",
     "hostprod": "node prodserver/server.js --content-path dist/iisapp/public",
     "pack": "gulp pack",
-    "postinstall": "npm run build",
     "rebuild": "gulp rebuild",
     "repack": "gulp repack"
   },
