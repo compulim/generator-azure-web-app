@@ -108,8 +108,6 @@ goto :EOF
 :Deployment
 echo Handling node.js deployment.
 
-call :ExecuteCmd !NODE_EXE! scripts/config
-
 :: 1. Copy source files to intermediate folder
 call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_INTERMEDIATE%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
 IF !ERRORLEVEL! NEQ 0 goto error
@@ -122,8 +120,6 @@ pushd "%DEPLOYMENT_INTERMEDIATE%"
 
 SET
 CD
-
-call :ExecuteCmd !NODE_EXE! scripts/config
 
 call :ExecuteCmd !NPM_CMD! install --quiet
 IF !ERRORLEVEL! NEQ 0 goto error

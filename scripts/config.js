@@ -1,15 +1,13 @@
 'use strict';
 
 const
+  base = process.cwd(),
   env = process.env,
   nodeEnv = env.node_env,
   path = require('path');
 
-console.log(__filename);
-console.log(__dirname);
-
-const BUILD_OUTPUT = path.resolve(__dirname, '../dist/');
-const WEB_ROOT = path.resolve(__dirname, '../web/');
+const BUILD_OUTPUT = path.resolve(base, 'dist/');
+const WEB_ROOT = path.resolve(base, 'web/');
 
 const IISAPP_INTERMEDIATE_PATH = path.resolve(BUILD_OUTPUT, 'iisapp/');
 const IISAPP_PACKAGE_PATH = path.resolve(BUILD_OUTPUT, 'packages/web.zip');
@@ -24,8 +22,8 @@ const MSDEPLOY_IIS_PARAMETERS = {
 };
 
 const PROD_SERVER_SRC = globIgnoreNodeModules('../prodserver').concat(
-  path.resolve(__dirname, '../iisnode.yml'),
-  path.resolve(__dirname, '../package.json')
+  path.resolve(base, 'iisnode.yml'),
+  path.resolve(base, 'package.json')
 );
 
 const WEBPACK_CONFIG_PATH = path.join(WEB_ROOT, 'webpack.config.js');

@@ -54,7 +54,6 @@ module.exports = function (gulp) {
   }
 
   function buildContent() {
-    gutil.log('[build:content]', `Copying content from ${ config.WEBPACK_CONTENT_SRC } to ${ CONTENT_DEST }`);
     gutil.log('[build:content]', `Copying content from ${ path.relative('.', config.WEBPACK_CONTENT_SRC) } to ${ path.relative('.', CONTENT_DEST) }`);
 
     return gulp
