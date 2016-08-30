@@ -105,13 +105,9 @@ goto :EOF
 echo Handling node.js deployment.
 
 :: DEBUG
-SET
 DIR %DEPLOYMENT_TEMP%
 
-:: 1. Select node version
-call :SelectNodeVersion
-
-:: 2. Copy source files to intermediate folder
+:: 1. Copy source files to intermediate folder
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   ROBOCOPY "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_INTERMEDIATE%" /E
   IF !ERRORLEVEL! GEQ 8 (
@@ -119,6 +115,9 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
     goto error
   )
 )
+
+:: 2. Select node version
+call :SelectNodeVersion
 
 :: 3. Install npm packages
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
