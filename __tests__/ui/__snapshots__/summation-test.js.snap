@@ -1,0 +1,22 @@
+exports[`<Summation> when summing 1 and 2 should return 3 1`] = `
+<div>
+  <input
+    onChange={[Function bound handleValueXChange]}
+    type="number"
+    value={1} />
+  <span>
+    +
+  </span>
+  <input
+    onChange={[Function bound handleValueYChange]}
+    type="number"
+    value={2} />
+  <span>
+    =
+  </span>
+  <input
+    readOnly={true}
+    type="number"
+    value={3} />
+</div>
+`;
