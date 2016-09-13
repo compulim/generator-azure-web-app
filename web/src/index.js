@@ -3,9 +3,31 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
+import Summation from './ui/summation';
+
 import './index.less';
 
 class Index extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleXChange = this.handleXChange.bind(this);
+    this.handleYChange = this.handleYChange.bind(this);
+
+    this.state = {
+      x: 1,
+      y: 2
+    };
+  }
+
+  handleXChange(newValue) {
+    this.setState({ x: newValue });
+  }
+
+  handleYChange(newValue) {
+    this.setState({ y: newValue });
+  }
+
   render() {
     return (
       <div>
@@ -14,6 +36,12 @@ class Index extends Component {
         <p>
           <a href="/api/health">Health check</a>
         </p>
+        <Summation
+          onXChange={ this.handleXChange }
+          onYChange={ this.handleYChange }
+          x={ this.state.x }
+          y={ this.state.y }
+        />
       </div>
     );
   }
