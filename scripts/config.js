@@ -3,6 +3,7 @@
 const
   env = process.env,
   nodeEnv = env.node_env,
+  os = require('os'),
   path = require('path');
 
 const BUILD_OUTPUT = path.resolve(__dirname, '../dist/');
@@ -11,7 +12,7 @@ const WEB_ROOT = path.resolve(__dirname, '../web/');
 const IISAPP_INTERMEDIATE_PATH = path.resolve(BUILD_OUTPUT, 'iisapp/');
 const IISAPP_PACKAGE_PATH = path.resolve(BUILD_OUTPUT, 'packages/web.zip');
 
-const MSDEPLOY_BIN_PATH = path.resolve(process.env['ProgramFiles(x86)'] || process.env.ProgramFiles, 'IIS\\Microsoft Web Deploy V3\\msdeploy.exe');
+const MSDEPLOY_BIN_PATH = os.platform() === 'win32' && path.resolve(process.env['ProgramFiles(x86)'] || process.env.ProgramFiles, 'IIS\\Microsoft Web Deploy V3\\msdeploy.exe');
 const MSDEPLOY_IIS_PARAMETERS = {
   name: 'IIS Web Application Name',
   defaultValue: 'Default Web Site',
