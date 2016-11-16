@@ -208,9 +208,9 @@ The configuration file is located at [`web/rollup.config.js`](web/rollup.config.
   * Bundled by [`rollup-plugin-node-resolve`](https://www.npmjs.com/package/rollup-plugin-node-resolve)
     * Bundle dependencies into `bundle.js`
 
-### Enable source map output
+### Enable source map output in production mode
 
-Run `npm run build -- --sourcemap true` to output `bundle.js.map` for debugging purpose.
+Run `npm run build -- --sourcemap true` to output `dist/bundle.js.map` for debugging purpose.
 
 ## Advanced: Hosting with Webpack development server
 
