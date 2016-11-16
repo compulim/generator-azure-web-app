@@ -2,7 +2,7 @@
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-Website template with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html), and [Express](https://expressjs.com/). [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to prepare deployment for [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
+Website template with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html), [Express](https://expressjs.com/), and [rollup.js](http://rollupjs.org/). [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to prepare deployment for [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
 
 ## Introduction
 
@@ -13,7 +13,9 @@ Modern websites are not bunches of plain text files. Build process increases pag
 * Re-compress JPEG and PNG files for better compression ratio
 * Remove dead code or code that is only used in development mode
 
-We use Webpack as a bundler for our build process. And the directory structure is designed to be able to host as a standalone Node.js server or IIS on [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/) and [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/).
+We use Webpack and rollup.js as a bundler for our build process. And the directory structure is designed to be able to host as a standalone Node.js server or IIS on [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/) and [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/).
+
+Notes: we recently moved to rollup.js for bundling in production mode, and Webpack development server in development mode. `Rollup.js` has better tree-shaking algorithm and less clunky source code.
 
 ## Try it out in 3 steps
 
@@ -137,6 +139,8 @@ You can specify production build by:
 
 Currently, the build favor (either `development` or `production`) is only used by [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/). It helps reducing bundle size by excluding developer-friendly error messages in production build.
 
+You can select between [rollup.js](http://rollupjs.org/) (default) and [Webpack](https://webpack.github.io/) as your bundler for production mode.
+
 ### What the build do
 
 * Copy server code from [`prodserver/`](prodserver) to `dist/iisapp/`, exclude `node_modules` folder
@@ -179,6 +183,30 @@ When running under development server, we will add the following to [`webpack.co
 * Also write a copy of `bundle.js` to `dist/webpack/bundle.js` for debugging purpose
 * Hot module replacement
   * Support React component with [`react-hot`](https://github.com/gaearon/react-hot-loader) loader
+
+### Rollup.js configuration
+
+Rollup.js bundler is used only in production mode.
+
+The configuration file is located at [`web/rollup.config.js`](web/rollup.config.js). It is similar to Webpack configuration.
+
+* [`web/src/*.less`](web/src)
+  * Bundled by [`rollup-plugin-less`](https://npmjs.com/package/rollup-plugin-less)
+    * Inject CSS styles into `<head>`
+* [`web/src/*.js`](web/src)
+  * Bundled by [`rollup-plugin-babel`](https://www.npmjs.com/package/rollup-plugin-babel)
+    * Enable ES2015 with [`preset-es2015`](http://babeljs.io/docs/plugins/preset-es2015/)
+    * Enable React JSX with [`preset-react`](https://babeljs.io/docs/plugins/preset-react/)
+    * Escape ES3 reserved keywords
+      * [`transform-es3-member-expression-literals`](https://babeljs.io/docs/plugins/transform-es3-member-expression-literals/)
+      * [`transform-es3-property-literals`](https://babeljs.io/docs/plugins/transform-es3-property-literals/)
+    * Entrypoint is [`web/src/index.js`](web/src/index.js)
+  * Bundled by [`rollup-plugin-commonjs`](https://www.npmjs.com/package/rollup-plugin-commonjs)
+    * Convert CommonJS `require` statement into ES2015 `import` statement, including `fbjs`, `object-assign`, `react`, and `react-dom`
+  * Bundled by [`rollup-plugin-replace`](https://www.npmjs.com/package/rollup-plugin-replace)
+    * Replace `process.env.NODE_ENV` into `"development"` or `"production"` with [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/)
+  * Bundled by [`rollup-plugin-node-resolve`](https://www.npmjs.com/package/rollup-plugin-node-resolve)
+    * Bundle dependencies into `bundle.js`
 
 ## Advanced: Hosting with Webpack development server
 
@@ -346,3 +374,6 @@ These are items we are working on or under consideration:
 * [ ] Scaffold with [Yeoman](http://yeoman.io/)
 * [x] ~~Use a single `package.json` if possible~~
 * [ ] Host development server programmatically
+* [x] ~~Bundle using [rollup.js](http://rollupjs.org/)~~
+  * [ ] Find a better plugin or way to bundle LESS into `bundle.js`
+* [ ] Uglify production `bundle.js`
