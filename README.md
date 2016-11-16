@@ -204,7 +204,7 @@ The configuration file is located at [`web/rollup.config.js`](web/rollup.config.
   * Bundled by [`rollup-plugin-commonjs`](https://www.npmjs.com/package/rollup-plugin-commonjs)
     * Convert CommonJS `require` statement into ES2015 `import` statement, including [`fbjs`](https://npmjs.com/package/fbjs), [`object-assign`](https://npmjs.com/package/object-assign), [`react`](https://npmjs.com/package/react), and [`react-dom`](https://npmjs.com/package/react-dom)
   * Bundled by [`rollup-plugin-replace`](https://www.npmjs.com/package/rollup-plugin-replace)
-    * Replace `process.env.NODE_ENV` into `"development"` or `"production"` with [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/)
+    * String-replace `process.env.NODE_ENV` into `"development"` or `"production"`
   * Bundled by [`rollup-plugin-node-resolve`](https://www.npmjs.com/package/rollup-plugin-node-resolve)
     * Bundle dependencies into `bundle.js`
 
