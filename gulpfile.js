@@ -7,6 +7,7 @@ const
 
 const currentBundler = process.env.BUNDLER === 'webpack' ? 'webpack' : 'rollup';
 const currentFavor = process.env.NODE_ENV === 'development' ? 'development' : 'production';
+const currentSourceMap = process.env.SOURCE_MAP === 'true' ? true : false;
 
 program
   .allowUnknownOption()
@@ -21,6 +22,12 @@ program
     `Specifies the bundler: "rollup", or "webpack". Will override BUNDLER. (Current = ${ currentBundler })`,
     /^(rollup|webpack)$/i,
     currentBundler
+  )
+  .option(
+    '--sourcemap <true>',
+    `Specifies whether source map will be built or not. Will override SOURCE_MAP. (Current = ${ currentSourceMap })`,
+    /^(true|false)$/i,
+    currentSourceMap
   )
   .option('--publishsettings <publish settings file>', 'Specifies the *.PublishSettings file for deployment')
   .parse(process.argv);
@@ -40,6 +47,15 @@ switch (bundler) {
 case 'rollup':
 case 'webpack':
   process.env.BUNDLER = bundler;
+  break;
+}
+
+const sourceMap = (program.sourcemap || '').toLowerCase();
+
+switch (sourceMap) {
+case 'true':
+case 'false':
+  process.env.SOURCE_MAP = sourceMap === 'true' ? true : false;
   break;
 }
 

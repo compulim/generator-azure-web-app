@@ -55,5 +55,5 @@ module.exports['default'] = {
       main: true
     })
   ],
-  sourceMap: true,
+  sourceMap: false
 };

@@ -97,26 +97,41 @@ module.exports = function (gulp) {
 
   function buildWebpack() {
     gutil.log('[build:webpack]', `Using configuration from ${ path.relative('.', config.WEBPACK_CONFIG_PATH) }`);
-    gutil.log('[build:webpack]', 'Packing with entrypoints:', ENTRY_PATHS.map(entry => path.relative('.', entry)).join(', '));
+    gutil.log('[build:webpack]', 'Bundling with entrypoints:', ENTRY_PATHS.map(entry => path.relative('.', entry)).join(', '));
+
+    const { SOURCE_MAP: sourceMap } = process.env;
+
+    sourceMap && gutil.log('[build:webpack]', 'Source map is enabled, this build should not be used for production');
 
     return gulp
       .src([])
-      .pipe(webpack(WEBPACK_CONFIG))
+      .pipe(webpack(
+        sourceMap ?
+          Object.assign({}, WEBPACK_CONFIG, { devtool: 'source-map' })
+        :
+          WEBPACK_CONFIG
+      ))
       .pipe(gulp.dest(WEBPACK_DEST));
   }
 
   function buildRollup() {
     gutil.log('[build:rollup]', `Using configuration from ${ path.relative('.', config.ROLLUP_CONFIG_PATH) }`);
-    gutil.log('[build:rollup]', 'Packing with entrypoints:', ROLLUP_CONFIG.entry);
+    gutil.log('[build:rollup]', 'Bundling with entrypoints:', ROLLUP_CONFIG.entry);
 
-    return rollup(ROLLUP_CONFIG)
-      .pipe(source('bundle.js'))
-      // TODO: Add sourcemap to a CLI switch
-      //       Uncomment to enable sourcemap
-      // .pipe(buffer())
-      // .pipe(sourcemaps.init({ loadMaps: true }))
-      // .pipe(sourcemaps.write('.'))
-      .pipe(gulp.dest(ROLLUP_DEST));
+    const { SOURCE_MAP: sourceMap } = process.env;
+
+    let workflow = rollup(Object.assign({}, ROLLUP_CONFIG, { sourceMap })).pipe(source('bundle.js'));
+
+    sourceMap && gutil.log('[build:webpack]', 'Source map is enabled, this build should not be used for production');
+
+    if (sourceMap) {
+      workflow = workflow
+        .pipe(buffer())
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(sourcemaps.write('.'));
+    }
+
+    workflow.pipe(gulp.dest(ROLLUP_DEST));
   }
 };
 
