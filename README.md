@@ -74,6 +74,8 @@ For load-balancing and scalability, it is recommended to use a process lifecycle
 
 ##### Host with Azure Web App
 
+(Due to a [bug](https://github.com/nodejs/node/issues/7175#issuecomment-239824532) in Node.js, Webpack is not working on Azure with Node.js >= 6.0.0 and < 6.4.0)
+
 There are two deployment options for Azure Web App:
 
 * Deploy via GitHub (Recommended)
@@ -84,7 +86,7 @@ There are two deployment options for Azure Web App:
   * Download publish settings file from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx)
   * Modify iisnode configuration to select Node.js version
     * When deployed thru MSDeploy, [`iisnode.yml`](iisnode.yml) is not updated automatically, thus Node.js version cannot be selected automatically
-    * Add a line to [`iisnode.yml`](iisnode.yml): `nodeProcessCommandLine: "D:\Program Files (x86)\nodejs\6.3.0\node.exe"`
+    * Add a line to [`iisnode.yml`](iisnode.yml): `nodeProcessCommandLine: "D:\Program Files (x86)\nodejs\6.6.0\node.exe"`
   * Then, run `npm run build`, to build the website to `dist/iisapp/`
   * Then, run `npm run pack`, to pack the website as `dist/packages/web.zip`
   * Then, run `npm run deploy --publishsettings=yoursite.PublishSettings`
@@ -248,7 +250,7 @@ This scenario is designed for deploying server code to [Azure Web Apps](https://
 
 ### Features
 
-* Can be deployed  to [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/), and on-premise IIS
+* Can be deployed to [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/), and on-premise IIS
 * IIS-managed worker process lifecycle
   * Auto recycle worker process as needed (hitting memory or CPU limit, or after number of hours)
 * Fast and efficient serving on static files using kernel-mode driver (http.sys)
@@ -295,7 +297,7 @@ This scenario is designed for manual or controlled release. Mostly paired with a
 
 Deployment thru MSDeploy will not trigger Project Kudu. Thus, Node.js version and binary location cannot be automatically selected from [`package.json`](package.json). Please add the followings to `iisnode.yml`:
 
-* `nodeProcessCommandLine: "D:\Program Files (x86)\nodejs\6.3.0\node.exe"`
+* `nodeProcessCommandLine: "D:\Program Files (x86)\nodejs\6.6.0\node.exe"`
 
 Then, build the server, `npm run build`. This will output to `dist/iisapp/`.
 
