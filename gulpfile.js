@@ -5,6 +5,7 @@ const
   gulp = require('gulp'),
   program = require('commander');
 
+const currentBundler = process.env.BUNDLER === 'webpack' ? 'webpack' : 'rollup';
 const currentFavor = process.env.NODE_ENV === 'development' ? 'development' : 'production';
 
 program
@@ -15,6 +16,12 @@ program
     /^(production|development)$/i,
     currentFavor
   )
+  .option(
+    '-r, --bundler <type>',
+    `Specifies the bundler: "rollup", or "webpack". Will override BUNDLER. (Current = ${ currentBundler })`,
+    /^(rollup|webpack)$/i,
+    currentBundler
+  )
   .option('--publishsettings <publish settings file>', 'Specifies the *.PublishSettings file for deployment')
   .parse(process.argv);
 
@@ -23,7 +30,16 @@ const build = (program.build || '').toLowerCase();
 switch (build) {
 case 'production':
 case 'development':
-  process.env.node_env = build;
+  process.env.NODE_ENV = build;
+  break;
+}
+
+const bundler = (program.bundler || '').toLowerCase();
+
+switch (bundler) {
+case 'rollup':
+case 'webpack':
+  process.env.BUNDLER = bundler;
   break;
 }
 

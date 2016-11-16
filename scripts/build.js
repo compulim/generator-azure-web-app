@@ -1,17 +1,21 @@
 'use strict';
 
-const
-  config = require('./config'),
-  del = require('del'),
-  gutil = require('gulp-util'),
-  htmlmin = require('gulp-htmlmin'),
-  imagemin = require('gulp-imagemin'),
-  install = require('gulp-install'),
-  path = require('path'),
-  rename = require('gulp-rename'),
-  webpack = require('webpack-stream');
+const buffer     = require('vinyl-buffer');
+const config     = require('./config');
+const del        = require('del');
+const gutil      = require('gulp-util');
+const htmlmin    = require('gulp-htmlmin');
+const imagemin   = require('gulp-imagemin');
+const install    = require('gulp-install');
+const path       = require('path');
+const rename     = require('gulp-rename');
+const rollup     = require('rollup-stream');
+const source     = require('vinyl-source-stream');
+const sourcemaps = require('gulp-sourcemaps');
+const webpack    = require('webpack-stream');
 
 const
+  ROLLUP_CONFIG = require(config.ROLLUP_CONFIG_PATH)['default'],
   WEBPACK_CONFIG = require(config.WEBPACK_CONFIG_PATH),
   WEBPACK_DIRNAME = path.dirname(config.WEBPACK_CONFIG_PATH);
 
@@ -22,6 +26,10 @@ const
   );
 
 const
+  ROLLUP_DEST = path.resolve(
+    CONTENT_DEST,
+    path.dirname(ROLLUP_CONFIG.dest)
+  ),
   WEBPACK_DEST = path.resolve(
     CONTENT_DEST,
     WEBPACK_CONFIG.output.publicPath.replace(/^\//, '')
@@ -32,32 +40,32 @@ module.exports = function (gulp) {
   gulp.task('build', [
     'build:content',
     'build:server',
-    'build:webpack'
+    'build:bundle'
   ], build);
 
+  gulp.task('build:bundle', buildBundle);
   gulp.task('build:content', buildContent);
   gulp.task('build:server', buildServer);
-  gulp.task('build:webpack', buildWebpack);
 
   gulp.task('rebuild', [
     'rebuild:content',
     'rebuild:server',
-    'rebuild:webpack'
+    'rebuild:bundle'
   ], build);
 
+  gulp.task('rebuild:bundle', ['clean:webroot'], buildBundle);
   gulp.task('rebuild:content', ['clean:webroot'], buildContent);
   gulp.task('rebuild:server', ['clean:webroot'], buildServer);
-  gulp.task('rebuild:webpack', ['clean:webroot'], buildWebpack);
 
   function build() {
     gutil.log('[build]', `Build with "${ process.env.NODE_ENV }" favor outputted to ${ path.relative('.', config.IISAPP_INTERMEDIATE_PATH) }`);
   }
 
   function buildContent() {
-    gutil.log('[build:content]', `Copying content from ${ path.relative('.', config.WEBPACK_CONTENT_SRC) } to ${ path.relative('.', CONTENT_DEST) }`);
+    gutil.log('[build:content]', `Copying content from ${ path.relative('.', config.WEB_CONTENT_SRC) } to ${ path.relative('.', CONTENT_DEST) }`);
 
     return gulp
-      .src(config.WEBPACK_CONTENT_SRC)
+      .src(config.WEB_CONTENT_SRC)
       .pipe(htmlmin())
       .pipe(imagemin())
       .pipe(gulp.dest(CONTENT_DEST));
@@ -75,6 +83,18 @@ module.exports = function (gulp) {
       }));
   }
 
+  function buildBundle() {
+    if (process.env.BUNDLER === 'webpack') {
+      gutil.log('[build:bundle]', 'Bundling with Webpack');
+
+      return buildWebpack();
+    } else {
+      gutil.log('[build:bundle]', 'Bundling with rollup.js');
+
+      return buildRollup();
+    }
+  }
+
   function buildWebpack() {
     gutil.log('[build:webpack]', `Using configuration from ${ path.relative('.', config.WEBPACK_CONFIG_PATH) }`);
     gutil.log('[build:webpack]', 'Packing with entrypoints:', ENTRY_PATHS.map(entry => path.relative('.', entry)).join(', '));
@@ -83,6 +103,20 @@ module.exports = function (gulp) {
       .src([])
       .pipe(webpack(WEBPACK_CONFIG))
       .pipe(gulp.dest(WEBPACK_DEST));
+  }
+
+  function buildRollup() {
+    gutil.log('[build:rollup]', `Using configuration from ${ path.relative('.', config.ROLLUP_CONFIG_PATH) }`);
+    gutil.log('[build:rollup]', 'Packing with entrypoints:', ROLLUP_CONFIG.entry);
+
+    return rollup(ROLLUP_CONFIG)
+      .pipe(source('bundle.js'))
+      // TODO: Add sourcemap to a CLI switch
+      //       Uncomment to enable sourcemap
+      // .pipe(buffer())
+      // .pipe(sourcemaps.init({ loadMaps: true }))
+      // .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest(ROLLUP_DEST));
   }
 };
 

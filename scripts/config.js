@@ -26,8 +26,9 @@ const PROD_SERVER_SRC = globIgnoreNodeModules('../prodserver').concat(
   path.resolve(__dirname, '../package.json')
 );
 
+const ROLLUP_CONFIG_PATH = path.join(WEB_ROOT, 'rollup.config.js');
+const WEB_CONTENT_SRC = path.join(WEB_ROOT, 'public/**');
 const WEBPACK_CONFIG_PATH = path.join(WEB_ROOT, 'webpack.config.js');
-const WEBPACK_CONTENT_SRC = path.join(WEB_ROOT, 'public/**');
 
 let DEPLOY_PUBLISH_SETTINGS;
 
@@ -44,8 +45,11 @@ module.exports = {
 
   PROD_SERVER_SRC,
 
+  ROLLUP_CONFIG_PATH,
+
+  WEB_CONTENT_SRC,
+
   WEBPACK_CONFIG_PATH,
-  WEBPACK_CONTENT_SRC
 };
 
 function globIgnoreNodeModules(relativePath) {
