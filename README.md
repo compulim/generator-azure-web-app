@@ -202,7 +202,7 @@ The configuration file is located at [`web/rollup.config.js`](web/rollup.config.
       * [`transform-es3-property-literals`](https://babeljs.io/docs/plugins/transform-es3-property-literals/)
     * Entrypoint is [`web/src/index.js`](web/src/index.js)
   * Bundled by [`rollup-plugin-commonjs`](https://www.npmjs.com/package/rollup-plugin-commonjs)
-    * Convert CommonJS `require` statement into ES2015 `import` statement, including `fbjs`, `object-assign`, `react`, and `react-dom`
+    * Convert CommonJS `require` statement into ES2015 `import` statement, including [`fbjs`](https://npmjs.com/package/fbjs), [`object-assign`](https://npmjs.com/package/object-assign), [`react`](https://npmjs.com/package/react), and [`react-dom`](https://npmjs.com/package/react-dom)
   * Bundled by [`rollup-plugin-replace`](https://www.npmjs.com/package/rollup-plugin-replace)
     * Replace `process.env.NODE_ENV` into `"development"` or `"production"` with [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/)
   * Bundled by [`rollup-plugin-node-resolve`](https://www.npmjs.com/package/rollup-plugin-node-resolve)
