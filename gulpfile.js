@@ -7,7 +7,7 @@ const
 
 const currentBundler = process.env.BUNDLER === 'webpack' ? 'webpack' : 'rollup';
 const currentFavor = process.env.NODE_ENV === 'development' ? 'development' : 'production';
-const currentSourceMap = process.env.SOURCE_MAP === 'true' ? true : false;
+const currentSourceMap = process.env.SOURCE_MAP === 'true' ? 'true' : 'false';
 
 program
   .allowUnknownOption()
