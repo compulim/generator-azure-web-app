@@ -6,56 +6,43 @@ const
   deepAssign = require('deep-assign'),
   debug = require('debug'),
   express = require('express'),
-  parseBool = require('../utils/parsebool'),
   parseURL = require('url').parse,
   webpack = require('webpack'),
   WebpackDevServer = require('webpack-dev-server');
 
 class DevServer {
   listen() {
-    const devWebpackConfig = deepAssign({}, require('./webpack.dev.config'));
+    const configurator = require('./webpackConfigurator')(require('../web/webpack.config.js'));
+    const contentPath = config.CONTENT_PATH;
 
-    if (config.HOT_MODULE_REPLACEMENT) {
-      devWebpackConfig.entry.unshift(
-        `webpack-dev-server/client?http://0.0.0.0:${config.PORT}`,
-        'webpack/hot/only-dev-server'
-      );
+    configurator.setContentBase(contentPath);
+    configurator.enableSourceMap({ absolutePath: config.USE_ABSOLUTE_PATH });
+    config.WRITE_TO_DISK && configurator.enableWriteToDisk();
+    config.HOT_MODULE_REPLACEMENT && configurator.enableHotModuleReplacement(config.PORT);
+    configurator.enableSetup(app => {
+      app.use('/api', require('../prodserver/controllers/api')());
 
-      devWebpackConfig.devServer.hot = true;
+      app.use((req, res, next) => {
+        const url = parseURL(req.url);
 
-      devWebpackConfig.plugins.push(
-        new webpack.HotModuleReplacementPlugin()
-      );
+        if (/\/[\d\w]+$/.test(url.pathname)) {
+          req.url = '/index.html';
+        }
 
-      devWebpackConfig.module.loaders.forEach(loader => {
-        devWebpackConfig.entry.some(entry => loader.test.test(entry)) && loader.loaders.unshift('react-hot')
+        next();
       });
-    } else {
-      console.warn('Hot module replacement is switched off');
-    }
 
-    const webpackServer = new WebpackDevServer(
-      webpack(devWebpackConfig),
-      devWebpackConfig.devServer
-    );
-
-    webpackServer.app.use('/api', require('../prodserver/controllers/api')());
-
-    webpackServer.app.use((req, res, next) => {
-      const url = parseURL(req.url);
-
-      if (/\/[\d\w]+$/.test(url.pathname)) {
-        req.url = '/index.html';
-      }
-
-      next();
+      app.use(express.static(contentPath, { fallthrough: true, redirect: false }));
     });
 
-    webpackServer.app.use(express.static(devWebpackConfig.devServer.contentBase, { fallthrough: true, redirect: false }));
+    const webpackServer = new WebpackDevServer(
+      configurator.compiler(),
+      configurator.devServerConfig()
+    );
 
     return new Promise((resolve, reject) => {
       webpackServer.listen(config.PORT, () => resolve({
-        contentPath: devWebpackConfig.devServer.contentBase,
+        contentPath,
         port: config.PORT
       }));
     });
