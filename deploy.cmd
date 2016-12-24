@@ -128,7 +128,6 @@ call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMEN
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 2. Install npm packages
-:: BUG: Currently, we must use Node.js < 6.0.0 to run Webpack, otherwise, memory-fs will fail
 pushd "%DEPLOYMENT_INTERMEDIATE%"
 
 call :ExecuteCmd !NPM_CMD! install --quiet --ignore-scripts
@@ -143,7 +142,7 @@ IF !ERRORLEVEL! NEQ 0 goto error
 popd
 
 :: 3. KuduSync from intermediate folder to target folder
-call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_INTERMEDIATE%\dist\iisapp" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%-intermediate" -p "%PREVIOUS_MANIFEST_PATH%-intermediate" -i ".git;.hg;.deployment;deploy.cmd"
+call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_INTERMEDIATE%\dist\website" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%-intermediate" -p "%PREVIOUS_MANIFEST_PATH%-intermediate" -i ".git;.hg;.deployment;deploy.cmd"
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 4. Select node version

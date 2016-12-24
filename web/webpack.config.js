@@ -1,9 +1,8 @@
 'use strict';
 
-const path = require('path');
+const config = require('../config');
 
-const PUBLIC_PATH = 'dist/';
-const OUTPUT_PATH = path.resolve(__dirname, '../dist/webpack/', PUBLIC_PATH);
+const { basename, join } = require('path');
 
 const
   BABEL_OPTIONS = {
@@ -17,21 +16,21 @@ const
 
 module.exports = {
   entry: [
-    path.join(__dirname, 'src/index.js')
+    join(config.SOURCE_JS_DIR, 'index.js')
   ],
   output: {
-    filename: 'bundle.js',
-    path: OUTPUT_PATH,
-    publicPath: `/${ PUBLIC_PATH }`
+    filename  : basename(config.DEST_WEBSITE_BUNDLE_FILE),
+    path      : config.DEST_WEBPACK_DEV_DIR,
+    publicPath: `/${ basename(config.DEST_WEBSITE_BUNDLE_DIR) }/`
   },
   module: {
     loaders: [
       {
-        test: /\.(c|le)ss$/,
+        test  : /\.(c|le)ss$/,
         loader: 'style!css!less'
       },
       {
-        test: /\.jsx?$/,
+        test   : /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
         loaders: [
           'babel' + babelOptions(BABEL_OPTIONS)
@@ -42,6 +41,8 @@ module.exports = {
 };
 
 function babelOptions(options) {
+  // TODO: Can we replace this with qs?
+
   const pairs = [];
 
   Object.keys(options).forEach(name => {

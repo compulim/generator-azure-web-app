@@ -1,12 +1,11 @@
 'use strict';
 
-const
-  config = require('./scripts/config'),
-  gulp = require('gulp'),
-  program = require('commander');
+const config  = require('./config');
+const gulp    = require('gulp');
+const program = require('commander');
 
-const currentBundler = process.env.BUNDLER === 'webpack' ? 'webpack' : 'rollup';
-const currentFavor = process.env.NODE_ENV === 'development' ? 'development' : 'production';
+const currentBundler   = process.env.BUNDLER === 'webpack' ? 'webpack' : 'rollup';
+const currentFavor     = process.env.NODE_ENV === 'development' ? 'development' : 'production';
 const currentSourceMap = process.env.SOURCE_MAP === 'true' ? 'true' : 'false';
 
 program

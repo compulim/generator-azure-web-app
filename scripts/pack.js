@@ -1,20 +1,20 @@
 'use strict';
 
-const
-  config = require('./config'),
-  ChildProcess = require('child_process'),
-  del = require('del'),
-  fs = require('fs'),
-  gutil = require('gulp-util'),
-  os = require('os'),
-  path = require('path'),
-  Promise = require('bluebird'),
-  sevenZip = require('es-7z');
+const config       = require('../config');
+const ChildProcess = require('child_process');
+const del          = require('del');
+const fs           = require('fs');
+const gutil        = require('gulp-util');
+const os           = require('os');
+const path         = require('path');
+const Promise      = require('bluebird');
+const sevenZip     = require('es-7z');
 
-const
-  exec = Promise.promisify(ChildProcess.exec),
-  mkdirp = Promise.promisify(require('mkdirp')),
-  stat = Promise.promisify(fs.stat);
+const { formatIISParameters, prettyPath } = require('./util');
+
+const exec   = Promise.promisify(ChildProcess.exec);
+const mkdirp = Promise.promisify(require('mkdirp'));
+const stat   = Promise.promisify(fs.stat);
 
 module.exports = function (gulp) {
   gulp.task('pack', ['pack:iisapp']);
@@ -26,19 +26,19 @@ module.exports = function (gulp) {
 
   function packPrepare() {
     return Promise.all([
-      mkdirp(path.dirname(config.IISAPP_PACKAGE_PATH))
+      mkdirp(path.dirname(config.DEST_PACKAGE_FILE))
         .catch(err => {
-          gutil.log('[pack:prepare]', `Failed to create output directory at ${ config.IISAPP_PACKAGE_PATH }`);
+          gutil.log('[pack:prepare]', `Failed to create output directory at ${ prettyPath(config.DEST_PACKAGE_FILE) }`);
           return Promise.reject(err);
         }),
-      stat(config.IISAPP_INTERMEDIATE_PATH)
+      stat(config.DEST_WEBSITE_DIR)
         .catch(err => {
-          gutil.log('[pack:prepare]', `No files were found to pack at ${ config.IISAPP_INTERMEDIATE_PATH }, please run "npm run build" first.`)
+          gutil.log('[pack:prepare]', `No files were found to pack at ${ prettyPath(config.DEST_WEBSITE_DIR) }, please run "npm run build" first.`)
           return Promise.reject(err);
         }),
-      stat(config.MSDEPLOY_BIN_PATH)
+      stat(config.MSDEPLOY_BIN_FILE)
         .catch(err => {
-          gutil.log('[pack:prepare]', `MSDeploy not found at ${ config.MSDEPLOY_BIN_PATH }`);
+          gutil.log('[pack:prepare]', `MSDeploy not found at ${ prettyPath(config.MSDEPLOY_BIN_FILE) }`);
           return Promise.reject(err);
         })
     ]);
@@ -49,19 +49,13 @@ module.exports = function (gulp) {
       return Promise.reject(new Error('MSDeploy is only supported on Windows platform'));
     }
 
-    const iisParameters = config.MSDEPLOY_IIS_PARAMETERS;
-    const declareParam =
-      Object.keys(iisParameters)
-        .map(key => `${key}="${iisParameters[key]}"`)
-        .join(',');
-
     return (
       exec([
-        `"${ config.MSDEPLOY_BIN_PATH }"`,
+        `"${ config.MSDEPLOY_BIN_FILE }"`,
         '-verb:sync',
         `-source:iisApp=${ src }`,
         `-dest:package=${ dest }`,
-        `-declareParam:${ declareParam }`
+        `-declareParam:${ formatIISParameters(config.MSDEPLOY_IIS_PARAMETERS) }`
       ].join(' '), {
         maxBuffer: 10485760
       })
@@ -69,8 +63,8 @@ module.exports = function (gulp) {
   }
 
   function packIISApp() {
-    gutil.log('[pack:iisapp]', `Running MSDeploy and output to ${path.relative('.', config.IISAPP_PACKAGE_PATH)}`);
+    gutil.log('[pack:iisapp]', `Running MSDeploy and output to ${ prettyPath(config.DEST_PACKAGE_FILE) }`);
 
-    return runMSDeploy(config.IISAPP_INTERMEDIATE_PATH, config.IISAPP_PACKAGE_PATH);
+    return runMSDeploy(config.DEST_WEBSITE_DIR, config.DEST_PACKAGE_FILE);
   }
 };

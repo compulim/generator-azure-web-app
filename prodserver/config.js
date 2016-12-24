@@ -1,12 +1,12 @@
 'use strict';
 
-const deepAssign = require('deep-assign');
-const cli = require('./config/cli');
-const defaults = require('./config/defaults');
+const cli         = require('./config/cli');
+const deepAssign  = require('deep-assign');
+const defaults    = require('./config/defaults');
 const environment = require('./config/environment');
 
 const development = deepAssign({}, defaults, require('./config/development'), environment, cli);
-const production = deepAssign({}, defaults, require('./config/production'), environment, cli);
+const production  = deepAssign({}, defaults, require('./config/production'), environment, cli);
 
 const { node_env: nodeEnv } = process.env;
 

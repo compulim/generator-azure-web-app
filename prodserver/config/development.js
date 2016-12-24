@@ -1,7 +1,7 @@
 'use strict';
 
-const path = require('path');
+const { join } = require('path');
 
 module.exports = {
-  CONTENT_PATH: path.join(__dirname, '../../dist/iisapp/public/'),
+  CONTENT_PATH: join(__dirname, '../../dist/website/public/'),
 };

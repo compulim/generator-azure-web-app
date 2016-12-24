@@ -1,40 +1,21 @@
 'use strict';
 
 const buffer     = require('vinyl-buffer');
-const config     = require('./config');
+const config     = require('../config');
 const del        = require('del');
+const filter     = require('gulp-filter');
 const gutil      = require('gulp-util');
 const htmlmin    = require('gulp-htmlmin');
 const imagemin   = require('gulp-imagemin');
 const install    = require('gulp-install');
-const path       = require('path');
 const rename     = require('gulp-rename');
 const rollup     = require('rollup-stream');
 const source     = require('vinyl-source-stream');
 const sourcemaps = require('gulp-sourcemaps');
 const webpack    = require('webpack-stream');
 
-const
-  ROLLUP_CONFIG = require(config.ROLLUP_CONFIG_PATH)['default'],
-  WEBPACK_CONFIG = require(config.WEBPACK_CONFIG_PATH),
-  WEBPACK_DIRNAME = path.dirname(config.WEBPACK_CONFIG_PATH);
-
-const
-  CONTENT_DEST = path.resolve(
-    config.IISAPP_INTERMEDIATE_PATH,
-    'public'
-  );
-
-const
-  ROLLUP_DEST = path.resolve(
-    CONTENT_DEST,
-    path.dirname(ROLLUP_CONFIG.dest)
-  ),
-  WEBPACK_DEST = path.resolve(
-    CONTENT_DEST,
-    WEBPACK_CONFIG.output.publicPath.replace(/^\//, '')
-  ),
-  ENTRY_PATHS = WEBPACK_CONFIG.entry;
+const { join, relative }                    = require('path');
+const { globIgnoreNodeModules, prettyPath } = require('./util');
 
 module.exports = function (gulp) {
   gulp.task('build', [
@@ -58,29 +39,41 @@ module.exports = function (gulp) {
   gulp.task('rebuild:server', ['clean:webroot'], buildServer);
 
   function build() {
-    gutil.log('[build]', `Build with "${ process.env.NODE_ENV }" favor outputted to ${ path.relative('.', config.IISAPP_INTERMEDIATE_PATH) }`);
+    gutil.log('[build]', `Build with "${ process.env.NODE_ENV }" favor outputted to ${ prettyPath(config.DEST_WEBSITE_DIR) }`);
   }
 
   function buildContent() {
-    gutil.log('[build:content]', `Copying content from ${ path.relative('.', config.WEB_CONTENT_SRC) } to ${ path.relative('.', CONTENT_DEST) }`);
+    gutil.log('[build:content]', `Copying content from ${ prettyPath(config.SOURCE_STATIC_FILES_DIR) } to ${ prettyPath(config.DEST_WEBSITE_STATIC_FILES_DIR) }`);
+
+    const htmlFilter = filter(['*.htm', '*.html'], { restore: true });
+    const imageFilter = filter(['*.gif', '*.jpg', '*.png'], { restore: true });
 
     return gulp
-      .src(config.WEB_CONTENT_SRC)
+      .src(join(config.SOURCE_STATIC_FILES_DIR, '**'))
+      .pipe(htmlFilter)
       .pipe(htmlmin())
+      .pipe(htmlFilter.restore)
+      .pipe(imageFilter)
       .pipe(imagemin())
-      .pipe(gulp.dest(CONTENT_DEST));
+      .pipe(imageFilter.restore)
+      .pipe(gulp.dest(config.DEST_WEBSITE_STATIC_FILES_DIR));
   }
 
   function buildServer() {
-    gutil.log('[build:server]', `Copying code from ${ path.relative('.', config.PROD_SERVER_SRC[0]) } to ${ path.relative('.', config.IISAPP_INTERMEDIATE_PATH) }`);
+    gutil.log('[build:server]', `Copying code from ${ prettyPath(config.SOURCE_SERVER_DIR) } to ${ prettyPath(config.DEST_WEBSITE_DIR) }`);
 
     return gulp
-      .src(config.PROD_SERVER_SRC)
-      .pipe(gulp.dest(config.IISAPP_INTERMEDIATE_PATH))
-      .pipe(install({
-        ignoreScripts: true,
-        production: true
-      }));
+      .src(
+        globIgnoreNodeModules(config.SOURCE_SERVER_DIR).concat(
+          join(__dirname, 'iisnode.yml'),
+          join(__dirname, '../package.json')
+        )
+      )
+      .pipe(gulp.dest(config.DEST_WEBSITE_DIR))
+      // .pipe(install({
+      //   ignoreScripts: true,
+      //   production: true
+      // }));
   }
 
   function buildBundle() {
@@ -96,10 +89,14 @@ module.exports = function (gulp) {
   }
 
   function buildWebpack() {
-    gutil.log('[build:webpack]', `Using configuration from ${ path.relative('.', config.WEBPACK_CONFIG_PATH) }`);
-    gutil.log('[build:webpack]', 'Bundling with entrypoints:', ENTRY_PATHS.map(entry => path.relative('.', entry)).join(', '));
+    gutil.log('[build:webpack]', `Using configuration from ${ prettyPath(config.SOURCE_WEBPACK_CONFIG_FILE) }`);
 
-    const { SOURCE_MAP: sourceMap } = process.env;
+    const WEBPACK_CONFIG = require(config.SOURCE_WEBPACK_CONFIG_FILE);
+
+    gutil.log('[build:webpack]', 'Bundling with entrypoints:', WEBPACK_CONFIG.entry.map(entry => prettyPath(entry)).join(', '));
+    gutil.log('[build:webpack]', `Will output to ${ prettyPath(config.DEST_WEBSITE_BUNDLE_FILE) }`);
+
+    const sourceMap = process.env.SOURCE_MAP === 'true';
 
     sourceMap && gutil.log('[build:webpack]', 'Source map is enabled, this build should not be used for production');
 
@@ -111,18 +108,22 @@ module.exports = function (gulp) {
         :
           WEBPACK_CONFIG
       ))
-      .pipe(gulp.dest(WEBPACK_DEST));
+      .pipe(gulp.dest(config.DEST_WEBSITE_BUNDLE_DIR));
   }
 
   function buildRollup() {
-    gutil.log('[build:rollup]', `Using configuration from ${ path.relative('.', config.ROLLUP_CONFIG_PATH) }`);
-    gutil.log('[build:rollup]', 'Bundling with entrypoints:', ROLLUP_CONFIG.entry);
+    gutil.log('[build:rollup]', `Using configuration from ${ prettyPath(config.SOURCE_ROLLUP_CONFIG_FILE) }`);
 
-    const { SOURCE_MAP: sourceMap } = process.env;
+    const ROLLUP_CONFIG = require(config.SOURCE_ROLLUP_CONFIG_FILE)['default'];
+
+    gutil.log('[build:rollup]', 'Bundling with entrypoint:', ROLLUP_CONFIG.entry);
+    gutil.log('[build:rollup]', `Will output to ${ prettyPath(config.DEST_WEBSITE_BUNDLE_FILE) }`);
+
+    const sourceMap = process.env.SOURCE_MAP === 'true';
 
     let workflow = rollup(Object.assign({}, ROLLUP_CONFIG, { sourceMap })).pipe(source('bundle.js'));
 
-    sourceMap && gutil.log('[build:webpack]', 'Source map is enabled, this build should not be used for production');
+    sourceMap && gutil.log('[build:rollup]', 'Source map is enabled, this build should not be used for production');
 
     if (sourceMap) {
       workflow = workflow
@@ -131,14 +132,6 @@ module.exports = function (gulp) {
         .pipe(sourcemaps.write('.'));
     }
 
-    workflow.pipe(gulp.dest(ROLLUP_DEST));
+    return workflow.pipe(gulp.dest(config.DEST_WEBSITE_BUNDLE_DIR));
   }
 };
-
-function filter(array, predicate) {
-  return array.reduce((result, item, index) => {
-    predicate(item, index) && result.push(item);
-
-    return result;
-  }, []);
-}

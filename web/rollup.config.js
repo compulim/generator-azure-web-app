@@ -1,14 +1,17 @@
 'use strict';
 
-const babel = require('rollup-plugin-babel');
-const commonjs = require('rollup-plugin-commonjs');
-const less = require('rollup-plugin-less');
+const babel       = require('rollup-plugin-babel');
+const commonjs    = require('rollup-plugin-commonjs');
+const config      = require('../config');
+const less        = require('rollup-plugin-less');
 const nodeResolve = require('rollup-plugin-node-resolve');
-const replace = require('rollup-plugin-replace');
+const replace     = require('rollup-plugin-replace');
+
+const { join } = require('path');
 
 module.exports['default'] = {
-  dest: 'dist/bundle.js',
-  entry: 'web/src/index.js',
+  dest: join(config.DEST_WEBSITE_BUNDLE_DIR, 'bundle.js'),
+  entry: join(config.SOURCE_JS_DIR, 'index.js'),
   format: 'iife',
   plugins: [
     less({
