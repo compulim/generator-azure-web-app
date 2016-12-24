@@ -1,7 +1,7 @@
 'use strict';
 
-const { platform }      = require('os');
-const { join, resolve } = require('path');
+const { platform } = require('os');
+const { join }     = require('path');
 
 const SOURCE_DIR                 = join(__dirname, 'web/');
 const SOURCE_ROLLUP_CONFIG_FILE  = join(SOURCE_DIR, 'rollup.config.js');
@@ -18,7 +18,7 @@ const DEST_WEBSITE_STATIC_FILES_DIR = join(DEST_WEBSITE_DIR, 'public/');
 const DEST_WEBSITE_BUNDLE_DIR       = join(DEST_WEBSITE_STATIC_FILES_DIR, 'js/');
 const DEST_WEBSITE_BUNDLE_FILE      = join(DEST_WEBSITE_BUNDLE_DIR, 'bundle.js');
 
-const MSDEPLOY_BIN_FILE             = platform() === 'win32' && resolve(process.env['ProgramFiles(x86)'] || process.env.ProgramFiles, 'IIS\\Microsoft Web Deploy V3\\msdeploy.exe');
+const MSDEPLOY_BIN_FILE             = platform() === 'win32' && join(process.env['ProgramFiles(x86)'] || process.env.ProgramFiles, 'IIS\\Microsoft Web Deploy V3\\msdeploy.exe');
 
 const MSDEPLOY_IIS_PARAMETERS = {
   name: 'IIS Web Application Name',
