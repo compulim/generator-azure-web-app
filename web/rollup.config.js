@@ -10,7 +10,7 @@ const replace     = require('rollup-plugin-replace');
 const { join } = require('path');
 
 module.exports['default'] = {
-  dest: join(config.DEST_WEBSITE_BUNDLE_DIR, 'bundle.js'),
+  dest: config.DEST_WEBSITE_BUNDLE_FILE,
   entry: join(config.SOURCE_JS_DIR, 'index.js'),
   format: 'iife',
   plugins: [

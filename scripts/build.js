@@ -14,7 +14,7 @@ const source     = require('vinyl-source-stream');
 const sourcemaps = require('gulp-sourcemaps');
 const webpack    = require('webpack-stream');
 
-const { join, relative }                    = require('path');
+const { basename, join, relative }          = require('path');
 const { globIgnoreNodeModules, prettyPath } = require('./util');
 
 module.exports = function (gulp) {
@@ -121,7 +121,7 @@ module.exports = function (gulp) {
 
     const sourceMap = process.env.SOURCE_MAP === 'true';
 
-    let workflow = rollup(Object.assign({}, ROLLUP_CONFIG, { sourceMap })).pipe(source('bundle.js'));
+    let workflow = rollup(Object.assign({}, ROLLUP_CONFIG, { sourceMap })).pipe(source(basename(config.DEST_WEBSITE_BUNDLE_FILE)));
 
     sourceMap && gutil.log('[build:rollup]', 'Source map is enabled, this build should not be used for production');
 
