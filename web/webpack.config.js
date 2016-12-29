@@ -1,6 +1,7 @@
 'use strict';
 
 const config = require('../config');
+const qs = require('qs');
 
 const { basename, join } = require('path');
 
@@ -33,29 +34,9 @@ module.exports = {
         test   : /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
         loaders: [
-          'babel' + babelOptions(BABEL_OPTIONS)
+          'babel?' + qs.stringify(BABEL_OPTIONS, { arrayFormat: 'brackets', encode: false })
         ]
       }
     ]
   }
 };
-
-function babelOptions(options) {
-  // TODO: Can we replace this with qs?
-
-  const pairs = [];
-
-  Object.keys(options).forEach(name => {
-    const value = options[name];
-
-    if (Array.isArray(value)) {
-      value.forEach(item => {
-        pairs.push(`${ name }[]=${ item }`);
-      });
-    } else {
-      pairs.push(`${ name }=${ value }`);
-    }
-  });
-
-  return '?' + pairs.join('&');
-}
