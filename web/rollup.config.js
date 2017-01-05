@@ -37,10 +37,7 @@ module.exports['default'] = {
       exclude: ['node_modules/process-es6/**'],
 
       include: [
-        'node_modules/fbjs/**',
-        'node_modules/object-assign/**',
-        'node_modules/react/**',
-        'node_modules/react-dom/**',
+        'node_modules/**'
       ],
 
       namedExports: {
