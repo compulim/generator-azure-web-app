@@ -1,7 +1,7 @@
 {
   "name": "modern-webpack-template",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.2.0",
+  "description": "Modern web template",
   "license": "MIT",
   "engines": {
     "node": "^6.6.0"
@@ -10,16 +10,20 @@
     "build": "gulp build",
     "clean": "gulp clean",
     "deploy": "gulp deploy",
-    "host": "npm run hostdev",
-    "hostdev": "node devserver/server.js",
-    "hostprod": "node prodserver/server.js",
+    "host": "node src/app.js",
+    "hostdev": "npm run host:dev",
+    "host:dev": "cross-env NODE_ENV=development node src/app.js",
+    "hostprod": "npm run host:prod",
+    "host:prod": "cross-env NODE_ENV=production node src/app.js",
     "pack": "gulp pack",
     "postinstall": "npm run build",
     "rebuild": "gulp rebuild",
     "repack": "gulp repack"
   },
+  "main": "src/app.js",
   "dependencies": {
     "commander": "^2.9.0",
+    "cross-env": "^3.1.4",
     "debug": "^2.2.0",
     "deep-assign": "^2.0.0",
     "express": "^4.14.0",
