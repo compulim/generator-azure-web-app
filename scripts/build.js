@@ -70,10 +70,10 @@ module.exports = function (gulp) {
         )
       )
       .pipe(gulp.dest(config.DEST_WEBSITE_DIR))
-      // .pipe(install({
-      //   ignoreScripts: true,
-      //   production: true
-      // }));
+      .pipe(install({
+        ignoreScripts: true,
+        production: true
+      }));
   }
 
   function buildBundle() {
