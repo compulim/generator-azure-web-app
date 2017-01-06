@@ -8,7 +8,6 @@ const gutil        = require('gulp-util');
 const os           = require('os');
 const path         = require('path');
 const Promise      = require('bluebird');
-const sevenZip     = require('es-7z');
 
 const { formatIISParameters, prettyPath } = require('./util');
 
