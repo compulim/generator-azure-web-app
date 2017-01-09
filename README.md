@@ -73,8 +73,8 @@ The project support hybrid deployment models:
 
 * Standalone Node.js
 * Azure App Service
-    * Continuous deployment
-    * MSDeploy
+    * Thru continuous deployment
+    * Thru MSDeploy
 * IIS
 
 #### Deploy as a standalone Node.js
@@ -89,7 +89,7 @@ To run as a standalone Node.js server, go under `dist/website/`, then run `node 
 
 Azure App Service support continuous deployment or traditional MSDeploy. We recommend continuous deployment for most projects.
 
-##### Continuous deployment
+##### Thru continuous deployment
 
 You can deploy with GitHub, local Git, Dropbox, or OneDrive. In this example, we will deploy it thru GitHub.
 
@@ -99,9 +99,9 @@ You can deploy with GitHub, local Git, Dropbox, or OneDrive. In this example, we
 
 As you push new commits to GitHub, Azure Web App will pick them up and deploy the project immediately.
 
-> When deploying using Continuous Deployment, the project will be built on Azure, instead of locally. We prepared a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) named [deploy.cmd](deploy.cmd).
+> When deploying using Continuous Deployment, the project will be built on Azure, instead of locally. We prepared a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) at [deploy.cmd](deploy.cmd)
 
-##### MSDeploy
+##### Thru MSDeploy
 
 Deploying thru MSDeploy is uncommon, but it is required when you prefer CI/CD using other tools, e.g. [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx).
 
@@ -171,13 +171,13 @@ This section helps you to dig deeper into the project.
 
 To help building the project, there are several NPM scripts.
 
-| Task name | Description |
-| - | - |
-| `build` | Start the build process |
-| `deploy` | Deploy the website to Azure Web App |
-| `host:dev` | Host a Webpack development server and bundle on-the-fly |
-| `host:prod` | Host a production server using pre-bundled files at `dist/website/` |
-| `pack` | Use MSDeploy to pack everything at `dist/website/` into `dist/packages/web.zip` |
+| Task name     | Description |
+| ------------- | ----------- |
+| `build`       | Start the build process |
+| `deploy`      | Deploy the website to Azure Web App |
+| `host:dev`    | Host a Webpack development server and bundle on-the-fly |
+| `host:prod`   | Host a production server using pre-bundled files at `dist/website/` |
+| `pack`        | Use MSDeploy to pack everything at `dist/website/` into `dist/packages/web.zip` |
 
 ### Building the website
 
@@ -288,7 +288,7 @@ These are items we are working on or under consideration:
 * [x] ~~Add [pngout](http://www.advsys.net/ken/utils.htm) to `npm run build`~~
 * [x] ~~Continuous deployment on Azure Web Apps~~
   * [x] ~~`npm install` should build~~
-  * [x] ~~`.deployment` file for Kudu to specify project folder at `dist/iisapp/`~~
+  * [x] ~~`.deployment` file for Kudu to specify project folder at `dist/website/`~~
 * [x] ~~Scaffold with [Yeoman](http://yeoman.io/)~~
 * [x] ~~Use a single `package.json` if possible~~
 * [x] ~~Host development server programmatically~~
