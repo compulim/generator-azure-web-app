@@ -35,9 +35,9 @@ There are few steps to develop using our `azure-web-app` scaffolding:
 2. Run development server and develop locally
 3. Build the project for production deployment
 4. Deploy to target servers
-    1. Deploy as a vanilla Node.js
-    2. Deploy to Azure Web App
-    3. Deploy to IIS, on-premise or cloud
+  * Deploy as a vanilla Node.js
+  * Deploy to Azure Web App
+  * Deploy to IIS, on-premise or cloud
 
 ### Create a new Web App Project
 
@@ -52,14 +52,14 @@ Run `npm run host`, the development server will listen to port 80 and available 
 Start developing on the server, you can:
 
 1. Edit JavaScript at [`web/src/`](web/src/)
-    1. Code are transpiled by [Babel](https://babeljs.io/) with [ES2015](https://npmjs.com/package/babel-preset-es2015) and [React](https://npmjs.com/package/babel-preset-react)
-    2. To import packages, mark them as development dependencies, for example, `npm install redux --save-dev`
+  1. Code are transpiled by [Babel](https://babeljs.io/) with [ES2015](https://npmjs.com/package/babel-preset-es2015) and [React](https://npmjs.com/package/babel-preset-react)
+  2. To import packages, mark them as development dependencies, for example, `npm install redux --save-dev`
 2. Edit static files at [`web/files/`](web/files/), including
-    1. Image assets, thru [`gulp-imagemin`](https://npmjs.com/package/gulp-imagemin)
-    2. HTML files, thru [`gulp-htmlmin`](https://npmjs.com/package/gulp-htmlmin)
+  1. Image assets, thru [`gulp-imagemin`](https://npmjs.com/package/gulp-imagemin)
+  2. HTML files, thru [`gulp-htmlmin`](https://npmjs.com/package/gulp-htmlmin)
 3. Add new API at [`src/controllers/api.js`](src/controllers/api.js)
-    1. To import packages, mark them as direct dependencies, for example, `npm install serve-static --save`
-    2. Don't forget to restart the development server to pick up your new code
+  1. To import packages, mark them as direct dependencies, for example, `npm install serve-static --save`
+  2. Don't forget to restart the development server to pick up your new code
 
 ### Build the project for production deployment
 
@@ -73,8 +73,8 @@ The project support hybrid deployment models:
 
 * Standalone Node.js
 * Azure App Service
-    * Thru continuous deployment
-    * Thru MSDeploy
+  * Thru continuous deployment
+  * Thru MSDeploy
 * IIS
 
 #### Deploy as a standalone Node.js
@@ -159,7 +159,7 @@ This section helps you to dig deeper into the project.
 | `dist/website/` | Compiled web server ready to run by itself or hosted on IIS |
 | `dist/website/public/` | Bundled content and static assets |
 | `dist/packages/web.zip` | Web server packed by MSDeploy and ready to deploy to Azure Web Apps |
-| [`src/app.js`](src/app.js) | Depends on `NODE_ENV`, development mode serves content directly from [`web`](web/), production mode serves content from `dist/website/public` |
+| [`src/app.js`](src/app.js) | Depends on `NODE_ENV`, development mode serves content directly from [`web/`](web/), production mode serves content from `dist/website/public` |
 | [`src/controllers/api.js`](src/controllers/api.js) | RESTful API hosted at [http://localhost/api](http://localhost/api) |
 | [`src/iisnode.yml`](src/iisnode.yml) | [iisnode configuration](https://tomasz.janczuk.org/2012/05/yaml-configuration-support-in-iisnode.html) |
 | [`src/web.config`](src/web.config) | `Web.config` for hosting under Azure Web App and IIS |
@@ -201,8 +201,8 @@ Source code can be found at [`scripts/build.js`](scripts/build.js).
 * Bundle source files from [`web/src/`](web/src) to `dist/website/public/dist/bundle.js`
   * Will use existing npm packages from `web/node_modules`
 * Copy static assets from [`web/files/`](web/files) to `dist/website/public/`
-  * Will minify image with [gulp-imagemin](https://www.npmjs.com/package/gulp-imagemin/)
-  * Will minify HTML with [gulp-htmlmin](https://www.npmjs.com/package/gulp-htmlmin/)
+  * Will minify image with [`gulp-imagemin`](https://www.npmjs.com/package/gulp-imagemin/)
+  * Will minify HTML with [`gulp-htmlmin`](https://www.npmjs.com/package/gulp-htmlmin/)
 
 ### Webpack configuration
 
