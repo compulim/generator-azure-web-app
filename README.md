@@ -1,23 +1,25 @@
-# modern-web-template
+# generator-azure-web-app
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-Website template with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html), [Express](https://expressjs.com/), and [rollup.js](http://rollupjs.org/). [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to prepare deployment for [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/).
+Generates a minimalist Web App with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [rollup.js](http://rollupjs.org/), [Express](https://expressjs.com/), and [Gulp](http://gulpjs.com/).
+
+You can deploy the Web App to a vanilla Node.js, [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), or IIS.
 
 ## Introduction
 
-Modern websites are not bunches of plain text files. Build process increases page load efficiency and overall page performance. This process involves:
+Modern websites are not just bunches of plain text files. Build process increases page load efficiency and overall page performance. This process involves:
 
 * Concatenating multiple JavaScript files into a single file (a.k.a. bundling)
 * Obfuscate and minify JavaScript files
 * Re-compress JPEG and PNG files for better compression ratio
 * Remove dead code or code that is only used in development mode
 
-We use Webpack and rollup.js as a bundler for our build process. And the directory structure is designed to be able to host as a standalone Node.js server or IIS on [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/) and [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/).
+We use [Webpack](https://webpack.github.io/) and [rollup.js](http://rollupjs.org/) as a bundler for our build process. And the directory structure is designed to be able to host as a standalone Node.js server or IIS on [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/) and [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/).
 
 Notes: we recently moved to rollup.js for bundling in production mode, and Webpack development server in development mode. `Rollup.js` has better tree-shaking algorithm and less clunky source code.
 
-## Try it out in 3 steps
+## Try it out in 3 easy steps
 
 1. Fork this repository
 2. Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
@@ -25,83 +27,131 @@ Notes: we recently moved to rollup.js for bundling in production mode, and Webpa
 
 It takes about 5-10 minutes to build for the first time (due to large npm install), have a little patience.
 
-## How to develop on it in a professional way
+## How to develop professionally
 
-### First time preparation
+There are few steps to develop using our `azure-web-app` scaffolding:
 
-Clone it to your dev box. Then run `npm install`.
+1. Create a new Web App project
+2. Run development server and develop locally
+3. Build the project for production deployment
+4. Deploy to target servers
+    1. Deploy as a vanilla Node.js
+    2. Deploy to Azure Web App
+    3. Deploy to IIS, on-premise or cloud
 
-### Run development server
+### Create a new Web App Project
 
-Run `npm run host:dev`, the development server will listen to port 80 and available at [http://localhost/](http://localhost/).
+For the very first time, install [Yeoman](https://yeoman.io/) and our generator, `npm install -g yo generator-azure-web-app`.
 
-### Develop your site
+Then, use Yeoman to create a new project, `yo azure-web-app`.
 
-#### Adding new contents
+### Run development server and develop locally
 
-For clarity, HTML pages and JavaScript code are separated into different folders.
+Run `npm run host`, the development server will listen to port 80 and available at [http://localhost/](http://localhost/) with [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html).
 
-* HTML pages or assets
-  * Create new HTML file at [`web/files/`](web/files)
-  * Save assets to [`web/files/`](web/files)
-* JavaScript code
-  * Create new JavaScript file at [`web/src/`](web/src)
-  * To import packages, mark them as development dependencies, for example, `npm install react --save-dev`
+Start developing on the server, you can:
 
-#### Adding new API endpoints
+1. Edit JavaScript at [`web/src/`](web/src/)
+    1. Code are transpiled by [Babel](https://babeljs.io/) with [ES2015](https://npmjs.com/package/babel-preset-es2015) and [React](https://npmjs.com/package/babel-preset-react)
+    2. To import packages, mark them as development dependencies, for example, `npm install redux --save-dev`
+2. Edit static files at [`web/files/`](web/files/), including
+    1. Image assets, thru [`gulp-imagemin`](https://npmjs.com/package/gulp-imagemin)
+    2. HTML files, thru [`gulp-htmlmin`](https://npmjs.com/package/gulp-htmlmin)
+3. Add new API at [`src/controllers/api.js`](src/controllers/api.js)
+    1. To import packages, mark them as direct dependencies, for example, `npm install serve-static --save`
+    2. Don't forget to restart the development server to pick up your new code
 
-Add new API endpoints at [`src/controllers/api.js`](src/controllers/api.js).
+### Build the project for production deployment
 
-To import packages, mark them as production dependencies, for example, `npm install serve-static --save`.
+Before deploying to the server, you will need to build the JavaScript bundle, minify images, etc. Type `npm run build`.
 
-Lastly, restart the development server to pick up your new code.
+> Instead of Webpack, we use rollup.js as bundler because it has a better tree-shaking mechanism, thus smaller output file size.
 
-### Production deployment
+### Deploy to target servers
 
-Then, there are multiple ways to host the server:
+The project support hybrid deployment models:
 
-* Host with vanilla Node.js
-* Host with Azure Web App
-  * Continuous integration: deploy via GitHub
-  * Controlled release: deploy using MSDeploy
-* Host with IIS
+* Standalone Node.js
+* Azure App Service
+    * Continuous deployment
+    * MSDeploy
+* IIS
 
-##### Host with vanilla Node.js
+#### Deploy as a standalone Node.js
 
-Build the website, run `npm run build`. Then under `dist/iisapp/`, run `node server.js`.
+To run as a standalone Node.js server, go under `dist/website/`, then run `node app.js`.
 
-The directory `dist/iisapp/` contains everything that need to run the production server, including minified HTML files and assets. It can be copied to production server to run.
+> The directory `dist/website/` contains everything that need to run the production server, including minified HTML files and assets. It can be copied to production server to run.
 
-For load-balancing and scalability, it is recommended to use a process lifecycle manager to manage the server process. For example, [PM2](https://www.npmjs.com/package/pm2).
+> For load-balancing and scalability, it is recommended to use a process lifecycle manager to manage the server process. For example, [PM2](https://www.npmjs.com/package/pm2).
 
-##### Host with Azure Web App
+#### Deploy to Azure App Service
 
-(Due to a [bug](https://github.com/nodejs/node/issues/7175#issuecomment-239824532) in Node.js, Webpack is not working on Azure with Node.js >= 6.0.0 and < 6.4.0)
+Azure App Service support continuous deployment or traditional MSDeploy. We recommend continuous deployment for most projects.
 
-There are two deployment options for Azure Web App:
+##### Continuous deployment
 
-* Deploy via GitHub (Recommended)
-  * As you push new commits to GitHub, your Azure Web App will pick them up and deploy immediately
-  * Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/) to start
-* Deploy using MSDeploy
-  * For manual or controlled release, for example, deploy thru release manager, for example, [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
-  * Download publish settings file from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx)
-  * Modify iisnode configuration to select Node.js version
-    * When deployed thru MSDeploy, [`iisnode.yml`](iisnode.yml) is not updated automatically, thus Node.js version cannot be selected automatically
+You can deploy with GitHub, local Git, Dropbox, or OneDrive. In this example, we will deploy it thru GitHub.
+
+1. Commit your project as a GitHub repository
+2. Browse your repository on GitHub
+3. In the [`README.md`](README.md), click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+
+As you push new commits to GitHub, Azure Web App will pick them up and deploy the project immediately.
+
+> When deploying using Continuous Deployment, the project will be built on Azure, instead of locally. We prepared a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) named [deploy.cmd](deploy.cmd).
+
+##### MSDeploy
+
+Deploying thru MSDeploy is uncommon, but it is required when you prefer CI/CD using other tools, e.g. [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx).
+
+1. Pack the deployment as a ZIP file, run `npm run pack`
+2. Download publish settings file from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx)
+  * Modify iisnode configuration to select correct Node.js version
     * Add a line to [`iisnode.yml`](iisnode.yml): `nodeProcessCommandLine: "D:\Program Files (x86)\nodejs\6.6.0\node.exe"`
-  * Then, run `npm run build`, to build the website to `dist/iisapp/`
-  * Then, run `npm run pack`, to pack the website as `dist/packages/web.zip`
-  * Then, run `npm run deploy --publishsettings=yoursite.PublishSettings`
+3. Deploy the ZIP file, run `npm run deploy --publishsettings=yoursite.PublishSettings`
 
-##### Host with IIS
+> When deployed thru MSDeploy, [`iisnode.yml`](iisnode.yml) is not updated by Project Kudu automatically, thus you will need to modify [`iisnode.yml`](iisnode.yml) to manually select Node.js version.
+>
+> We have overrode some defaults in [`iisnode.yml`](iisnode.yml):
+>
+> * `debuggingEnabled` is set to `false`
+> * `devErrorsEnabled` is set to `false`
+> * `loggingEnabled` is set to `false`
+> * `nodeProcessCountPerApplication` is set to `0`
+>   * One worker process per CPU
+> * `node_env` is set to `production`
+>   * We assume hosting the site in IIS is always in production mode
+>   * Express is faster when environment variable `NODE_ENV` is set to `production`, details [here](http://apmblog.dynatrace.com/2015/07/22/the-drastic-effects-of-omitting-node_env-in-your-express-js-applications/)
 
-This will use IIS Management Service feature to deploy the site.
+#### Deploy to IIS
 
-1. Run `npm run build`, to build the website and output to `dist/iisapp/`
-2. Then, run `npm run pack`, to pack the website as `dist/packages/web.zip`
-3. Then, use MSDeploy to deploy the package to your IIS
+You can also deploy Web App project to an on-premise or hosted IIS.
 
-## Advanced: Important files and directories
+1. Make sure [Node.js](https://nodejs.org/) and [iisnode](https://github.com/tjanczuk/iisnode) is installed
+2. Pack the deployment as a ZIP file, run `npm run pack`
+3. Use MSDeploy to [deploy your package](https://msdn.microsoft.com/en-us/library/dd465337(v=vs.110).aspx)
+
+```
+"C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe"
+  -verb:sync
+  -source:package="dist\packages\web.zip"
+  -dest:
+    auto,
+    ComputerName="https://<server>:443/msdeploy.axd?site=<appname>",
+    UserName='<username>',
+    Password='<password>',
+    AuthType='Basic'
+  -setParam:name="IIS Web Application Name",value="<appname>"
+```
+
+(Whitespace and line breaks added for clarity)
+
+## Advanced topics
+
+This section helps you to dig deeper into the project.
+
+### Important files and directories
 
 | Filename | Description |
 |----------------|-------------|
@@ -109,41 +159,45 @@ This will use IIS Management Service feature to deploy the site.
 | `dist/website/` | Compiled web server ready to run by itself or hosted on IIS |
 | `dist/website/public/` | Bundled content and static assets |
 | `dist/packages/web.zip` | Web server packed by MSDeploy and ready to deploy to Azure Web Apps |
-| [`src/`](src) | Depends on `NODE_ENV`, development mode serves content from [`web`], production mode serves content from `dist/website/public` |
-| [`src/controllers/api.js`](src/controllers/api.js) | RESTful API for [http://localhost/api](http://localhost/api) |
-| [`src/iisnode.yml`](src/iisnode.yml) | [iisnode](https://github.com/tjanczuk/iisnode) configuration |
-| [`src/web.config`](src/web.config) | `Web.config` for hosting under IIS with [iisnode](https://github.com/tjanczuk/iisnode) |
+| [`src/app.js`](src/app.js) | Depends on `NODE_ENV`, development mode serves content directly from [`web`](web/), production mode serves content from `dist/website/public` |
+| [`src/controllers/api.js`](src/controllers/api.js) | RESTful API hosted at [http://localhost/api](http://localhost/api) |
+| [`src/iisnode.yml`](src/iisnode.yml) | [iisnode configuration](https://tomasz.janczuk.org/2012/05/yaml-configuration-support-in-iisnode.html) |
+| [`src/web.config`](src/web.config) | `Web.config` for hosting under Azure Web App and IIS |
 | [`scripts/`](scripts) | Gulpfile for building and packing the project |
 | [`web/files/`](web/files) | Asset source files |
 | [`web/src/`](web/src) | JavaScript source files |
 
-## Advanced: Gulp tasks
+### NPM scripts
 
-To help building the project, there are several Gulp tasks exposed thru NPM scripts.
+To help building the project, there are several NPM scripts.
 
-* `npm run build` will start the build process
-* `npm run deploy` will deploy the website to Azure Web App
-* `npm run host:dev` will host a development server and bundle on-the-fly
-* `npm run host:prod` will host a production server using pre-bundled files
-* `npm run pack` will pack production server and bundled files into a ZIP file using MSDeploy
+| Task name | Description |
+| - | - |
+| `build` | Start the build process |
+| `deploy` | Deploy the website to Azure Web App |
+| `host:dev` | Host a Webpack development server and bundle on-the-fly |
+| `host:prod` | Host a production server using pre-bundled files at `dist/website/` |
+| `pack` | Use MSDeploy to pack everything at `dist/website/` into `dist/packages/web.zip` |
 
-## Advanced: Building the website
+### Building the website
 
-To build the website, `npm run build`. The build output will be located at `dist/website/`.
+To build the website, run `npm run build`. The build output will be located at `dist/website/`.
 
-You can specify production build by:
+* Specify build favor by either
+    * Set environment variable `NODE_ENV` to `production`, or
+    * Run `npm run build -- --build production`
+* Specify bundler by either
+    * Set environment variable `BUNDLER` to `rollup` or `webpack`, or
+    * Run `npm run build -- --bundler rollup`
 
-* Set environment variable `NODE_ENV` to `production`, or
-* Run `npm run build -- --build production`
+> Currently, the build favor (either `development` or `production`) is only used by [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/). It helps reducing bundle size by excluding developer-friendly error messages in production build.
 
-Currently, the build favor (either `development` or `production`) is only used by [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/). It helps reducing bundle size by excluding developer-friendly error messages in production build.
+#### What the build do
 
-You can select between [rollup.js](http://rollupjs.org/) (default) and [Webpack](https://webpack.github.io/) as your bundler for production mode.
-
-### What the build do
+Source code can be found at [`scripts/build.js`](scripts/build.js).
 
 * Copy server code from [`src/`](src) to `dist/website/`, exclude `node_modules` folder
-  * After copy complete, will run `npm install` to install fresh production-only packages
+  * After copy complete, will run `npm install --ignore-scripts --only=production` to install fresh packages
 * Bundle source files from [`web/src/`](web/src) to `dist/website/public/dist/bundle.js`
   * Will use existing npm packages from `web/node_modules`
 * Copy static assets from [`web/files/`](web/files) to `dist/website/public/`
@@ -152,12 +206,12 @@ You can select between [rollup.js](http://rollupjs.org/) (default) and [Webpack]
 
 ### Webpack configuration
 
-The configuration file is located at [`web/webpack.config.js`](web/webpack.config.js). It controls how files are getting bundled into a monolithic `dist/bundle.js`.
+The configuration file is located at [`web/webpack.config.js`](web/webpack.config.js). It controls how files are getting bundled into a monolithic `dist/website/public/js/bundle.js`.
 
 * [`web/src/*.js`](web/src) and [`web/src/*.jsx`](web/src)
   * Bundled by [`babel-loader`](https://www.npmjs.com/package/babel-loader)
-    * Enable React JSX with [`preset-react`](https://babeljs.io/docs/plugins/preset-react/)
-    * Enable ES2015 with [`preset-es2015`](http://babeljs.io/docs/plugins/preset-es2015/)
+    * Enable React JSX by [`preset-react`](https://babeljs.io/docs/plugins/preset-react/)
+    * Enable ES2015 by [`preset-es2015`](http://babeljs.io/docs/plugins/preset-es2015/)
     * Escape ES3 reserved keywords
       * [`transform-es3-member-expression-literals`](https://babeljs.io/docs/plugins/transform-es3-member-expression-literals/)
       * [`transform-es3-property-literals`](https://babeljs.io/docs/plugins/transform-es3-property-literals/)
@@ -168,13 +222,15 @@ The configuration file is located at [`web/webpack.config.js`](web/webpack.confi
   * [`css-loader`](https://www.npmjs.com/package/css-loader), then
   * [`style-loader`](https://www.npmjs.com/package/style-loader)
 
+> We use rollup.js for bundling in production build. Since rollup.js currently only support single entrypoint and not code-splitting. If you want to enable these features, please build with `--bundler webpack` to use Webpack as bundler in production build.
+
 ### Webpack development mode configuration
 
 When running Webpack development server, additional configurations are required, for example, hot module replacement.
 
 When running under development server, we will add the following to [`webpack.config.js`](web/webpack.config.js):
 
-* Serve assets from [`web/files/`](web/files)
+* Serve assets from [`web/files/`](web/files/)
 * Enable [source map](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/#toc-tools)
   * Use absolute path for source map for compatibility with Edge
 * Also write a copy of `bundle.js` to `dist/webpack/bundle.js` for debugging purpose
@@ -183,13 +239,13 @@ When running under development server, we will add the following to [`webpack.co
 
 ### Rollup.js configuration
 
-Rollup.js bundler is used only in production mode.
+Rollup.js bundler is used only in production build.
 
 The configuration file is located at [`web/rollup.config.js`](web/rollup.config.js). It is similar to Webpack configuration.
 
-* [`web/src/*.less`](web/src)
-  * Bundled by [`rollup-plugin-less`](https://npmjs.com/package/rollup-plugin-less)
-    * Inject CSS styles into `<head>`
+* TBD: ~~[`web/src/*.less`](web/src)~~
+  * ~~Bundled by [`rollup-plugin-less`](https://npmjs.com/package/rollup-plugin-less)~~
+    * ~~Inject CSS styles into `<head>`~~
 * [`web/src/*.js`](web/src)
   * Bundled by [`rollup-plugin-babel`](https://www.npmjs.com/package/rollup-plugin-babel)
     * Enable ES2015 with [`preset-es2015`](http://babeljs.io/docs/plugins/preset-es2015/)
@@ -207,90 +263,9 @@ The configuration file is located at [`web/rollup.config.js`](web/rollup.config.
 
 ### Enable source map output in production mode
 
-Run `npm run build -- --sourcemap true` to output `dist/bundle.js.map` for debugging purpose.
+Run `npm run build -- --sourcemap true` to output `dist/website/public/js/bundle.js.map` for debugging purpose.
 
-## Advanced: Hosting with Webpack development server
-
-The server targets local development environment where network speed is not a concern.
-
-Instead of serving a monolithic bundle `dist/bundle.js`, the development server will serve each source files separately. This also enables hot module replacement, when a source file is modified, the browser will only reload that source file and/or re-render related React component.
-
-### Features
-
-* Bundle on-the-fly, shorter build time
-* Support [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html) (supersede [LiveReload](http://livereload.com/))
-
-### Options
-
-* Listening port
-  * Set environment variable `PORT` to `8080`, or
-  * Command-line switches: `npm run hostdev -- --port 8080`
-
-### File serving order
-
-* `dist/bundle.js` will be bundled by Webpack on-the-fly
-* `*` if matching file exists, will be served from [`web/public/*`](web/public)
-* `api/` will be served by Express router at [`prodserver/controllers/api.js`](prodserver/controllers/api.js)
-* Otherwise, will redirect to [`web/public/index.html`](web/public/index.html)
-  * To support single-page application
-
-## Advanced: Hosting as a standalone Express server
-
-The server is a simple Express server which host on port 80 at [http://localhost/](http://localhost/). All contents are served from `dist/iisapp/public/`.
-
-### Features
-
-* Cross-platform
-* Simple deployment
-* Recommended to host under a process lifecycle manager, for example, [PM2](https://www.npmjs.com/package/pm2)
-
-### Options
-
-* Listening port
-  * Set environment variable `PORT` to `8080`, or
-  * Command-line switches: `npm run hostprod -- --port 8080`
-
-### File serving order
-
-* `*` if matching file exists, will be served from `dist/iisapp/public/*`
-  * Also serve bundle `dist/bundle.js` from `dist/iisapp/public/dist/bundle.js`
-* `api/` will be served by Express router at [`prodserver/controllers/api.js`](prodserver/controllers/api.js)
-* Otherwise, will be redirected to [`web/public/index.html`](web/public/index.html)
-  * To support single-page application
-
-### Notes
-
-Because the contents are served from `dist/iisapp/public/`. After you modify your source files at [`web/src/`](web/src) or assets at [`web/public/`](web/public), you will need to rerun `npm run build` to rebuild the content to `dist/iisapp/public/`.
-
-## Advanced: Hosting with IIS and iisnode
-
-This scenario is designed for deploying server code to [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/), and on-premise IIS.
-
-[iisnode](https://github.com/tjanczuk/iisnode) configuration is located at `iisnode.yml`. We have overrode some defaults:
-
-* `debuggingEnabled` is set to `false`
-* `devErrorsEnabled` is set to `false`
-* `loggingEnabled` is set to `false`
-* `nodeProcessCountPerApplication` is set to `0`
-  * One worker process per CPU
-* `node_env` is set to `production`
-  * We assume hosting the site in IIS is always in production mode
-  * Express is faster when environment variable `NODE_ENV` is set to `production`, details [here](http://apmblog.dynatrace.com/2015/07/22/the-drastic-effects-of-omitting-node_env-in-your-express-js-applications/)
-
-### Features
-
-* Can be deployed to [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/), and on-premise IIS
-* IIS-managed worker process lifecycle
-  * Auto recycle worker process as needed (hitting memory or CPU limit, or after number of hours)
-* Fast and efficient serving on static files using kernel-mode driver (http.sys)
-
-### File serving order
-
-Largely same as hosting with standalone Express server. Except when serving `*`, files will be served directly by IIS and not passing thru [iisnode](https://github.com/tjanczuk/iisnode) or [Express](https://expressjs.com/). Static files served by IIS will be served and cached by [kernel-mode driver](https://technet.microsoft.com/en-us/library/cc740087(v=ws.10).aspx) (http.sys).
-
-## Advanced: Packing with MSDeploy
-
-(This scenario is only supported on Windows because it requires [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy).)
+## Packing with MSDeploy
 
 To pack the content and production server, `npm run pack`.
 
@@ -304,65 +279,7 @@ Additional parameters added to MSDeploy ZIP file:
 
 Before packing the project, make sure your current build is up-to-date, or run `npm run build`.
 
-## Advanced: Continuous deployment for Azure Web App
-
-This project can be deployed to [Azure Web App](https://azure.microsoft.com/en-us/services/app-service/web/) using continuous deployment with GitHub. Azure Web App is powered by [Project Kudu](https://github.com/projectkudu/kudu).
-
-To deploy to Azure, please click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/), or refer to this [article](https://azure.microsoft.com/en-us/documentation/articles/app-service-continous-deployment/).
-
-To run Webpack on Azure, we prepared a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) for Project Kudu.
-
-* Copy source files to intermediate folder (under `D:\home\site\intermediate\`)
-* Build the project (by running `npm install`)
-* Copy server and bundles from `D:\home\site\intermediate\dist\iisapp\` to `D:\home\site\wwwroot\`
-* Update [`iisnode.yml`](iisnode.yml) by selecting Node.js version from engines in [`package.json`](package.json)
-  * Currently, there is a [bug](https://github.com/webpack/memory-fs/issues/23) in Webpack that prevent us to use Node.js >= 6.0.0 to bundle
-
-## Advanced: Manual deploy to Azure Web App
-
-(This command is only supported on Windows because it requires MSDeploy)
-
-This scenario is designed for manual or controlled release. Mostly paired with a release management tool, for example, [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx).
-
-Deployment thru MSDeploy will not trigger Project Kudu. Thus, Node.js version and binary location cannot be automatically selected from [`package.json`](package.json). Please add the followings to `iisnode.yml`:
-
-* `nodeProcessCommandLine: "D:\Program Files (x86)\nodejs\6.6.0\node.exe"`
-
-Then, build the server, `npm run build`. This will output to `dist/iisapp/`.
-
-Then, pack the web server, `npm run pack`. This will output a MSDeploy package file at `dist/packages/web.zip`.
-
-Then, deploy the package file to Azure Web App, `npm run deploy -- --publishsettings=<yoursettings>.PublishSettings`.
-
-The publish settings file can be downloaded from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx).
-
-## Advanced: Manual deploy to IIS
-
-(This scenario is only supported on Windows because it requires MSDeploy)
-
-Similar to Azure Web App, the website can also deploy to an on-premise IIS with [iisnode](https://github.com/tjanczuk/iisnode) and [Node.js](https://nodejs.org/) installed.
-
-[iisnode](https://github.com/tjanczuk/iisnode) helps manage Node.js worker process:
-
-* Automatic process recycle
-* Redirect console output to file
-
-After you have packed your website into a MSDeploy ZIP file (`npm run pack`), use [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) to "sync" the package to the server. For example,
-
-```
-"C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe"
-  -verb:sync
-  -source:package="dist\packages\web.zip"
-  -dest:
-    auto,
-    ComputerName="https://<server>:443/msdeploy.axd?site=<appname>",
-    UserName='<username>',
-    Password='<password>',
-    AuthType='Basic'
-  -setParam:name="IIS Web Application Name",value="<appname>"
-```
-
-(Whitespace and line breaks added for clarity)
+> [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) is only supported on Windows.
 
 ## Work in progress
 
@@ -372,9 +289,9 @@ These are items we are working on or under consideration:
 * [x] ~~Continuous deployment on Azure Web Apps~~
   * [x] ~~`npm install` should build~~
   * [x] ~~`.deployment` file for Kudu to specify project folder at `dist/iisapp/`~~
-* [ ] Scaffold with [Yeoman](http://yeoman.io/)
+* [x] ~~Scaffold with [Yeoman](http://yeoman.io/)~~
 * [x] ~~Use a single `package.json` if possible~~
-* [ ] Host development server programmatically
+* [x] ~~Host development server programmatically~~
 * [x] ~~Bundle using [rollup.js](http://rollupjs.org/)~~
   * [ ] Find a better plugin or way to bundle LESS into `bundle.js`
 * [ ] Uglify production `bundle.js`
