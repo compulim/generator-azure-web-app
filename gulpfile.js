@@ -6,13 +6,13 @@ const program = require('commander');
 
 const currentBundler   = process.env.BUNDLER === 'webpack' ? 'webpack' : 'rollup';
 const currentFavor     = process.env.NODE_ENV === 'development' ? 'development' : 'production';
-const currentSourceMap = process.env.SOURCE_MAP === 'true' ? 'true' : 'false';
+const currentSourceMap = process.env.SOURCE_MAP === 'true' ? true : false;
 
 program
   .allowUnknownOption()
   .option(
     '-b, --build <type>',
-    `Specifies the build type: "production", or "development". Will override NODE_ENV. (Current = "${ currentFavor }")`,
+    `Specifies the build type: "production", or "development". Will override NODE_ENV. (Current = ${ currentFavor })`,
     /^(production|development)$/i,
     currentFavor
   )
@@ -34,18 +34,24 @@ program
 const build = (program.build || '').toLowerCase();
 
 switch (build) {
-case 'production':
 case 'development':
   process.env.NODE_ENV = build;
+  break;
+
+default:
+  process.env.NODE_ENV = 'production';
   break;
 }
 
 const bundler = (program.bundler || '').toLowerCase();
 
 switch (bundler) {
-case 'rollup':
 case 'webpack':
   process.env.BUNDLER = bundler;
+  break;
+
+default:
+  process.env.BUNDLER = 'rollup';
   break;
 }
 
@@ -53,8 +59,11 @@ const sourceMap = (program.sourcemap || '').toLowerCase();
 
 switch (sourceMap) {
 case 'true':
-case 'false':
   process.env.SOURCE_MAP = sourceMap === 'true' ? true : false;
+  break;
+
+default:
+  process.env.SOURCE_MAP = false;
   break;
 }
 

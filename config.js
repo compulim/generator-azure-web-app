@@ -21,11 +21,11 @@ const DEST_WEBSITE_BUNDLE_FILE      = join(DEST_WEBSITE_BUNDLE_DIR, 'bundle.js')
 const MSDEPLOY_BIN_FILE             = platform() === 'win32' && join(process.env['ProgramFiles(x86)'] || process.env.ProgramFiles, 'IIS\\Microsoft Web Deploy V3\\msdeploy.exe');
 
 const MSDEPLOY_IIS_PARAMETERS = {
-  name: 'IIS Web Application Name',
   defaultValue: 'Default Web Site',
-  tags: 'IisApp',
-  kind: 'ProviderPath',
-  scope: 'IisApp'
+  kind:         'ProviderPath',
+  name:         'IIS Web Application Name',
+  scope:        'IisApp',
+  tags:         'IisApp'
 };
 
 module.exports = {
