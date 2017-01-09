@@ -21,7 +21,7 @@ Modern websites are not just bunches of plain text files. Build process increase
 2. Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 3. Commit your changes and see it continuously deploy to Azure
 
-It takes about 5-10 minutes to build for the first time (due to large npm install), have a little patience.
+It takes about 5-10 minutes to build for the first time, have a little patience.
 
 ## How to develop professionally
 
@@ -31,15 +31,15 @@ There are few steps to develop using our `azure-web-app` scaffolding:
 2. Run development server and develop locally
 3. Build the project for production deployment
 4. Deploy to target servers
-  * Deploy as a vanilla Node.js
-  * Deploy to Azure Web App
-  * Deploy to IIS, on-premise or cloud
+  * As a vanilla Node.js
+  * To Azure Web App
+  * To IIS, on-premise or cloud
 
 ### Create a new Web App Project
 
 For the very first time, install [Yeoman](https://yeoman.io/) and our generator, `npm install -g yo generator-azure-web-app`.
 
-Then, use Yeoman to create a new project, `yo azure-web-app`.
+Then, use [Yeoman](https://yeoman.io/) to create a new project, `yo azure-web-app`.
 
 ### Run development server and develop locally
 
@@ -108,7 +108,7 @@ Deploying thru MSDeploy is uncommon, but it is required when you prefer CI/CD us
 3. Deploy the ZIP file, run `npm run deploy --publishsettings=yoursite.PublishSettings`
 
 > When deployed thru MSDeploy, [`iisnode.yml`](iisnode.yml) is not updated by Project Kudu automatically, thus you will need to modify [`iisnode.yml`](iisnode.yml) to manually select Node.js version.
->
+
 > We have overrode some defaults in [`iisnode.yml`](iisnode.yml):
 >
 > * `debuggingEnabled` is set to `false`
@@ -234,8 +234,6 @@ When running under development server, we will add the following to [`webpack.co
   * Support React component with [`react-hot`](https://github.com/gaearon/react-hot-loader) loader
 
 ### Rollup.js configuration
-
-Rollup.js bundler is used only in production build.
 
 The configuration file is located at [`web/rollup.config.js`](web/rollup.config.js). It is similar to Webpack configuration.
 
