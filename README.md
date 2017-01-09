@@ -2,7 +2,7 @@
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-Generates a minimalist Web App with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [rollup.js](http://rollupjs.org/), [Express](https://expressjs.com/), and [Gulp](http://gulpjs.com/). And deploy the Web App to a vanilla Node.js, [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), or IIS.
+Minimalist Web App generator: [Webpack](https://webpack.github.io/)/[Rollup](https://rollupjs.org/) + [React](https://facebook.github.io/react/) + [Express](https://expressjs.com/), deployable to vanilla [Node.js](https://nodejs.org/), [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), and IIS
 
 ## Introduction
 
