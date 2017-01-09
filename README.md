@@ -184,11 +184,11 @@ To help building the project, there are several NPM scripts.
 To build the website, run `npm run build`. The build output will be located at `dist/website/`.
 
 * Specify build favor by either
-    * Set environment variable `NODE_ENV` to `production`, or
-    * Run `npm run build -- --build production`
+  * Set environment variable `NODE_ENV` to `production`, or
+  * Run `npm run build -- --build production`
 * Specify bundler by either
-    * Set environment variable `BUNDLER` to `rollup` or `webpack`, or
-    * Run `npm run build -- --bundler rollup`
+  * Set environment variable `BUNDLER` to `rollup` or `webpack`, or
+  * Run `npm run build -- --bundler rollup`
 
 > Currently, the build favor (either `development` or `production`) is only used by [`transform-node-env-inline`](https://babeljs.io/docs/plugins/transform-node-env-inline/). It helps reducing bundle size by excluding developer-friendly error messages in production build.
 
