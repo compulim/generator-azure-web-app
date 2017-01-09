@@ -1,11 +1,17 @@
 {
-  "name": "modern-webpack-template",
-  "version": "0.2.0",
-  "description": "Modern web template",
+  "name": "generator-azure-web-app",
+  "version": "1.0.0",
+  "description": "Minimalist Web App generator: Webpack/Rollup + React + Express, deployable to vanilla Node.js, Azure App Service, and IIS",
   "license": "MIT",
   "engines": {
     "node": "^6.6.0"
   },
+  "files": [
+    "generators"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
   "scripts": {
     "build": "gulp build",
     "clean": "gulp clean",
@@ -27,8 +33,10 @@
     "debug": "^2.2.0",
     "deep-assign": "^2.0.0",
     "express": "^4.14.0",
+    "inquirer-npm-name": "^2.0.0",
     "qs": "^6.3.0",
-    "serve-static": "^1.11.1"
+    "serve-static": "^1.11.1",
+    "yeoman-generator": "^1.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
