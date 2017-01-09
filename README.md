@@ -2,9 +2,7 @@
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-Generates a minimalist Web App with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [rollup.js](http://rollupjs.org/), [Express](https://expressjs.com/), and [Gulp](http://gulpjs.com/).
-
-You can deploy the Web App to a vanilla Node.js, [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), or IIS.
+Generates a minimalist Web App with [React](https://facebook.github.io/react/), [Webpack](https://webpack.github.io/), [rollup.js](http://rollupjs.org/), [Express](https://expressjs.com/), and [Gulp](http://gulpjs.com/). And deploy the Web App to a vanilla Node.js, [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), or IIS.
 
 ## Introduction
 
@@ -15,9 +13,7 @@ Modern websites are not just bunches of plain text files. Build process increase
 * Re-compress JPEG and PNG files for better compression ratio
 * Remove dead code or code that is only used in development mode
 
-We use [Webpack](https://webpack.github.io/) and [rollup.js](http://rollupjs.org/) as a bundler for our build process. And the directory structure is designed to be able to host as a standalone Node.js server or IIS on [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/) and [Azure VM](https://azure.microsoft.com/en-us/services/virtual-machines/).
-
-Notes: we recently moved to rollup.js for bundling in production mode, and Webpack development server in development mode. `Rollup.js` has better tree-shaking algorithm and less clunky source code.
+> We recently moved to rollup.js for bundling in production mode, and Webpack development server in development mode. Rollup.js has better tree-shaking algorithm and less clunky source code.
 
 ## Try it out in 3 easy steps
 
