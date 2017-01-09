@@ -33,7 +33,7 @@ Clone it to your dev box. Then run `npm install`.
 
 ### Run development server
 
-Run `npm run hostdev`, the development server will listen to port 80 and available at [http://localhost/](http://localhost/).
+Run `npm run host:dev`, the development server will listen to port 80 and available at [http://localhost/](http://localhost/).
 
 ### Develop your site
 
@@ -42,15 +42,15 @@ Run `npm run hostdev`, the development server will listen to port 80 and availab
 For clarity, HTML pages and JavaScript code are separated into different folders.
 
 * HTML pages or assets
-  * Create new HTML file at [`web/public/`](web/public)
-  * Save assets to [`web/public/`](web/public)
+  * Create new HTML file at [`web/files/`](web/files)
+  * Save assets to [`web/files/`](web/files)
 * JavaScript code
   * Create new JavaScript file at [`web/src/`](web/src)
   * To import packages, mark them as development dependencies, for example, `npm install react --save-dev`
 
 #### Adding new API endpoints
 
-Add new API endpoints at [`prodserver/controllers/api.js`](prodserver/controllers/api.js).
+Add new API endpoints at [`src/controllers/api.js`](src/controllers/api.js).
 
 To import packages, mark them as production dependencies, for example, `npm install serve-static --save`.
 
@@ -105,17 +105,16 @@ This will use IIS Management Service feature to deploy the site.
 
 | Filename | Description |
 |----------------|-------------|
-| [`devserver/`](devserver) | Webpack development server, serve content from [`web/public/`](web/public) and [`web/src/`](web/src) |
 | `dist/` | Build output |
-| `dist/iisapp/` | Compiled web server ready to run by itself or hosted on IIS |
-| `dist/iisapp/public/` | Bundled content and static assets |
+| `dist/website/` | Compiled web server ready to run by itself or hosted on IIS |
+| `dist/website/public/` | Bundled content and static assets |
 | `dist/packages/web.zip` | Web server packed by MSDeploy and ready to deploy to Azure Web Apps |
-| [`prodserver/`](prodserver) | Express production server, serve content from `dist/iisapp/public` |
-| [`prodserver/controllers/api.js`](prodserver/controllers/api.js) | RESTful API for [http://localhost/api](http://localhost/api) |
-| [`prodserver/iisnode.yml`](prodserver/iisnode.yml) | [iisnode](https://github.com/tjanczuk/iisnode) configuration |
-| [`prodserver/web.config`](prodserver/web.config) | `Web.config` for hosting under IIS with [iisnode](https://github.com/tjanczuk/iisnode) |
+| [`src/`](src) | Depends on `NODE_ENV`, development mode serves content from [`web`], production mode serves content from `dist/website/public` |
+| [`src/controllers/api.js`](src/controllers/api.js) | RESTful API for [http://localhost/api](http://localhost/api) |
+| [`src/iisnode.yml`](src/iisnode.yml) | [iisnode](https://github.com/tjanczuk/iisnode) configuration |
+| [`src/web.config`](src/web.config) | `Web.config` for hosting under IIS with [iisnode](https://github.com/tjanczuk/iisnode) |
 | [`scripts/`](scripts) | Gulpfile for building and packing the project |
-| [`web/public/`](web/public) | Asset source files |
+| [`web/files/`](web/files) | Asset source files |
 | [`web/src/`](web/src) | JavaScript source files |
 
 ## Advanced: Gulp tasks
@@ -124,13 +123,13 @@ To help building the project, there are several Gulp tasks exposed thru NPM scri
 
 * `npm run build` will start the build process
 * `npm run deploy` will deploy the website to Azure Web App
-* `npm run hostdev` will host a development server and bundle on-the-fly
-* `npm run hostprod` will host a production server using pre-bundled files
+* `npm run host:dev` will host a development server and bundle on-the-fly
+* `npm run host:prod` will host a production server using pre-bundled files
 * `npm run pack` will pack production server and bundled files into a ZIP file using MSDeploy
 
 ## Advanced: Building the website
 
-To build the website, `npm run build`. The build output will be located at `dist/iisapp/`.
+To build the website, `npm run build`. The build output will be located at `dist/website/`.
 
 You can specify production build by:
 
@@ -143,11 +142,11 @@ You can select between [rollup.js](http://rollupjs.org/) (default) and [Webpack]
 
 ### What the build do
 
-* Copy server code from [`prodserver/`](prodserver) to `dist/iisapp/`, exclude `node_modules` folder
+* Copy server code from [`src/`](src) to `dist/website/`, exclude `node_modules` folder
   * After copy complete, will run `npm install` to install fresh production-only packages
-* Bundle source files from [`web/src/`](web/src) to `dist/iisapp/public/dist/bundle.js`
+* Bundle source files from [`web/src/`](web/src) to `dist/website/public/dist/bundle.js`
   * Will use existing npm packages from `web/node_modules`
-* Copy static assets from [`web/public/`](web/public) to `dist/iisapp/public/`
+* Copy static assets from [`web/files/`](web/files) to `dist/website/public/`
   * Will minify image with [gulp-imagemin](https://www.npmjs.com/package/gulp-imagemin/)
   * Will minify HTML with [gulp-htmlmin](https://www.npmjs.com/package/gulp-htmlmin/)
 
@@ -173,11 +172,9 @@ The configuration file is located at [`web/webpack.config.js`](web/webpack.confi
 
 When running Webpack development server, additional configurations are required, for example, hot module replacement.
 
-The configuration file is located at [`devserver/webpack.dev.config.js`](devserver/webpack.dev.config.js).
-
 When running under development server, we will add the following to [`webpack.config.js`](web/webpack.config.js):
 
-* Serve assets from [`web/public/`](web/public)
+* Serve assets from [`web/files/`](web/files)
 * Enable [source map](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/#toc-tools)
   * Use absolute path for source map for compatibility with Edge
 * Also write a copy of `bundle.js` to `dist/webpack/bundle.js` for debugging purpose
