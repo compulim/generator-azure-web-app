@@ -136,7 +136,7 @@ The following MSDeploy command-line switches can be used to deploy the package t
 
 (Whitespace and line breaks added for clarity)
 
-## Work in progress
+## Roadmap
 
 These are items we are working on or under consideration:
 
