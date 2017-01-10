@@ -48,7 +48,7 @@ Subsequently, run `yo azure-web-app` to create a new project with [Yeoman](https
 
 Run `npm start`, the development server will listen to port 80 and available at [http://localhost/](http://localhost/).
 
-To change the port to 8080, either set environment variable `PORT` to `8080`, or run `npm start -- --port 8080`.
+> To change the port to 8080, either set environment variable `PORT` to `8080`, or run `npm start -- --port 8080`.
 
 * Edit JavaScript at [`web/src/`](web/src/)
   * Code are transpiled by [Babel](https://babeljs.io/) with [ES2015](https://npmjs.com/package/babel-preset-es2015) and [React](https://npmjs.com/package/babel-preset-react)
@@ -58,7 +58,8 @@ To change the port to 8080, either set environment variable `PORT` to `8080`, or
   * HTML files, thru [`gulp-htmlmin`](https://npmjs.com/package/gulp-htmlmin)
 * Add new RESTful API at [`src/controllers/api.js`](src/controllers/api.js)
   * To import packages, mark them as direct dependencies, for example, `npm install serve-static --save`
-  * Don't forget to restart the development server to pick up your new code
+
+> Don't forget to restart the development server to pick up your new code
 
 ## Build the project for production deployment
 
@@ -66,7 +67,7 @@ Before deploying to the server, you will need to build the JavaScript bundle, mi
 
 > Instead of Webpack, we use rollup.js as bundler because it has a better tree-shaking mechanism, thus smaller output file size.
 
-> To use Webpack for production build, run `npm run build -- --bundler webpack`.
+> To opt for Webpack for production build, run `npm run build -- --bundler webpack`.
 
 ## Deploy to target servers
 
