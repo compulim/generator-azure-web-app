@@ -1,6 +1,6 @@
 {
   "name": "generator-azure-web-app",
-  "version": "1.0.2-rc.0",
+  "version": "1.0.2-rc.1",
   "description": "Minimalist Web App generator: Webpack/Rollup + React + Express, deployable to vanilla Node.js, Azure App Service, and IIS",
   "license": "MIT",
   "engines": {
@@ -19,9 +19,6 @@
     "type": "git",
     "url": "https://github.com/candrholdings/generator-azure-web-app.git"
   },
-  "files": [
-    "generators"
-  ],
   "keywords": [
     "yeoman-generator"
   ],
