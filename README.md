@@ -34,7 +34,7 @@ But everyone build and promote their own build process. There are few reasons yo
 2. Run development server and develop locally
 3. Build for production deployment
 4. Deploy to target servers
-  * As a vanilla Node.js
+  * As a standalone Node.js
   * To Azure Web App
   * To IIS, on-premise or cloud
 
