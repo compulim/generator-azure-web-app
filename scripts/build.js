@@ -110,7 +110,11 @@ module.exports = function (gulp) {
           NODE_ENV: JSON.stringify('production')
         }
       }),
-      new Webpack.optimize.UglifyJsPlugin()
+      new Webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        }
+      })
     );
 
     return gulp
