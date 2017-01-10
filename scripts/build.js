@@ -14,6 +14,7 @@ const source     = require('vinyl-source-stream');
 const sourcemaps = require('gulp-sourcemaps');
 const uglify     = require('gulp-uglify');
 const webpack    = require('webpack-stream');
+const Webpack    = require('webpack');
 
 const { basename, join, relative }          = require('path');
 const { globIgnoreNodeModules, prettyPath } = require('./util');
@@ -100,6 +101,17 @@ module.exports = function (gulp) {
     const sourceMap = process.env.SOURCE_MAP === 'true';
 
     sourceMap && gutil.log('[build:webpack]', 'Source map is enabled, this build should not be used for production');
+
+    const plugins = WEBPACK_CONFIG.plugins || (WEBPACK_CONFIG.plugins = []);
+
+    plugins.splice(Infinity, 0,
+      new Webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify('production')
+        }
+      }),
+      new Webpack.optimize.UglifyJsPlugin()
+    );
 
     return gulp
       .src([])
