@@ -71,6 +71,7 @@
     "gulp-imagemin": "^3.0.3",
     "gulp-install": "^0.6.0",
     "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",

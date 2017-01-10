@@ -12,6 +12,7 @@ const rename     = require('gulp-rename');
 const rollup     = require('rollup-stream');
 const source     = require('vinyl-source-stream');
 const sourcemaps = require('gulp-sourcemaps');
+const uglify     = require('gulp-uglify');
 const webpack    = require('webpack-stream');
 
 const { basename, join, relative }          = require('path');
@@ -129,6 +130,7 @@ module.exports = function (gulp) {
       workflow = workflow
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(uglify())
         .pipe(sourcemaps.write('.'));
     }
 
