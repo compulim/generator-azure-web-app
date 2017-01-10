@@ -6,13 +6,15 @@ Minimalist Azure Web App generator: [Webpack](https://webpack.github.io/)/[Rollu
 
 # Why us?
 
-Modern websites are not just bunches of plain text files. Build process increases page load efficiency and overall page performance. And everyone build and promote their own build process. There are few reasons to choose us:
+Modern websites are not just bunches of plain text files. Build process increases page load efficiency and overall page performance.
 
-* Scaffold with [Yeoman](https://yeoman.io/)
-* We only include React for greater flexibility
-* Bundle with the best bundler
-  * Webpack for development, with hot module replacement
-  * Rollup.js for production, better tree-shaking algorithm
+But everyone build and promote their own build process. There are few reasons you should choose us:
+
+* Scaffold with [Yeoman](https://yeoman.io/), `yo azure-web-app`
+* For greater flexibility, we only include React
+* Bundle with the *best* bundler
+  * [Webpack](https://webpack.github.io/) for development, hot module replacement means less page refresh
+  * [Rollup](https://rollupjs.org/) for production, better tree-shaking algorithm means smaller file size
 * Hybrid deployment
   * Standalone Node.js
   * Azure Web App
@@ -20,9 +22,9 @@ Modern websites are not just bunches of plain text files. Build process increase
 
 # Try it out in 3 easy steps
 
-1. Fork this repository
+1. Fork [this repository](https://github.com/candrholdings/generator-azure-web-app/)
 2. Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
-3. Commit your changes and see it continuously deploy to Azure
+3. Push your changes and see it continuously deploy to Azure
 
 > It takes about 5-10 minutes to build for the first time, have a little patience.
 
@@ -30,7 +32,7 @@ Modern websites are not just bunches of plain text files. Build process increase
 
 1. Create a new Web App project
 2. Run development server and develop locally
-3. Build the project for production deployment
+3. Build for production deployment
 4. Deploy to target servers
   * As a vanilla Node.js
   * To Azure Web App
@@ -44,7 +46,7 @@ Subsequently, run `yo azure-web-app` to create a new project with [Yeoman](https
 
 ## Run development server and develop locally
 
-Run `npm start`, the development server will listen to port 80 and available at [http://localhost/](http://localhost/) with [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html).
+Run `npm start`, the development server will listen to port 80 and available at [http://localhost/](http://localhost/).
 
 To change the port to 8080, either set environment variable `PORT` to `8080`, or run `npm start -- --port 8080`.
 
@@ -72,7 +74,7 @@ The project support hybrid deployment models:
 
 * Standalone Node.js
 * [Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/)
-  * Thru continuous deployment
+  * Thru [continuous deployment](https://azure.microsoft.com/en-us/blog/using-app-service-web-apps-continuous-deployment-with-github-organizations/)
   * Thru MSDeploy
 * IIS with [iisnode](https://github.com/tjanczuk/iisnode)
 
@@ -84,7 +86,7 @@ To run as a standalone Node.js server, go under `dist/website/`, then run `node 
 
 ### Deploy to Azure App Service
 
-[Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/) support continuous deployment or traditional MSDeploy. We recommend continuous deployment for most projects.
+[Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/) support [continuous deployment](https://azure.microsoft.com/en-us/blog/using-app-service-web-apps-continuous-deployment-with-github-organizations/) or traditional [MSDeploy](https://azure.microsoft.com/en-us/blog/simple-azure-websites-deployment/). We recommend continuous deployment for most projects.
 
 #### Thru continuous deployment
 
@@ -100,7 +102,7 @@ As you push new commits to GitHub, Azure Web App will pick them up and deploy th
 
 #### Thru MSDeploy
 
-Deploying thru MSDeploy is uncommon, but it is required when you prefer CI/CD using other tools, e.g. [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx).
+Deploying thru MSDeploy is uncommon, but it is required when you prefer CI/CD using other tools, such as [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx).
 
 1. Pack the deployment as a MSDeploy ZIP file, run `npm run pack`
 2. Download publish settings file, either from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx)
