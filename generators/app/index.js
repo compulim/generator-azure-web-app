@@ -16,8 +16,8 @@ module.exports = class extends Generator {
   prompting() {
     return askName({
       name: 'name',
-      message: 'Your website name',
-      default: 'web-example'
+      message: 'Your Web App name',
+      default: 'webapp-example'
     }, this).then(props => {
       this.props.name = props.name;
 
@@ -53,6 +53,16 @@ module.exports = class extends Generator {
     });
 
     packageJSON.name = this.props.name;
+    packageJSON.license = 'UNLICENSED';
+    packageJSON.private = true;
+
+    delete packageJSON.author;
+    delete packageJSON.bugs;
+    delete packageJSON.homepage;
+    delete packageJSON.preferGlobal;
+    delete packageJSON.repository;
+    delete packageJSON.files;
+    delete packageJSON.keywords;
 
     // Do not copy Yeoman-only dependencies
     delete generatorPackageJSON.dependencies['inquirer-npm-name'];
@@ -66,6 +76,6 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.npmInstall([], { 'ignore-scripts': true });
+    this.npmInstall([]);
   }
 };

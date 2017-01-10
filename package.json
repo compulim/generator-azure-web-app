@@ -1,6 +1,6 @@
 {
   "name": "generator-azure-web-app",
-  "version": "1.0.1",
+  "version": "1.0.2-rc.0",
   "description": "Minimalist Web App generator: Webpack/Rollup + React + Express, deployable to vanilla Node.js, Azure App Service, and IIS",
   "license": "MIT",
   "engines": {
@@ -10,7 +10,11 @@
     "name": "William Wong",
     "url": "https://github.com/compulim"
   },
-  "homepage": "https://github.com/candrholdings/generator-azure-web-app",
+  "bugs": {
+    "url": "https://github.com/candrholdings/generator-azure-web-app/issues"
+  },
+  "homepage": "https://npmjs.com/package/generator-azure-web-app",
+  "preferGlobal": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/candrholdings/generator-azure-web-app.git"
@@ -25,15 +29,15 @@
     "build": "gulp build",
     "clean": "gulp clean",
     "deploy": "gulp deploy",
-    "host": "node src/app.js",
+    "host": "npm start",
     "hostdev": "npm run host:dev",
     "host:dev": "cross-env NODE_ENV=development node src/app.js",
     "hostprod": "npm run host:prod",
-    "host:prod": "cross-env NODE_ENV=production node src/app.js",
+    "host:prod": "cross-env NODE_ENV=production node src/app.js --content-path dist/website/public/",
     "pack": "gulp pack",
-    "postinstall": "npm run build",
     "rebuild": "gulp rebuild",
-    "repack": "gulp repack"
+    "repack": "gulp repack",
+    "start": "node src/app.js"
   },
   "main": "src/app.js",
   "dependencies": {

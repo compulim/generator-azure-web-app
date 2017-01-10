@@ -43,7 +43,9 @@ Then, use [Yeoman](https://yeoman.io/) to create a new project, `yo azure-web-ap
 
 ### Run development server and develop locally
 
-Run `npm run host`, the development server will listen to port 80 and available at [http://localhost/](http://localhost/) with [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html).
+Run `npm start`, the development server will listen to port 80 and available at [http://localhost/](http://localhost/) with [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html).
+
+To change the port to 8080, either set environment variable `PORT` to `8080`, or run `npm start -- --port 8080`.
 
 Start developing on the server, you can:
 
