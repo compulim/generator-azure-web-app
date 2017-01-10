@@ -90,15 +90,13 @@ To run as a standalone Node.js server, go under `dist/website/`, then run `node 
 
 #### Thru continuous deployment
 
-You can deploy with GitHub, local Git, Dropbox, or OneDrive. In this example, we will deploy it thru GitHub.
+Azure Web App can automatically update itself when you push/save your code. You can deploy with [GitHub](https://github.com/), local Git, [Dropbox](https://dropbox.com/), or [OneDrive](https://onedrive.com/). In this example, we will deploy it thru GitHub.
 
 1. Commit your project to GitHub
 2. Browse to your project on GitHub
 3. Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-As you push new commits to GitHub, Azure Web App will pick them up and deploy the project immediately.
-
-> When deploying using Continuous Deployment, the project will be built on Azure, instead of locally. We prepared a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) at [deploy.cmd](deploy.cmd)
+> When deploying using continuous deployment, the project will be built on Azure, instead of locally. We prepared a [custom deployment script](https://github.com/projectkudu/kudu/wiki/Custom-Deployment-Script) at [deploy.cmd](deploy.cmd)
 
 #### Thru MSDeploy
 
@@ -153,6 +151,8 @@ These are items we are working on or under consideration:
 * [x] ~~Uglify production `bundle.js`~~
   * [x] ~~Uglify rollup.js build~~
   * [x] ~~Uglify Webpack build~~
+* [ ] Steps to deploy from [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
+* [ ] Include [Jest](https://facebook.github.io/jest/) and `npm test` script
 
 ## Contributions
 
