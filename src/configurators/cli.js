@@ -35,7 +35,7 @@ function parseBool(value) {
 module.exports = function (config, favor) {
   program
     .version(loadPackageJSON().version)
-    .option('-p, --port <port>', 'Listens to specific port (default = 80)');
+    .option('-p, --port <port>', `Listens to specific port (default = ${ config.PORT })`);
 
   if (favor === 'production') {
     program.option('-i, --content-path <path>', `Specifies the path to web content (default = ${ config.CONTENT_PATH }).`);
@@ -51,6 +51,10 @@ module.exports = function (config, favor) {
 
   if (typeof program.hot === 'string') {
     config.HOT_MODULE_REPLACEMENT = program.hot;
+  }
+
+  if (typeof program.port === 'string') {
+    config.PORT = program.port;
   }
 
   return config;
