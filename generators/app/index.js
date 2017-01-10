@@ -26,20 +26,22 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    this.fs.copy(
-      this.templatePath('**/*'),
-      this.destinationPath(),
-      {
-        globOptions: {
-          ignore: [
-            '**/package.json',
-            '**/dist/**/*',
-            '**/generators/**/*',
-            '**/node_modules/**/*'
-          ]
-        }
-      }
-    );
+    ['*.cmd', '*.js', '*.md'].forEach(filename => {
+      this.fs.copy(
+        this.templatePath(filename),
+        this.destinationPath()
+      );
+    });
+
+    ['scripts', 'src', 'web'].forEach(filename => {
+      this.fs.copy(
+        this.templatePath(filename),
+        this.destinationPath(filename)
+      );
+    });
+
+    this.fs.write(this.destinationPath('.deployment'), this.fs.read(this.templatePath('.deployment')));
+    this.fs.write(this.destinationPath('.gitignore'), ['dist', '**/node_modules', 'npm*.log*'].join('\n'));
 
     const generatorPackageJSON = this.fs.readJSON(this.templatePath('package.json'));
     const packageJSON = this.fs.readJSON(this.destinationPath('package.json'), {
