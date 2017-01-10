@@ -2,7 +2,7 @@
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-Minimalist Web App generator: [Webpack](https://webpack.github.io/)/[Rollup](https://rollupjs.org/) + [React](https://facebook.github.io/react/) + [Express](https://expressjs.com/), deployable to vanilla [Node.js](https://nodejs.org/), [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), and IIS
+Minimalist Azure Web App generator: [Webpack](https://webpack.github.io/)/[Rollup](https://rollupjs.org/) + [React](https://facebook.github.io/react/) + [Express](https://expressjs.com/), deployable to vanilla [Node.js](https://nodejs.org/), [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), and IIS.
 
 ## Introduction
 
@@ -103,30 +103,21 @@ Deploying thru MSDeploy is uncommon, but it is required when you prefer CI/CD us
 
 1. Pack the deployment as a ZIP file, run `npm run pack`
 2. Download publish settings file from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx)
-  * Modify iisnode configuration to select correct Node.js version
-    * Add a line to [`iisnode.yml`](iisnode.yml): `nodeProcessCommandLine: "D:\Program Files (x86)\nodejs\6.6.0\node.exe"`
-3. Deploy the ZIP file, run `npm run deploy --publishsettings=yoursite.PublishSettings`
+3. Modify iisnode configuration to select correct Node.js version
+  * Add a line to [`iisnode.yml`](iisnode.yml): `nodeProcessCommandLine: "D:\Program Files (x86)\nodejs\6.6.0\node.exe"`
+4. Deploy the ZIP file, run `npm run deploy --publishsettings=yoursite.PublishSettings`
 
 > When deployed thru MSDeploy, [`iisnode.yml`](iisnode.yml) is not updated by Project Kudu automatically, thus you will need to modify [`iisnode.yml`](iisnode.yml) to manually select Node.js version.
-
-> We have overrode some defaults in [`iisnode.yml`](iisnode.yml):
->
-> * `debuggingEnabled` is set to `false`
-> * `devErrorsEnabled` is set to `false`
-> * `loggingEnabled` is set to `false`
-> * `nodeProcessCountPerApplication` is set to `0`
->   * One worker process per CPU
-> * `node_env` is set to `production`
->   * We assume hosting the site in IIS is always in production mode
->   * Express is faster when environment variable `NODE_ENV` is set to `production`, details [here](http://apmblog.dynatrace.com/2015/07/22/the-drastic-effects-of-omitting-node_env-in-your-express-js-applications/)
 
 #### Deploy to IIS
 
 You can also deploy Web App project to an on-premise or hosted IIS.
 
-1. Make sure [Node.js](https://nodejs.org/) and [iisnode](https://github.com/tjanczuk/iisnode) is installed
+1. Make sure [Node.js](https://nodejs.org/) and [iisnode](https://github.com/tjanczuk/iisnode) is installed on the target server
 2. Pack the deployment as a ZIP file, run `npm run pack`
 3. Use MSDeploy to [deploy your package](https://msdn.microsoft.com/en-us/library/dd465337(v=vs.110).aspx)
+
+The following MSDeploy command-line switches can be used to deploy the package to an IIS box.
 
 ```
 "C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe"
@@ -157,3 +148,9 @@ These are items we are working on or under consideration:
 * [x] ~~Bundle using [rollup.js](http://rollupjs.org/)~~
   * [ ] Find a better plugin or way to bundle LESS into `bundle.js`
 * [ ] Uglify production `bundle.js`
+
+## Contributions
+
+Like us? [Star](https://github.com/candrholdings/generator-azure-web-app/stargazers) us.
+
+Want to make it better? File an [issue](https://github.com/candrholdings/generator-azure-web-app/issues) to us.

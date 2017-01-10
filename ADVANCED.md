@@ -129,3 +129,16 @@ Additional parameters added to MSDeploy ZIP file:
 Before packing the project, make sure your current build is up-to-date, or run `npm run build`.
 
 > [MSDeploy](https://www.iis.net/downloads/microsoft/web-deploy) is only supported on Windows.
+
+## iisnode configuration
+
+We have overrode some defaults in [`iisnode.yml`](iisnode.yml).
+
+* `debuggingEnabled` is set to `false`
+* `devErrorsEnabled` is set to `false`
+* `loggingEnabled` is set to `false`
+* `nodeProcessCountPerApplication` is set to `0`
+  * One worker process per CPU
+* `node_env` is set to `production`
+  * We assume hosting the site in IIS is always in production mode
+  * Express is faster when environment variable `NODE_ENV` is set to `production`, details [here](http://apmblog.dynatrace.com/2015/07/22/the-drastic-effects-of-omitting-node_env-in-your-express-js-applications/)
