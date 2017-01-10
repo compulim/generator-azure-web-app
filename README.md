@@ -2,7 +2,7 @@
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-Minimalist Azure Web App generator: [Webpack](https://webpack.github.io/)/[Rollup](https://rollupjs.org/) + [React](https://facebook.github.io/react/) + [Express](https://expressjs.com/), deployable to vanilla [Node.js](https://nodejs.org/), [Azure Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/), and IIS.
+Minimalist Azure Web App generator: [Webpack](https://webpack.github.io/)/[Rollup](https://rollupjs.org/) + [React](https://facebook.github.io/react/) + [Express](https://expressjs.com/), deployable to standalone [Node.js](https://nodejs.org/), [Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/), and IIS.
 
 # Why us?
 
@@ -11,13 +11,13 @@ Modern websites are not just bunches of plain text files. Build process increase
 But everyone build and promote their own build process. There are few reasons you should choose us:
 
 * Scaffold with [Yeoman](https://yeoman.io/), `yo azure-web-app`
-* For greater flexibility, we only include React
+* For greater flexibility, we only include [React](https://facebook.github.io/react/)
 * Bundle with the *best* bundler
   * [Webpack](https://webpack.github.io/) for development, hot module replacement means less page refresh
   * [Rollup](https://rollupjs.org/) for production, better tree-shaking algorithm means smaller file size
 * Hybrid deployment
   * Standalone Node.js
-  * Azure Web App
+  * [Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/)
   * On-premise or hosted IIS
 
 # Try it out in 3 easy steps
@@ -140,7 +140,7 @@ The following MSDeploy command-line switches can be used to deploy the package t
 These are items we are working on or under consideration:
 
 * [x] ~~Add [pngout](http://www.advsys.net/ken/utils.htm) to `npm run build`~~
-* [x] ~~Continuous deployment on Azure Web Apps~~
+* [x] ~~Continuous deployment on Azure App Service~~
   * [x] ~~`npm install` should build~~
   * [x] ~~`.deployment` file for Kudu to specify project folder at `dist/website/`~~
 * [x] ~~Scaffold with [Yeoman](http://yeoman.io/)~~
