@@ -146,7 +146,7 @@ These are items we are working on or under consideration:
 * [x] ~~Use a single `package.json` if possible~~
 * [x] ~~Host development server programmatically~~
 * [x] ~~Bundle using [rollup.js](http://rollupjs.org/)~~
-  * [ ] Find a better plugin or way to bundle LESS into `bundle.js`
+  * [ ] Find a better plugin or way to bundle LESS or SASS into `bundle.js`
 * [x] ~~Uglify production `bundle.js`~~
   * [x] ~~Uglify rollup.js build~~
   * [x] ~~Uglify Webpack build~~
