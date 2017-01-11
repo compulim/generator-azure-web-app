@@ -20,6 +20,9 @@
     "url": "https://github.com/candrholdings/generator-azure-web-app.git"
   },
   "keywords": [
+    "azure",
+    "app service",
+    "web app",
     "yeoman-generator"
   ],
   "scripts": {
