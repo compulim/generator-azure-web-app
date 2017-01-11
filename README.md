@@ -34,9 +34,9 @@ But everyone build and promote their own build process. There are few reasons yo
 2. Run development server and develop locally
 3. Build for production deployment
 4. Deploy to target servers
-  * As a standalone Node.js
-  * To Azure Web App
-  * To IIS, on-premise or cloud
+  * Standalone Node.js
+  * [Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/)
+  * On-premise or hosted IIS
 
 ## Create a new Web App Project
 
@@ -107,7 +107,7 @@ Deploying thru MSDeploy is uncommon, but it is required when you prefer CI/CD us
 2. Download publish settings file, either from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx)
 3. Modify iisnode configuration to select correct Node.js version
   * Add a line to [`iisnode.yml`](iisnode.yml): `nodeProcessCommandLine: "D:\Program Files (x86)\nodejs\6.6.0\node.exe"`
-4. Deploy using MSDeploy, run `npm run deploy --publishsettings=yoursite.PublishSettings`
+4. Deploy using MSDeploy, run `npm run deploy --publish-settings=yoursite.PublishSettings`
 
 > When deployed thru MSDeploy, [`iisnode.yml`](iisnode.yml) is not updated by Project Kudu automatically, thus you will need to modify [`iisnode.yml`](iisnode.yml) to manually select Node.js version.
 
@@ -133,8 +133,6 @@ The following MSDeploy command-line switches can be used to deploy the package t
     AuthType='Basic'
   -setParam:name="IIS Web Application Name",value="<appname>"
 ```
-
-(Whitespace and line breaks added for clarity)
 
 ## Roadmap
 

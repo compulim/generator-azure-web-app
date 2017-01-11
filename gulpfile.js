@@ -23,52 +23,22 @@ program
     currentBundler
   )
   .option(
-    '--sourcemap <true>',
+    '--source-map <true>',
     `Specifies whether source map will be built or not. Will override SOURCE_MAP. (Current = ${ currentSourceMap })`,
     /^(true|false)$/i,
     currentSourceMap
   )
-  .option('--publishsettings <publish settings file>', 'Specifies the *.PublishSettings file for deployment')
+  .option('--publish-settings <publish settings file>', 'Specifies the *.PublishSettings file for deployment')
   .parse(process.argv);
 
 const build = (program.build || '').toLowerCase();
 
-switch (build) {
-case 'development':
-  process.env.NODE_ENV = build;
-  break;
+process.env.NODE_ENV = (program.build || '').toLowerCase() === 'development' ? 'development' : 'production';
+process.env.BUNDLER = (program.bundler || '').toLowerCase() === 'webpack' ? 'webpack' : 'rollup';
+process.env.SOURCE_MAP = (program.sourceMap || '').toLowerCase() === 'true';
 
-default:
-  process.env.NODE_ENV = 'production';
-  break;
-}
-
-const bundler = (program.bundler || '').toLowerCase();
-
-switch (bundler) {
-case 'webpack':
-  process.env.BUNDLER = bundler;
-  break;
-
-default:
-  process.env.BUNDLER = 'rollup';
-  break;
-}
-
-const sourceMap = (program.sourcemap || '').toLowerCase();
-
-switch (sourceMap) {
-case 'true':
-  process.env.SOURCE_MAP = sourceMap === 'true' ? true : false;
-  break;
-
-default:
-  process.env.SOURCE_MAP = false;
-  break;
-}
-
-if (program.publishsettings) {
-  config.DEPLOY_PUBLISH_SETTINGS = program.publishsettings;
+if (program.publishSettings) {
+  config.DEPLOY_PUBLISH_SETTINGS = program.publishSettings;
 }
 
 require('./scripts/build')(gulp);
