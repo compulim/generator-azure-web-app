@@ -1,5 +1,7 @@
 # generator-azure-web-app
 
+[![npm version](https://badge.fury.io/js/generator-azure-web-app.svg)](https://badge.fury.io/js/generator-azure-web-app) [![Node.js dependencies](https://david-dm.org/candrholdings/generator-azure-web-app.svg)](https://david-dm.org/candrholdings/generator-azure-web-app) [![npm downloads](https://img.shields.io/npm/dm/generator-azure-web-app.svg)](https://img.shields.io/npm/dm/generator-azure-web-app.svg)
+
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
 Minimalist Azure Web App generator: [Webpack](https://webpack.github.io/)/[Rollup](https://rollupjs.org/) + [React](https://facebook.github.io/react/) + [Express](https://expressjs.com/), deployable to standalone [Node.js](https://nodejs.org/), [Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/), and IIS.
