@@ -31,15 +31,14 @@
     "deploy": "gulp deploy",
     "host": "npm start",
     "hostdev": "npm run host:dev",
-    "host:dev": "cross-env NODE_ENV=development node app.js",
+    "host:dev": "cross-env NODE_ENV=development npm start",
     "hostprod": "npm run host:prod",
-    "host:prod": "cross-env NODE_ENV=production node app.js --content-path dist/website/public/",
+    "host:prod": "cross-env NODE_ENV=production npm start -- --content-path dist/website/public/",
     "pack": "gulp pack",
     "rebuild": "gulp rebuild",
     "repack": "gulp repack",
-    "start": "node app.js"
+    "start": "node src/app.js"
   },
-  "main": "app.js",
   "dependencies": {
     "commander": "^2.9.0",
     "cross-env": "^3.1.4",
@@ -74,6 +73,8 @@
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
     "mkdirp": "^0.5.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "react-hot-loader": "^1.3.0",
     "rollup": "^0.40.2",
     "rollup-plugin-babel": "^2.6.1",
