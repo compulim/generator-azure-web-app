@@ -3,10 +3,10 @@
 const buffer     = require('vinyl-buffer');
 const config     = require('../config');
 const del        = require('del');
-const filter     = require('gulp-filter');
+// const filter     = require('gulp-filter');
 const gutil      = require('gulp-util');
-const htmlmin    = require('gulp-htmlmin');
-const imagemin   = require('gulp-imagemin');
+// const htmlmin    = require('gulp-htmlmin');
+// const imagemin   = require('gulp-imagemin');
 const install    = require('gulp-install');
 const rename     = require('gulp-rename');
 const rollup     = require('rollup-stream');
@@ -47,17 +47,17 @@ module.exports = function (gulp) {
   function buildContent() {
     gutil.log('[build:content]', `Copying content from ${ prettyPath(config.SOURCE_STATIC_FILES_DIR) } to ${ prettyPath(config.DEST_WEBSITE_STATIC_FILES_DIR) }`);
 
-    const htmlFilter = filter(['*.htm', '*.html'], { restore: true });
-    const imageFilter = filter(['*.gif', '*.jpg', '*.png'], { restore: true });
+    // const htmlFilter = filter(['*.htm', '*.html'], { restore: true });
+    // const imageFilter = filter(['*.gif', '*.jpg', '*.png'], { restore: true });
 
     return gulp
       .src(join(config.SOURCE_STATIC_FILES_DIR, '**'))
-      .pipe(htmlFilter)
-      .pipe(htmlmin())
-      .pipe(htmlFilter.restore)
-      .pipe(imageFilter)
-      .pipe(imagemin())
-      .pipe(imageFilter.restore)
+      // .pipe(htmlFilter)
+      // .pipe(htmlmin())
+      // .pipe(htmlFilter.restore)
+      // .pipe(imageFilter)
+      // .pipe(imagemin())
+      // .pipe(imageFilter.restore)
       .pipe(gulp.dest(config.DEST_WEBSITE_STATIC_FILES_DIR));
   }
 
