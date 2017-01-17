@@ -1,5 +1,8 @@
 'use strict';
 
+// Project Kudu read path of app.js from script of "npm start" and generate web.config
+// Thus, we need to have another app.js here for development purpose
+
 const config = require('./src/config');
 
 const runningAsMain = require.main === module;
