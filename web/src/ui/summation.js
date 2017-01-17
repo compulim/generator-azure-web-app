@@ -1,8 +1,10 @@
 'use strict';
 
-import React, { Component, PropTypes } from 'react';
+// import React, { Component, PropTypes } from 'react';
 
-export default class Summation extends Component {
+const { PropTypes } = React;
+
+export default class Summation extends React.Component {
   constructor(props) {
     super(props);
 
