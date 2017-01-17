@@ -130,13 +130,13 @@ IF !ERRORLEVEL! NEQ 0 goto error
 :: 2. Install npm packages
 pushd "%DEPLOYMENT_INTERMEDIATE%"
 
-call :ExecuteCmd !NPM_CMD! install --quiet --ignore-scripts 2>NUL
+call :ExecuteCmd !NPM_CMD! install --quiet --ignore-scripts
 IF !ERRORLEVEL! NEQ 0 goto error
 
 call :ExecuteCmd !NPM_CMD! dedupe
 IF !ERRORLEVEL! NEQ 0 goto error
 
-call :ExecuteCmd !NPM_CMD! run rebuild 2>NUL
+call :ExecuteCmd !NPM_CMD! run rebuild
 IF !ERRORLEVEL! NEQ 0 goto error
 
 popd
