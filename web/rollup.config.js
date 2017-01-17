@@ -3,7 +3,7 @@
 const babel       = require('rollup-plugin-babel');
 const commonjs    = require('rollup-plugin-commonjs');
 const config      = require('../config');
-const less        = require('rollup-plugin-less');
+// const less        = require('rollup-plugin-less');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const replace     = require('rollup-plugin-replace');
 
@@ -14,10 +14,10 @@ module.exports['default'] = {
   entry: join(config.SOURCE_JS_DIR, 'index.js'),
   format: 'iife',
   plugins: [
-    less({
-      insert: true,
-      output: css => css
-    }),
+    // less({
+    //   insert: true,
+    //   output: css => css
+    // }),
 
     babel({
       babelrc: false,
