@@ -31,13 +31,13 @@
     "deploy": "gulp deploy",
     "host": "npm start",
     "hostdev": "npm run host:dev",
-    "host:dev": "cross-env NODE_ENV=development node src/app.js",
+    "host:dev": "cross-env NODE_ENV=development node app.js",
     "hostprod": "npm run host:prod",
-    "host:prod": "cross-env NODE_ENV=production node src/app.js --content-path dist/website/public/",
+    "host:prod": "cross-env NODE_ENV=production node app.js --content-path dist/website/public/",
     "pack": "gulp pack",
     "rebuild": "gulp rebuild",
     "repack": "gulp repack",
-    "start": "node src/app.js"
+    "start": "node app.js"
   },
   "main": "app.js",
   "dependencies": {
