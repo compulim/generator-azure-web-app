@@ -70,6 +70,7 @@
     "gulp-command": "^0.1.2",
     "gulp-install": "^0.6.0",
     "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^2.4.0",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
     "mkdirp": "^0.5.1",
