@@ -5,7 +5,7 @@
 
 import Summation from './ui/summation';
 
-import './index.less';
+// import './index.less';
 
 class Index extends React.Component {
   constructor(props) {
