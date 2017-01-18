@@ -36,7 +36,7 @@
     "hostprod": "npm run host:prod",
     "host:prod": "cross-env NODE_ENV=production npm start -- --content-path dist/website/public/",
     "pack": "gulp pack",
-    "postinstall": "npm install --ignore-scripts --only=development & gulp build",
+    "postinstall": "npm install --ignore-scripts --only=development && gulp build",
     "rebuild": "gulp rebuild",
     "repack": "gulp repack",
     "start": "node lib/app.js"
