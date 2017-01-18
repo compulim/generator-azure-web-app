@@ -14,6 +14,7 @@
     "url": "https://github.com/candrholdings/generator-azure-web-app/issues"
   },
   "homepage": "https://npmjs.com/package/generator-azure-web-app",
+  "main": "lib/app.js",
   "preferGlobal": true,
   "repository": {
     "type": "git",
