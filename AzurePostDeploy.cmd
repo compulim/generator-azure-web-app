@@ -1,0 +1,9 @@
+@ECHO OFF
+SETLOCAL
+PUSHD "%~dp0"
+SET DEPLOY
+
+npm install
+
+POPD
+ENDLOCAL
