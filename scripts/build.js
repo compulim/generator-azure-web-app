@@ -88,7 +88,7 @@ module.exports = function (gulp) {
 
     return gulp
       .src([
-        `${ join(config.SOURCE_DIR, 'app.js') }`,
+        // `${ join(config.SOURCE_DIR, 'app.js') }`,
         `${ config.SOURCE_SERVER_DIR }/**`
       ], { base: config.SOURCE_DIR })
       .pipe(gulp.dest(config.DEST_WEBSITE_DIR));
