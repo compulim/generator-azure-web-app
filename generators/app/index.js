@@ -48,7 +48,7 @@ module.exports = class extends Generator {
       engines: {
         node: '^6.6.0'
       },
-      main: 'lib/app.js',
+      main: 'app.js',
       private: true,
       version: generatorPackageJSON.version
     });
