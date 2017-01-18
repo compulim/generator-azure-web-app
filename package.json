@@ -37,7 +37,7 @@
     "pack": "gulp pack",
     "rebuild": "gulp rebuild",
     "repack": "gulp repack",
-    "start": "node src/app.js"
+    "start": "node lib/app.js"
   },
   "dependencies": {
     "commander": "^2.9.0",
