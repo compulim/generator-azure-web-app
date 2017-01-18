@@ -4,6 +4,7 @@ PUSHD "%~dp0"
 SET DEPLOY
 
 npm install
+gulp build
 
 POPD
 ENDLOCAL
