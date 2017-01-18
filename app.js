@@ -1,16 +1,16 @@
 'use strict';
 
-const config = require('./config');
+const config = require('./lib/config');
 
 if (process.env.NODE_ENV === 'production') {
-  const ProdServer = require('./prodServer');
+  const ProdServer = require('./lib/prodServer');
 
   (new ProdServer({
     contentPath: config.CONTENT_PATH,
     port       : config.PORT
   })).listen();
 } else {
-  const DevServer = require('./devServer');
+  const DevServer = require('./lib/devServer');
 
   (new DevServer({
     contentPath         : config.CONTENT_PATH,
