@@ -24,25 +24,25 @@ module.exports = function (gulp) {
     'build:asset',
     'build:bundle',
     'build:config',
-    'build:server'
+    'build:lib'
   ], build);
 
   gulp.task('build:asset', buildAsset);
-  gulp.task('build:config', buildConfig);
   gulp.task('build:bundle', buildBundle);
-  gulp.task('build:server', buildServer);
+  gulp.task('build:config', buildConfig);
+  gulp.task('build:lib', buildLib);
 
   gulp.task('rebuild', [
     'rebuild:asset',
     'rebuild:bundle',
     'rebuild:config',
-    'rebuild:server'
+    'rebuild:lib'
   ], build);
 
   gulp.task('rebuild:asset', ['clean:website'], buildAsset);
   gulp.task('rebuild:bundle', ['clean:website'], buildBundle);
   gulp.task('rebuild:config', ['clean:website'], buildConfig);
-  gulp.task('rebuild:server', ['clean:website'], buildServer);
+  gulp.task('rebuild:lib', ['clean:website'], buildLib);
 
   function build() {
     log('build', `Build with ${ magenta(process.env.NODE_ENV) } favor outputted to ${ prettyPath(config.DEST_WEBSITE_DIR) }`);
@@ -83,16 +83,15 @@ module.exports = function (gulp) {
       }));
   }
 
-  function buildServer() {
-    log('build:server', `Copying code from ${ prettyPath(config.SOURCE_SERVER_DIR) } to ${ prettyPath(config.DEST_WEBSITE_SERVER_DIR) }`);
+  function buildLib() {
+    log('build:lib', `Copying code from ${ prettyPath(config.SOURCE_SERVER_DIR) } to ${ prettyPath(config.DEST_WEBSITE_SERVER_DIR) }`);
 
     return gulp
-      .src(
-        globIgnoreNodeModules(config.SOURCE_SERVER_DIR).concat(
-          `!${ join(config.SOURCE_SERVER_DIR) }/web.config`
-        )
-      )
-      .pipe(gulp.dest(config.DEST_WEBSITE_SERVER_DIR));
+      .src([
+        `${ join(config.SOURCE_DIR, 'app.js') }`,
+        `${ config.SOURCE_SERVER_DIR }/**`
+      ], { base: config.SOURCE_DIR })
+      .pipe(gulp.dest(config.DEST_WEBSITE_DIR));
   }
 
   function buildBundle() {
@@ -117,7 +116,7 @@ module.exports = function (gulp) {
 
     const sourceMap = process.env.SOURCE_MAP === 'true';
 
-    log('build:webpack', red('Source map is enabled, this build should not be used for production'));
+    sourceMap && log('build:webpack', red('Source map is enabled, this build should not be used for production'));
 
     const plugins = WEBPACK_CONFIG.plugins || (WEBPACK_CONFIG.plugins = []);
 
@@ -157,9 +156,9 @@ module.exports = function (gulp) {
 
     let workflow = rollup(Object.assign({}, ROLLUP_CONFIG, { rollup: require('rollup'), sourceMap })).pipe(source(basename(config.DEST_WEBSITE_BUNDLE_FILE))).pipe(buffer());
 
-    log('build:rollup', red('Source map is enabled, this build should not be used for production'));
-
     if (sourceMap) {
+      log('build:rollup', red('Source map is enabled, this build should not be used for production'));
+
       workflow = workflow
         .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify())

@@ -1,6 +1,6 @@
 'use strict';
 
-const config = require('./lib/config');
+const config = require('./lib/appConfig');
 
 if (process.env.NODE_ENV === 'production') {
   const ProdServer = require('./lib/prodServer');
