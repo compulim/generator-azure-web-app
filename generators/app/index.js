@@ -40,7 +40,7 @@ module.exports = class extends Generator {
       );
     });
 
-    this.fs.write(this.destinationPath('.gitignore'), ['dist', '**/node_modules', 'npm*.log*'].join('\n'));
+    this.fs.write(this.destinationPath('.gitignore'), ['dist', '**/node_modules', 'npm*.log*', '*.PublishSettings'].join('\n'));
 
     const generatorPackageJSON = this.fs.readJSON(this.templatePath('package.json'));
     const packageJSON = this.fs.readJSON(this.destinationPath('package.json'), {
