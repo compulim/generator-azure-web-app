@@ -3,11 +3,11 @@
 const config       = require('../config');
 const ChildProcess = require('child_process');
 const fs           = require('fs');
-const gutil        = require('gulp-util');
 const os           = require('os');
 const Promise      = require('bluebird');
 
-const { formatIISParameters } = require('util');
+const { magenta }                  = require('colors');
+const { formatIISParameters, log } = require('./util');
 
 const exec     = Promise.promisify(ChildProcess.exec);
 const parseXml = Promise.promisify(require('xml2js').parseString);
@@ -48,9 +48,11 @@ module.exports = function (gulp) {
         };
 
         const setParams = {
-          name: config.DEPLOY_PUBLISH_SETTINGS.name,
+          name: config.MSDEPLOY_IIS_PARAMETERS.name,
           value: profile.$.msdeploySite
         };
+
+        log('deploy', `Deploying to ${ magenta(profile.$.publishUrl) }`);
 
         return exec(
           [
@@ -66,11 +68,3 @@ module.exports = function (gulp) {
       });
   }
 };
-
-// function formatIISParams(map) {
-//   return Object.keys(map).reduce((parts, name) => {
-//     parts.push(`${ name }='${ map[name] }'`);
-
-//     return parts;
-//   }, []).join(',');
-// }

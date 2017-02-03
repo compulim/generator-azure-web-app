@@ -1,13 +1,13 @@
 'use strict';
 
-import React, { Component } from 'react';
-import { render } from 'react-dom';
+// import React, { Component } from 'react';
+// import { render } from 'react-dom';
 
 import Summation from './ui/summation';
 
-import './index.less';
+// import './index.less';
 
-class Index extends Component {
+class Index extends React.Component {
   constructor(props) {
     super(props);
 
@@ -47,7 +47,7 @@ class Index extends Component {
   }
 }
 
-render(
+ReactDOM.render(
   <Index />,
   document.getElementById('reactRoot')
 );

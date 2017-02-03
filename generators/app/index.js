@@ -1,7 +1,7 @@
 'use strict';
 
 const askName   = require('inquirer-npm-name');
-const path      = require('path');
+const { join }  = require('path');
 const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
@@ -10,7 +10,7 @@ module.exports = class extends Generator {
   }
 
   paths() {
-    this.sourceRoot(path.join(__dirname, '../../'));
+    this.sourceRoot(join(__dirname, '../../'));
   }
 
   prompting() {
@@ -21,27 +21,26 @@ module.exports = class extends Generator {
     }, this).then(props => {
       this.props.name = props.name;
 
-      this.destinationRoot(path.join(this.props.name, '/'));
+      this.destinationRoot(join(this.props.name, '/'));
     });
   }
 
   writing() {
-    ['*.cmd', '*.js', '*.md'].forEach(filename => {
+    ['*.js', '*.md', 'iisnode.yml', 'web.config'].forEach(filename => {
       this.fs.copy(
         this.templatePath(filename),
         this.destinationPath()
       );
     });
 
-    ['scripts', 'src', 'web'].forEach(filename => {
+    ['lib', 'scripts', 'web'].forEach(filename => {
       this.fs.copy(
         this.templatePath(filename),
         this.destinationPath(filename)
       );
     });
 
-    this.fs.write(this.destinationPath('.deployment'), this.fs.read(this.templatePath('.deployment')));
-    this.fs.write(this.destinationPath('.gitignore'), ['dist', '**/node_modules', 'npm*.log*'].join('\n'));
+    this.fs.write(this.destinationPath('.gitignore'), ['dist', '**/node_modules', 'npm*.log*', '*.PublishSettings'].join('\n'));
 
     const generatorPackageJSON = this.fs.readJSON(this.templatePath('package.json'));
     const packageJSON = this.fs.readJSON(this.destinationPath('package.json'), {
@@ -49,7 +48,7 @@ module.exports = class extends Generator {
       engines: {
         node: '^6.6.0'
       },
-      main: 'src/app.js',
+      main: 'app.js',
       private: true,
       version: generatorPackageJSON.version
     });
@@ -78,6 +77,6 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.npmInstall([]);
+    this.npmInstall([], { 'ignore-scripts': true });
   }
 };

@@ -1,23 +1,24 @@
 {
   "name": "generator-azure-web-app",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Minimalist Web App generator: Webpack/Rollup + React + Express, deployable to vanilla Node.js, Azure App Service, and IIS",
   "license": "MIT",
   "engines": {
-    "node": "^6.6.0"
+    "node": ">=6.6.0"
   },
   "author": {
     "name": "William Wong",
     "url": "https://github.com/compulim"
   },
   "bugs": {
-    "url": "https://github.com/candrholdings/generator-azure-web-app/issues"
+    "url": "https://github.com/compulim/generator-azure-web-app/issues"
   },
   "homepage": "https://npmjs.com/package/generator-azure-web-app",
+  "main": "app.js",
   "preferGlobal": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/candrholdings/generator-azure-web-app.git"
+    "url": "https://github.com/compulim/generator-azure-web-app.git"
   },
   "keywords": [
     "azure",
@@ -31,15 +32,15 @@
     "deploy": "gulp deploy",
     "host": "npm start",
     "hostdev": "npm run host:dev",
-    "host:dev": "cross-env NODE_ENV=development node app.js",
+    "host:dev": "cross-env NODE_ENV=development npm start",
     "hostprod": "npm run host:prod",
-    "host:prod": "cross-env NODE_ENV=production node app.js --content-path dist/website/public/",
+    "host:prod": "cross-env NODE_ENV=production npm start -- --content-path dist/website/public/",
     "pack": "gulp pack",
+    "postinstall": "npm install --ignore-scripts --only=development && gulp build",
     "rebuild": "gulp rebuild",
     "repack": "gulp repack",
-    "start": "node app.js"
+    "start": "node lib/app.js"
   },
-  "main": "app.js",
   "dependencies": {
     "commander": "^2.9.0",
     "cross-env": "^3.1.4",
@@ -64,33 +65,26 @@
     "bluebird": "^3.4.1",
     "colors": "^1.1.2",
     "commander": "^2.9.0",
-    "css-loader": "^0.23.1",
     "debug": "^2.2.0",
     "del": "^2.2.2",
     "express": "^4.14.0",
     "gulp": "^3.9.1",
     "gulp-command": "^0.1.2",
-    "gulp-filter": "^4.0.0",
-    "gulp-htmlmin": "^2.0.0",
-    "gulp-imagemin": "^3.0.3",
     "gulp-install": "^0.6.0",
     "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^2.4.0",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
-    "less": "^2.7.1",
-    "less-loader": "^2.2.3",
     "mkdirp": "^0.5.1",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "react-hot-loader": "^1.3.0",
     "rollup": "^0.40.2",
     "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-commonjs": "^5.0.5",
-    "rollup-plugin-less": "0.0.9",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.1",
     "rollup-stream": "^1.16.0",
-    "style-loader": "^0.13.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "webpack": "^1.13.1",

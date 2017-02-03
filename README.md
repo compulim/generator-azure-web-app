@@ -1,6 +1,6 @@
 # generator-azure-web-app
 
-[![npm version](https://badge.fury.io/js/generator-azure-web-app.svg)](https://badge.fury.io/js/generator-azure-web-app) [![Node.js dependencies](https://david-dm.org/candrholdings/generator-azure-web-app.svg)](https://david-dm.org/candrholdings/generator-azure-web-app) [![npm downloads](https://img.shields.io/npm/dm/generator-azure-web-app.svg)](https://img.shields.io/npm/dm/generator-azure-web-app.svg)
+[![npm version](https://badge.fury.io/js/generator-azure-web-app.svg)](https://badge.fury.io/js/generator-azure-web-app) [![Node.js dependencies](https://david-dm.org/compulim/generator-azure-web-app.svg)](https://david-dm.org/compulim/generator-azure-web-app) [![npm downloads](https://img.shields.io/npm/dm/generator-azure-web-app.svg)](https://img.shields.io/npm/dm/generator-azure-web-app.svg)
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
@@ -24,7 +24,7 @@ But everyone build and promote their own build process. There are few reasons yo
 
 # Try it out in 3 easy steps
 
-1. Fork [this repository](https://github.com/candrholdings/generator-azure-web-app/)
+1. Fork [this repository](https://github.com/compulim/generator-azure-web-app/)
 2. Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 3. Push your changes and see it continuously deploy to Azure
 
@@ -157,6 +157,6 @@ These are items we are working on or under consideration:
 
 ## Contributions
 
-Like us? [Star](https://github.com/candrholdings/generator-azure-web-app/stargazers) us.
+Like us? [Star](https://github.com/compulim/generator-azure-web-app/stargazers) us.
 
-Want to make it better? File an [issue](https://github.com/candrholdings/generator-azure-web-app/issues) to us.
+Want to make it better? File an [issue](https://github.com/compulim/generator-azure-web-app/issues) to us.

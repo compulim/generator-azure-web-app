@@ -4,12 +4,11 @@ const config       = require('../config');
 const ChildProcess = require('child_process');
 const del          = require('del');
 const fs           = require('fs');
-const gutil        = require('gulp-util');
 const os           = require('os');
 const path         = require('path');
 const Promise      = require('bluebird');
 
-const { formatIISParameters, prettyPath } = require('./util');
+const { formatIISParameters, log, prettyPath } = require('./util');
 
 const exec   = Promise.promisify(ChildProcess.exec);
 const mkdirp = Promise.promisify(require('mkdirp'));
@@ -27,17 +26,17 @@ module.exports = function (gulp) {
     return Promise.all([
       mkdirp(path.dirname(config.DEST_PACKAGE_FILE))
         .catch(err => {
-          gutil.log('[pack:prepare]', `Failed to create output directory at ${ prettyPath(config.DEST_PACKAGE_FILE) }`);
+          log('pack:prepare', `Failed to create output directory at ${ prettyPath(config.DEST_PACKAGE_FILE) }`);
           return Promise.reject(err);
         }),
       stat(config.DEST_WEBSITE_DIR)
         .catch(err => {
-          gutil.log('[pack:prepare]', `No files were found to pack at ${ prettyPath(config.DEST_WEBSITE_DIR) }, please run "npm run build" first.`)
+          log('pack:prepare', `No files were found to pack at ${ prettyPath(config.DEST_WEBSITE_DIR) }, please run "npm run build" first.`)
           return Promise.reject(err);
         }),
       stat(config.MSDEPLOY_BIN_FILE)
         .catch(err => {
-          gutil.log('[pack:prepare]', `MSDeploy not found at ${ prettyPath(config.MSDEPLOY_BIN_FILE) }`);
+          log('pack:prepare', `MSDeploy not found at ${ prettyPath(config.MSDEPLOY_BIN_FILE) }`);
           return Promise.reject(err);
         })
     ]);
@@ -62,7 +61,7 @@ module.exports = function (gulp) {
   }
 
   function packIISApp() {
-    gutil.log('[pack:iisapp]', `Running MSDeploy and output to ${ prettyPath(config.DEST_PACKAGE_FILE) }`);
+    log('pack:iisapp', `Packing from ${ prettyPath(config.DEST_WEBSITE_DIR) } to ${ prettyPath(config.DEST_PACKAGE_FILE) }`);
 
     return runMSDeploy(config.DEST_WEBSITE_DIR, config.DEST_PACKAGE_FILE);
   }

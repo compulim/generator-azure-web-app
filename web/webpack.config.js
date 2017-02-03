@@ -26,10 +26,10 @@ module.exports = {
   },
   module: {
     loaders: [
-      {
-        test  : /\.(c|le)ss$/,
-        loader: 'style!css!less'
-      },
+      // {
+      //   test  : /\.(c|le)ss$/,
+      //   loader: 'style!css!less'
+      // },
       {
         test   : /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
