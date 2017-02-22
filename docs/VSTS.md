@@ -38,3 +38,20 @@ Create a new release definition using "Azure App Service Deployment" template. I
 > You can also set this release definition to be triggered whenever a new artifact is built.
 
 > Performance and integration tests can be added to make sure the deployment is good for public consumption.
+
+## Advanced build and deployment
+
+For a deployment scenario that requires provisioning resource group, linking to virtual networks, etc. We recommend deploying using Azure Resource Manager (ARM) template.
+
+1. Build definition
+   1. Run `npm install`
+   2. Run Gulp task named `build`
+   3. Run Gulp task named `pack`
+   4. Publish artifact `/dist/packages/web.zip` to server drop
+2. Release definition
+   1. Upload publish artifact `web.zip` to Azure Storage
+      * Output with SAS token is highly recommended
+   2. Run an ARM template that will deploy thru [`MSDeploy` extension](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-arm-with-msdeploy-provision)
+      * Set `packageUri` to the URL to `web.zip` on Azure Storage
+      * Set `dbType` to `None`
+      * Set `setParameters` to `{ "IIS Web Application Name": <your web app name> }`
