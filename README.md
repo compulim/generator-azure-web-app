@@ -13,7 +13,7 @@ Modern websites are not just bunches of plain text files. Build process increase
 But everyone build and promote their own build process. There are few reasons you should choose us:
 
 * Scaffold with [Yeoman](https://yeoman.io/), `yo azure-web-app`
-* For greater flexibility, we only include [React](https://facebook.github.io/react/)
+* Choose your own path, we only include [React](https://facebook.github.io/react/)
 * Bundle with the *best* bundler
   * [Webpack](https://webpack.github.io/) for development, hot module replacement means less page refresh
   * [Rollup](https://rollupjs.org/) for production, better tree-shaking algorithm means smaller file size
