@@ -3,6 +3,7 @@
 const askName   = require('inquirer-npm-name');
 const { join }  = require('path');
 const Generator = require('yeoman-generator');
+const { merge } = require('./utils');
 
 module.exports = class extends Generator {
   initializing() {
@@ -43,37 +44,14 @@ module.exports = class extends Generator {
     this.fs.write(this.destinationPath('.gitignore'), ['dist', '**/node_modules', 'npm*.log*', '*.PublishSettings'].join('\n'));
 
     const generatorPackageJSON = this.fs.readJSON(this.templatePath('package.json'));
-    const packageJSON = this.fs.readJSON(this.destinationPath('package.json'), {
-      description: generatorPackageJSON.description,
-      engines: {
-        node: '^6.6.0'
-      },
-      main: 'app.js',
-      private: true,
-      version: generatorPackageJSON.version
-    });
+    const overridePackageJSON = this.fs.readJSON(this.templatePath('generators/app/overridePackage.json'));
+    const packageJSON = merge(generatorPackageJSON, overridePackageJSON);
+
+    packageJSON.description = packageJSON.description
+      .replace(/\$\{\s*packageName\s*\}/g, generatorPackageJSON.name)
+      .replace(/\$\{\s*version\s*\}/g, generatorPackageJSON.version);
 
     packageJSON.name = this.props.name;
-    packageJSON.license = 'UNLICENSED';
-    packageJSON.private = true;
-
-    delete packageJSON.author;
-    delete packageJSON.bugs;
-    delete packageJSON.homepage;
-    delete packageJSON.preferGlobal;
-    delete packageJSON.repository;
-    delete packageJSON.files;
-    delete packageJSON.keywords;
-
-    // Do not copy Yeoman-only dependencies
-    delete generatorPackageJSON.dependencies['inquirer-npm-name'];
-    delete generatorPackageJSON.dependencies['yeoman-generator'];
-
-    ['dependencies', 'devDependencies', 'scripts'].forEach(name => {
-      packageJSON[name] = Object.assign({}, generatorPackageJSON[name], packageJSON[name] || {});
-    });
-
-    packageJSON.scripts.postinstall = 'npm install --ignore-scripts --only=development && gulp build';
 
     this.fs.writeJSON(this.destinationPath('package.json'), packageJSON);
   }
