@@ -52,6 +52,6 @@ For a deployment scenario that requires provisioning resource group, linking to 
    1. Upload publish artifact `web.zip` to Azure Storage
       * Output with SAS token is highly recommended
    2. Run an ARM template that will deploy thru [`MSDeploy` extension](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-arm-with-msdeploy-provision)
-      * Set `packageUri` to the URL to `web.zip` on Azure Storage
+      * Set `packageUri` to the URL to the uploaded `web.zip`, obtained from last step
       * Set `dbType` to `None`
       * Set `setParameters` to `{ "IIS Web Application Name": <your web app name> }`
