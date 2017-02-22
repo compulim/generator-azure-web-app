@@ -13,13 +13,13 @@ You can also add unit tests to your build, approval process, and fallback, etc.
 
 Create a new build definition using "NodeJS With Gulp" template. It should have the following tasks preconfigured:
 
-1. npm install (`0.*`)
+1. npm install (version `0.*`)
    * Leaves all settings as-is
-2. Run gulp task (`0.*`)
+2. Run gulp task (version `0.*`)
    * Set Gulp task to `build`
-3. Archive files (1.*)
+3. Archive files (version `1.*`)
    * Set root folder to `$(System.DefaultWorkingDirectory)\dist\website`
-4. Copy Publish Artifact: drop (`1.*`)
+4. Copy Publish Artifact: drop (version `1.*`)
    * Leaves all settings as-is
 
 > Optionally, you can set this build definition to be triggered whenever there is a commit to the `master` branch.
@@ -30,7 +30,7 @@ Create a new build definition using "NodeJS With Gulp" template. It should have 
 
 Create a new release definition using "Azure App Service Deployment" template. It should have the following tasks preconfigured:
 
-1. Deploy Azure App Service (`2.*`)
+1. Deploy Azure App Service (version `2.*`)
    * Select your Azure Subscription
    * Select your App Service name
    * Set package to `$(System.DefaultWorkingDirectory)/Build/drop/*.zip`
