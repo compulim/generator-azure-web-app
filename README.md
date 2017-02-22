@@ -70,9 +70,9 @@ Run `npm start`, the development server will listen to port 80 and available at 
 
 Run `npm run build`, to bundle JavaScript files, crush images, etc.
 
-> Instead of Webpack used in development, we use rollup.js as production bundler because it has a better tree-shaking mechanism, thus smaller output file size.
+> Instead of [Webpack](https://webpack.github.io/) used in development, we use [Rollup](https://rollupjs.org/) as production bundler because it has a better tree-shaking mechanism, thus smaller output file size.
 
-> To opt for Webpack for production build, run `npm run build -- --bundler webpack`, or set `BUNDLER` to `webpack`.
+> To opt for [Webpack](https://webpack.github.io/) for production build, set `BUNDLER` to `webpack`, or run `npm run build -- --bundler webpack`.
 
 ## Deployment
 
@@ -149,9 +149,9 @@ These are items we are working on or under consideration:
 * [x] ~~Scaffold with [Yeoman](http://yeoman.io/)~~
 * [x] ~~Use a single `package.json` if possible~~
 * [x] ~~Host development server programmatically~~
-* [x] ~~Bundle using [rollup.js](http://rollupjs.org/)~~
+* [x] ~~Bundle using [Rollup](http://rollupjs.org/)~~
 * [x] ~~Uglify production `bundle.js`~~
-  * [x] ~~Uglify rollup.js build~~
+  * [x] ~~Uglify Rollup build~~
   * [x] ~~Uglify Webpack build~~
 * [ ] Steps to deploy from [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
 * [ ] Include [Jest](https://facebook.github.io/jest/) and `npm test` script
