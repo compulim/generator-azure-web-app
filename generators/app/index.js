@@ -26,14 +26,14 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    ['*.js', '*.md', 'iisnode.yml', 'web.config'].forEach(filename => {
+    ['*.js', '*.md'].forEach(filename => {
       this.fs.copy(
         this.templatePath(filename),
         this.destinationPath()
       );
     });
 
-    ['lib', 'scripts', 'web'].forEach(filename => {
+    ['iisnode.yml', 'web.config', 'lib', 'scripts', 'web'].forEach(filename => {
       this.fs.copy(
         this.templatePath(filename),
         this.destinationPath(filename)
