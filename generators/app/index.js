@@ -73,6 +73,8 @@ module.exports = class extends Generator {
       packageJSON[name] = Object.assign({}, generatorPackageJSON[name], packageJSON[name] || {});
     });
 
+    packageJSON.scripts.postinstall = 'npm install --ignore-scripts --only=development && gulp build';
+
     this.fs.writeJSON(this.destinationPath('package.json'), packageJSON);
   }
 
