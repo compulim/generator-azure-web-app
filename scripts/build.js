@@ -71,6 +71,7 @@ module.exports = function (gulp) {
     return gulp
       .src(
         [
+          'config.js',
           'iisnode.yml',
           'package.json',
           'web.config'
