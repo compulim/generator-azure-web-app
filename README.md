@@ -1,6 +1,6 @@
 # generator-azure-web-app
 
-[![npm version](https://badge.fury.io/js/generator-azure-web-app.svg)](https://badge.fury.io/js/generator-azure-web-app) [![Node.js dependencies](https://david-dm.org/compulim/generator-azure-web-app.svg)](https://david-dm.org/compulim/generator-azure-web-app) [![npm downloads](https://img.shields.io/npm/dm/generator-azure-web-app.svg)](https://img.shields.io/npm/dm/generator-azure-web-app.svg)
+[![npm version](https://badge.fury.io/js/generator-azure-web-app.svg)](https://npmjs.com/package/generator-azure-web-app) [![Node.js dependencies](https://david-dm.org/compulim/generator-azure-web-app.svg)](https://david-dm.org/compulim/generator-azure-web-app) [![npm downloads](https://img.shields.io/npm/dm/generator-azure-web-app.svg)](https://npmjs.com/package/generator-azure-web-app)
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
