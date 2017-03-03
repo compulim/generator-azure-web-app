@@ -45,6 +45,7 @@ But everyone build and promote their own build process. There are few reasons yo
    * Standalone Node.js
    * [Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/)
    * On-premise or hosted IIS
+6. Update the scaffolding
 
 ## Create a new Web App Project
 
@@ -160,7 +161,16 @@ The following MSDeploy command-line switches can be used to deploy the package t
   -setParam:name="IIS Web Application Name",value="<appname>"
 ```
 
-## Roadmap
+## Update the scaffold
+
+We update our scaffold from time to time. To update your existing project:
+
+1. `npm install generator-azure-web-app` to update to latest version of scaffold
+2. `yo azure-web-app` to update the scaffold
+
+> Don't worry, Yeoman will prompt to overwrite a file if it should be replaced.
+
+# Roadmap
 
 These are items we are working on or under consideration:
 
@@ -187,7 +197,7 @@ Because we cannot modify virtual path on Linux, thus, continous deployment is cu
 
 One possible solution is to re-architect the project so the output is in-place rather than under `/dist`.
 
-## Contributions
+# Contributions
 
 Like us? [Star](https://github.com/compulim/generator-azure-web-app/stargazers) us.
 
