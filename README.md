@@ -33,12 +33,12 @@ But everyone build and promote their own build process. There are few reasons yo
 2. Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 3. Push your changes and see it continuously deploy to Azure
 
-> It takes about 5-10 minutes to build for the first time, have a little patience.
+> It takes about 5-10 minutes for the first build, have a little patience.
 
 # How to develop professionally
 
 1. Create a new Web App project
-2. Run development server
+2. Run local development server
 3. Develop locally
 4. Prepare for production deployment
 5. Deploy to target servers
@@ -52,7 +52,7 @@ But everyone build and promote their own build process. There are few reasons yo
 
 Run `yo azure-web-app` to create a new project.
 
-## Run development server
+## Run local development server
 
 Run `npm start`, the development server will listen to port 80 and available at [http://localhost/](http://localhost/).
 
@@ -60,28 +60,30 @@ Run `npm start`, the development server will listen to port 80 and available at 
 
 ## Develop locally
 
-* Edit JavaScript at [`web/lib/`](web/lib/)
-  * Code are transpiled by [Babel](https://babeljs.io/) with [ES2015](https://npmjs.com/package/babel-preset-es2015) and [React](https://npmjs.com/package/babel-preset-react)
-  * To import packages, mark them as *development dependencies*, for example, `npm install redux --save-dev`
-* Edit static files at [`web/files/`](web/files/), including
-  * Image assets, thru [`gulp-imagemin`](https://npmjs.com/package/gulp-imagemin)
-  * HTML files, thru [`gulp-htmlmin`](https://npmjs.com/package/gulp-htmlmin)
-* Add new REST API at [`lib/controllers/api.js`](lib/controllers/api.js)
-  * To import packages, mark them as *direct dependencies*, for example, `npm install mongodb --save`
+* Browser side
+  * JavaScript files at [`web/lib/`](web/lib/)
+    * Transpiled by [Babel](https://babeljs.io/) with [ES2015](https://npmjs.com/package/babel-preset-es2015) and [React](https://npmjs.com/package/babel-preset-react)
+    * Packages should be marked as *development dependencies*, for example, `npm install redux --save-dev`
+  * Other files at [`web/files/`](web/files/), including
+    * Image assets, thru [`gulp-imagemin`](https://npmjs.com/package/gulp-imagemin)
+    * HTML files, thru [`gulp-htmlmin`](https://npmjs.com/package/gulp-htmlmin)
+* Server side
+  * Add new REST API at [`lib/controllers/api.js`](lib/controllers/api.js)
+    * Packages should be marked as *direct dependencies*, for example, `npm install mongodb --save`
 
 > Don't forget to restart the development server to pick up your new REST API or packages
 
 ## Prepare for production deployment
 
-Run `npm run build`, to bundle JavaScript files, crush images, etc.
+Run `npm run build`, to bundle JavaScript files, crush images, etc. It outputs to `dist/website/`.
 
 > Instead of [Webpack](https://webpack.github.io/) used in development, we use [Rollup](https://rollupjs.org/) as production bundler because it has a better tree-shaking mechanism, thus smaller output file size.
 
-> To opt for [Webpack](https://webpack.github.io/) for production build, set `BUNDLER` to `webpack`, or run `npm run build -- --bundler webpack`.
+> To opt for [Webpack](https://webpack.github.io/) in production, set `BUNDLER` to `webpack`, or run `npm run build -- --bundler webpack`.
 
 ## Deployment
 
-The project support multiple deployment scenarios, we will cover each separately.
+The project supports multiple deployment scenarios, we will cover each separately.
 
 * Standalone Node.js
 * [Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/)
@@ -90,44 +92,50 @@ The project support multiple deployment scenarios, we will cover each separately
   * Thru [MSDeploy](https://azure.microsoft.com/en-us/blog/simple-azure-websites-deployment/)
 * IIS with [iisnode](https://github.com/tjanczuk/iisnode)
 
+> Don't forget to build your project before deployment, run `npm run build`.
+
 ### Deploy as a standalone Node.js
 
 Run `node dist/website/app.js` to run as a standalone Node.js.
 
-> To deploy to your SaaS provider, copy everything under `dist/website/` to your provider. We recommend [`PM2`](http://pm2.io/) for process management and scalability.
+> To deploy to your SaaS provider, copy everything under `dist/website/` to your provider.
 
 ### Deploy to Azure App Service
 
-[Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/) support [continuous deployment](https://azure.microsoft.com/en-us/blog/using-app-service-web-apps-continuous-deployment-with-github-organizations/) or traditional [MSDeploy](https://azure.microsoft.com/en-us/blog/simple-azure-websites-deployment/). For most projects, we recommend continuous deployment.
+[Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/) support [continuous deployment](https://azure.microsoft.com/en-us/blog/using-app-service-web-apps-continuous-deployment-with-github-organizations/) or traditional [MSDeploy](https://azure.microsoft.com/en-us/blog/simple-azure-websites-deployment/). For small teams, we recommend continuous deployment.
 
 #### Thru continuous deployment
 
-Azure Web App can automatically update itself when you push/save your code. You can deploy with [GitHub](https://github.com/), local Git, [Dropbox](https://dropbox.com/), or [OneDrive](https://onedrive.com/). In this example, we will cover deployment with GitHub.
+Azure Web App comes with handy [continuous deployment](https://azure.microsoft.com/en-us/blog/using-app-service-web-apps-continuous-deployment-with-github-organizations/) feature. When you push/save your code, Azure Web App will pickup new changes from [GitHub](https://github.com/), local Git (hosted on Azure), [Dropbox](https://dropbox.com/), [OneDrive](https://onedrive.com/), etc.
+
+Follow steps below for first time setup for GitHub deployment.
 
 1. Commit your project to GitHub
-2. Browse your project on GitHub
+2. Browse on GitHub
 3. Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-> When deploying using continuous deployment, the project will be built on Azure, including bundling and crushing images.
+> When deploying using continuous deployment, the project will build on Azure via [Project Kudu](https://github.com/projectkudu/kudu).
+
+> Because the build is done on Azure, we modified the virtual path from `/site/wwwroot` to `/site/wwwroot/dist/website`. This is done by customizing [`azuredeploy.json`](azuredeploy.json).
 
 #### Thru Visual Studio Team Services
 
-Deploy thru Azure [continuous deployment](https://azure.microsoft.com/en-us/blog/using-app-service-web-apps-continuous-deployment-with-github-organizations/) is limited and asynchronous. This makes the option not ideal for medium or large projects.
+Deploy thru Azure [continuous deployment](https://azure.microsoft.com/en-us/blog/using-app-service-web-apps-continuous-deployment-with-github-organizations/) is limited and asynchronous. This makes the option not ideal for medium or large teams.
 
-Advanced deployment scenario can be done by [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx) and deploy to Azure App Service. On top of that, you can also add [BVTs](https://en.wikipedia.org/wiki/Build_verification_test), performance tests, approval process, etc.
+We recommend [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx) for advanced deployment, it also comes with [BVTs](https://en.wikipedia.org/wiki/Build_verification_test), performance tests, approval process, rollback, etc.
 
-You can find steps for VSTS [here](docs/VSTS.md).
+You can follow steps for VSTS [here](docs/VSTS.md) for advanced deployment scenario.
 
 #### Thru MSDeploy
 
-Thru [MSDeploy](https://azure.microsoft.com/en-us/blog/simple-azure-websites-deployment/), you can also continuously deploy this project with CI/CD tools other than Azure and VSTS. Please note that [MSDeploy](https://azure.microsoft.com/en-us/blog/simple-azure-websites-deployment/) is only supported on Windows.
+If you use CI/CD tools other than Azure and VSTS, you may want to integrate with [MSDeploy](https://azure.microsoft.com/en-us/blog/simple-azure-websites-deployment/).
 
 1. Run `npm run build` to build the project
 2. Run `npm run pack` to pack the deployment as a MSDeploy ZIP file
 3. Download publish settings file, either from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx)
 4. Run `npm run deploy --publish-settings=yoursite.PublishSettings` to deploy with MSDeploy
 
-> When deployed thru MSDeploy, [`iisnode.yml`](iisnode.yml) is not updated by Project Kudu automatically, thus you might need to modify [`iisnode.yml`](iisnode.yml) to manually select Node.js version.
+> To use a specific version of Node.js, don't forget to modify [`iisnode.yml`](iisnode.yml) manually.
 
 ### Deploy to IIS
 
@@ -168,10 +176,16 @@ These are items we are working on or under consideration:
   * [x] ~~Uglify Rollup build~~
   * [x] ~~Uglify Webpack build~~
 * [x] Steps to deploy from [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
+* [x] ~~Try out on [App Service for Linux](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-linux-intro)~~
 * [ ] Include [Jest](https://facebook.github.io/jest/) and `npm test` script
 * [ ] Consider [glamor](https://npmjs.com/package/glamor) for CSS bundling
 * [ ] Consider [restify](https://restify.com) in addition to [Express](https://expressjs.com)
-* [ ] Try out on [App Service for Linux](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-linux-intro)
+
+### Roadblock on [App Service for Linux](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-linux-intro)
+
+Because we cannot modify virtual path on Linux, thus, continous deployment is currently not supported on Linux. We will continue evaluate the possibility to CI/CD on Linux.
+
+One possible solution is to re-architect the project so the output is in-place rather than under `/dist`.
 
 ## Contributions
 
