@@ -1,4 +1,4 @@
-[![Azure Web App](docs/azureWebAppLogo.png)](https://azure.microsoft.com/en-us/services/app-service/web/)
+[![Azure Web App](docs/azureWebAppLogo.png)](https://azure.microsoft.com/en-us/services/app-service/web/) [![Yeoman](docs/yeomanLogo.png)](https://yeoman.io)
 
 # generator-azure-web-app
 
