@@ -48,7 +48,7 @@ module.exports = class extends Generator {
       );
     });
 
-    ['iisnode.yml', 'web.config', 'docs', 'lib', 'public', 'scripts'].forEach(filename => {
+    ['iisnode.yml', 'web.config', 'doc', 'lib', 'public', 'scripts'].forEach(filename => {
       this.fs.copy(
         this.templatePath(filename),
         this.destinationPath(filename)

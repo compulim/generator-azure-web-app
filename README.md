@@ -1,4 +1,4 @@
-[![Azure Web App](docs/azureWebAppLogo.png)](https://azure.microsoft.com/en-us/services/app-service/web/) [![Yeoman](docs/yeomanLogo.png)](https://yeoman.io)
+[![Azure Web App](doc/azureWebAppLogo.png)](https://azure.microsoft.com/en-us/services/app-service/web/) [![Yeoman](doc/yeomanLogo.png)](https://yeoman.io)
 
 # generator-azure-web-app
 
@@ -125,7 +125,7 @@ Deploy thru Azure [continuous deployment](https://azure.microsoft.com/en-us/blog
 
 We recommend [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx) for advanced deployment, it also comes with [BVTs](https://en.wikipedia.org/wiki/Build_verification_test), performance tests, approval process, rollback, etc.
 
-You can follow steps for VSTS [here](docs/VSTS.md) for advanced deployment scenario.
+You can follow steps for VSTS [here](doc/VSTS.md) for advanced deployment scenario.
 
 #### Thru MSDeploy
 
