@@ -12,7 +12,8 @@
   "repository": null,
   "keywords": null,
   "scripts": {
-    "postinstall": "npm install --ignore-scripts --only=development && gulp build"
+    "postinstall": "if-env running_install=1 && echo >nul || npm run postinstall:everything",
+    "postinstall:everything": "cross-env running_install=1 npm install --only=development && gulp build"
   },
   "dependencies": {
     "inquirer-npm-name": null,
