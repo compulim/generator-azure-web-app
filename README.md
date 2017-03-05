@@ -214,6 +214,11 @@ Originally, we planned to have a single `package.json` and packages for server c
 
 Thus, we decided to have two `package.json`, one in [root](package.json) for browser code (e.g. Babel + React), another in [`lib`](lib/packages.json) for server code.
 
+# FAQs
+
+1. After deploying to Azure Web App, it say directory browsing is not allowed.
+   * During first deployment, do not browse to the web site until the deployment is ready. Otherwise, it will show 404, until you restart the server.
+
 # Contributions
 
 Like us? [Star](https://github.com/compulim/generator-azure-web-app/stargazers) us.
