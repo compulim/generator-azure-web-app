@@ -66,7 +66,7 @@ Run `npm start`, the development server will listen to port 80 and available at 
     * Transpiled by [Babel](https://babeljs.io/) with [ES2015](https://npmjs.com/package/babel-preset-es2015) and [React](https://npmjs.com/package/babel-preset-react)
     * Packages should be marked as *development dependencies*, for example, `npm install redux --save-dev`
   * Other files at [`web/files/`](web/files/)
-    * [`gulp-imagemin`](https://npmjs.com/package/gulp-imagemin) will minify image assets (`*.gif`, `*.jpg`, and `*.png`)
+    * [`gulp-imagemin`](https://npmjs.com/package/gulp-imagemin) will minify image assets (`*.gif`, `*.jpg`, `*.png`, `*.svg`)
     * [`gulp-htmlmin`](https://npmjs.com/package/gulp-htmlmin) will minify HTML files (`*.html`, and `*.htm`)
 * Server side
   * Add new REST API at [`lib/controllers/api.js`](lib/controllers/api.js)
