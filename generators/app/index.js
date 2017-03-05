@@ -34,7 +34,7 @@ module.exports = class extends Generator {
       );
     });
 
-    ['iisnode.yml', 'web.config', 'lib', 'scripts', 'web'].forEach(filename => {
+    ['azuredeploy.json', 'iisnode.yml', 'web.config', 'lib', 'scripts', 'web'].forEach(filename => {
       this.fs.copy(
         this.templatePath(filename),
         this.destinationPath(filename)
