@@ -48,7 +48,7 @@ module.exports = class extends Generator {
       );
     });
 
-    ['iisnode.yml', 'web.config', 'docs', 'lib', 'scripts', 'web'].forEach(filename => {
+    ['iisnode.yml', 'web.config', 'docs', 'lib', 'public', 'scripts'].forEach(filename => {
       this.fs.copy(
         this.templatePath(filename),
         this.destinationPath(filename)
@@ -76,15 +76,22 @@ module.exports = class extends Generator {
 
     const generatorPackageJSON = this.fs.readJSON(this.templatePath('package.json'));
     const overridePackageJSON = this.fs.readJSON(this.templatePath('generators/app/overridePackage.json'));
-    const packageJSON = merge(generatorPackageJSON, overridePackageJSON);
+    const rootPackageJSON = merge(generatorPackageJSON, overridePackageJSON);
 
-    packageJSON.description = packageJSON.description
+    rootPackageJSON.description = rootPackageJSON.description
       .replace(/\$\{\s*packageName\s*\}/g, generatorPackageJSON.name)
       .replace(/\$\{\s*version\s*\}/g, generatorPackageJSON.version);
 
-    packageJSON.name = this.props.name;
+    rootPackageJSON.name = this.props.name;
 
-    this.fs.writeJSON(this.destinationPath('package.json'), packageJSON);
+    this.fs.writeJSON(this.destinationPath('package.json'), rootPackageJSON);
+
+    const libPackageJSON = this.fs.readJSON(this.templatePath('lib/package.json'));
+
+    libPackageJSON.description = rootPackageJSON.description;
+    libPackageJSON.name = `${ this.props.name }-server`;
+
+    this.fs.writeJSON(this.destinationPath('lib/package.json'), libPackageJSON);
   }
 
   install() {

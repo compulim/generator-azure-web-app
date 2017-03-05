@@ -24,25 +24,15 @@ module.exports = function (gulp) {
     'build:asset',
     'build:bundle',
     'build:config',
-    'build:lib'
+    'build:lib',
+    'build:package'
   ], build);
 
   gulp.task('build:asset', buildAsset);
   gulp.task('build:bundle', buildBundle);
   gulp.task('build:config', buildConfig);
   gulp.task('build:lib', buildLib);
-
-  gulp.task('rebuild', [
-    'rebuild:asset',
-    'rebuild:bundle',
-    'rebuild:config',
-    'rebuild:lib'
-  ], build);
-
-  gulp.task('rebuild:asset', ['clean:website'], buildAsset);
-  gulp.task('rebuild:bundle', ['clean:website'], buildBundle);
-  gulp.task('rebuild:config', ['clean:website'], buildConfig);
-  gulp.task('rebuild:lib', ['clean:website'], buildLib);
+  gulp.task('build:package', ['build:lib'], buildPackage);
 
   function build() {
     log('build', `Build with ${ magenta(process.env.NODE_ENV) } favor outputted to ${ prettyPath(config.DEST_WEBSITE_DIR) }`);
@@ -76,15 +66,10 @@ module.exports = function (gulp) {
         [
           'config.js',
           'iisnode.yml',
-          'package.json',
           'web.config'
         ].map(filename => join(config.SOURCE_DIR, filename))
       )
-      .pipe(gulp.dest(config.DEST_WEBSITE_DIR))
-      .pipe(install({
-        ignoreScripts: true,
-        production: true
-      }));
+      .pipe(gulp.dest(config.DEST_WEBSITE_DIR));
   }
 
   function buildLib() {
@@ -92,10 +77,20 @@ module.exports = function (gulp) {
 
     return gulp
       .src([
-        // `${ join(config.SOURCE_DIR, 'app.js') }`,
         `${ config.SOURCE_SERVER_DIR }/**`
-      ], { base: config.SOURCE_DIR })
-      .pipe(gulp.dest(config.DEST_WEBSITE_DIR));
+      ])
+      .pipe(gulp.dest(config.DEST_WEBSITE_SERVER_DIR));
+  }
+
+  function buildPackage() {
+    log('build:package', 'Installing npm packages');
+
+    return gulp
+      .src([
+        `${ config.SOURCE_SERVER_DIR }/package.json`
+      ])
+      .pipe(gulp.dest(config.DEST_WEBSITE_SERVER_DIR))
+      .pipe(install({ production: true }));
   }
 
   function buildBundle() {

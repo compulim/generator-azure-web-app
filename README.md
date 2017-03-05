@@ -62,17 +62,17 @@ Run `npm start`, the development server will listen to port 80 and available at 
 ## Develop locally
 
 * Browser side
-  * JavaScript files at [`web/lib/`](web/lib/)
+  * JavaScript files at [`public/lib/`](public/lib/)
     * Transpiled by [Babel](https://babeljs.io/) with [ES2015](https://npmjs.com/package/babel-preset-es2015) and [React](https://npmjs.com/package/babel-preset-react)
-    * Packages should be marked as *development dependencies*, for example, `npm install redux --save-dev`
-  * Other files at [`web/files/`](web/files/)
+    * Packages should be saved to root [`package.json`](package.json) as *direct dependencies*, for example, `npm install redux --save`
+  * Other files at [`public/files/`](public/files/)
     * [`gulp-imagemin`](https://npmjs.com/package/gulp-imagemin) will minify image assets (`*.gif`, `*.jpg`, `*.png`, `*.svg`)
     * [`gulp-htmlmin`](https://npmjs.com/package/gulp-htmlmin) will minify HTML files (`*.html`, and `*.htm`)
 * Server side
   * Add new REST API at [`lib/controllers/api.js`](lib/controllers/api.js)
-    * Packages should be marked as *direct dependencies*, for example, `npm install mongodb --save`
+    * Packages should be saved to [`lib/package.json`](lib/package.json) as *direct dependencies*, for example, `cd lib && npm install mongodb --save`
 
-> Don't forget to restart the development server to pick up your new REST API or packages
+> If you added new packages or modified server code, don't forget to restart the development server to pick up new changes.
 
 ## Prepare for production deployment
 
@@ -191,11 +191,28 @@ These are items we are working on or under consideration:
 * [ ] Consider [glamor](https://npmjs.com/package/glamor) for CSS bundling
 * [ ] Consider [restify](https://restify.com) in addition to [Express](https://expressjs.com)
 
-### Roadblock on [App Service for Linux](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-linux-intro)
+## Roadblock on [App Service for Linux](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-linux-intro)
 
 Because we cannot modify virtual path on Linux, thus, continous deployment is currently not supported on Linux. We will continue evaluate the possibility to CI/CD on Linux.
 
-One possible solution is to re-architect the project so the output is in-place rather than under `/dist`.
+One possible solution is to re-architect the project so the output is in-place rather than under `/dist`. But downsides:
+
+* Difficult to package the website as MSDeploy ZIP file
+
+## Roadblock on unifying `package.json`
+
+Originally, we planned to have a single `package.json` and packages for server code are marked as *direct dependencies* and browser code are marked as *development dependencies*. But few things:
+
+* We want to separate list of server-only packages
+  * This helps minimize the final output file size, i.e. no Webpack or Babel in server-only packages
+* Azure Web App deployment script (a.k.a. `deploy.cmd`) will run `npm install --production` only
+  * We don't want to customize deployment script and maintain versions of `deploy.cmd`
+  * We need to build browser code and we need to run `npm install --only=development` on `postinstall`
+  * Thus, we need to use `--ignore-scripts` to hack
+  * Also, it doesn't quite make sense for `npm install --production` to install both production and development packages
+  * `--ignore-scripts` broke some packages, e.g. `optipng-bin`
+
+Thus, we decided to have two `package.json`, one in [root](package.json) for browser code (e.g. Babel + React), another in [`lib`](lib/packages.json) for server code.
 
 # Contributions
 
