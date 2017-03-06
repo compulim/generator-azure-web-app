@@ -95,6 +95,6 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.npmInstall([], { 'ignore-scripts': true });
+    this.npmInstall([]);
   }
 };
