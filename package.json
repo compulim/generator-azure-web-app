@@ -1,6 +1,6 @@
 {
   "name": "generator-azure-web-app",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Minimalist Web App generator: Webpack/Rollup + React + Express, deployable to vanilla Node.js, Azure App Service, and IIS",
   "license": "MIT",
   "engines": {
