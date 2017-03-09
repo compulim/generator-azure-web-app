@@ -94,7 +94,7 @@ module.exports = function (gulp) {
   }
 
   function buildBundle() {
-    if (process.env.BUNDLER === 'webpack') {
+    if (process.env.NPM_CONFIG_BUNDLER === 'webpack') {
       log('build:bundle', `Bundling with ${ magenta('Webpack') }`);
 
       return buildWebpack();
