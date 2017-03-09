@@ -4,7 +4,7 @@ const config  = require('./config');
 const gulp    = require('gulp');
 const program = require('commander');
 
-const currentBundler   = process.env.BUNDLER === 'webpack' ? 'webpack' : 'rollup';
+const currentBundler   = process.env.NPM_CONFIG_BUNDLER === 'webpack' ? 'webpack' : 'rollup';
 const currentFavor     = process.env.NODE_ENV === 'development' ? 'development' : 'production';
 const currentSourceMap = process.env.SOURCE_MAP === 'true' ? true : false;
 
@@ -18,7 +18,7 @@ program
   )
   .option(
     '-r, --bundler <type>',
-    `Specifies the bundler: "rollup", or "webpack". Will override BUNDLER. (Current = ${ currentBundler })`,
+    `Specifies the bundler: "rollup", or "webpack". Will override NPM_CONFIG_BUNDLER. (Current = ${ currentBundler })`,
     /^(rollup|webpack)$/i,
     currentBundler
   )
@@ -34,7 +34,7 @@ program
 const build = (program.build || '').toLowerCase();
 
 process.env.NODE_ENV = (program.build || '').toLowerCase() === 'development' ? 'development' : 'production';
-process.env.BUNDLER = (program.bundler || '').toLowerCase() === 'webpack' ? 'webpack' : 'rollup';
+process.env.NPM_CONFIG_BUNDLER = (program.bundler || '').toLowerCase() === 'webpack' ? 'webpack' : 'rollup';
 process.env.SOURCE_MAP = (program.sourceMap || '').toLowerCase() === 'true';
 
 if (program.publishSettings) {

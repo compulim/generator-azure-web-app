@@ -18,7 +18,7 @@ But everyone build and promote their own build process. There are few reasons yo
 * Choose your own faith: we only include [React](https://facebook.github.io/react/)
 * Bundle with the *best* bundler
   * [Webpack](https://webpack.github.io/) for development, hot module replacement means less page refresh
-  * [Rollup](https://rollupjs.org/) for production, better tree-shaking algorithm means smaller file size
+  * Optionally, [Rollup](https://rollupjs.org/) for production, better tree-shaking algorithm means smaller file size
 * Support multiple deployment scenarios
   * Standalone Node.js
   * [Azure Web App](https://azure.microsoft.com/en-us/services/app-service/web/)
@@ -78,9 +78,14 @@ Run `npm start`, the development server will listen to port 80 and available at 
 
 Run `npm run build`, to bundle JavaScript files, crush images, etc. It outputs to `dist/website/`.
 
-> Instead of [Webpack](https://webpack.github.io/) used in development, we use [Rollup](https://rollupjs.org/) as production bundler because it has a better tree-shaking mechanism, thus smaller output file size.
+> Instead of [Webpack](https://webpack.github.io/) used in development, you can opt for [Rollup](https://rollupjs.org/) as bundler for production, it has better tree-shaking mechanism, thus smaller output file size.
 
-> To opt for [Webpack](https://webpack.github.io/) in production, set `BUNDLER` to `webpack`, or run `npm run build -- --bundler webpack`.
+There are few ways to select your bundler:
+
+* Run `npm run build -- --bundler rollup` for one-time switch
+* Set environment variable `NPM_CONFIG_BUNDLER` to `rollup` or `webpack`
+* Modify [`.npmrc`](.npmrc) and set `bundler = "rollup"`
+* During Yeoman scaffolding, set bundler to `rollup`
 
 ## Deployment
 

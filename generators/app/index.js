@@ -24,15 +24,28 @@ module.exports = class extends Generator {
         name   : 'enableStickySession',
         message: '(Azure Web App) Enable sticky session',
         default: true,
-        type   : 'boolean'
+        type   : 'confirm'
       }, {
         name   : 'use64BitWorkerProcess',
         message: '(Azure Web App) Enable 64-bit worker process',
         default: false,
-        type   : 'boolean'
+        type   : 'confirm'
+      }, {
+        name   : 'bundler',
+        message: 'Use Webpack or rollup.js as production bundler',
+        default: 'rollup',
+        type   : 'list',
+        choices: [{
+          name: 'Rollup',
+          value: 'rollup'
+        }, {
+          name: 'Webpack',
+          value: 'webpack'
+        }]
       }]).then(otherAnswers => {
-        this.props.name = nameAnswers.name;
-        this.props.enableStickySession = otherAnswers.enableStickySession;
+        this.props.bundler               = otherAnswers.bundler;
+        this.props.enableStickySession   = otherAnswers.enableStickySession;
+        this.props.name                  = nameAnswers.name;
         this.props.use64BitWorkerProcess = otherAnswers.use64BitWorkerProcess;
 
         this.destinationRoot(join(this.props.name, '/'));
@@ -57,19 +70,26 @@ module.exports = class extends Generator {
 
     const azureDeployJSON = this.fs.readJSON(this.templatePath('azuredeploy.json'));
 
-    azureDeployJSON.resources
-      .find(resource => resource.type === 'Microsoft.Web/sites')
-      .properties.clientAffinityEnabled = this.props.enableStickySession;
+    const siteResource = azureDeployJSON.resources.find(resource => resource.type === 'Microsoft.Web/sites');
 
-    azureDeployJSON.resources
-      .find(resource => resource.type === 'Microsoft.Web/sites')
-      .resources
-        .find(resource => resource.type === 'config' && resource.name === 'web')
-        .properties.use32BitWorkerProcess = !this.props.use64BitWorkerProcess;
+    siteResource.properties.clientAffinityEnabled = this.props.enableStickySession;
+
+    siteResource.resources
+      .find(resource => resource.type === 'config' && resource.name === 'web')
+      .properties.use32BitWorkerProcess = !this.props.use64BitWorkerProcess;
+
+    siteResource.resources
+      .find(resource => resource.type === 'config' && resource.name === 'appsettings')
+      .properties.NPM_CONFIG_BUNDLER = this.props.bundler;
 
     this.fs.writeJSON(
       this.destinationPath('azuredeploy.json'),
       azureDeployJSON
+    );
+
+    this.fs.write(
+      this.destinationPath('.npmrc'),
+      `bundler = "${ this.props.bundler }"`
     );
 
     this.fs.write(this.destinationPath('.gitignore'), ['dist', '**/node_modules', 'npm*.log*', '*.PublishSettings'].join('\n'));
