@@ -10,7 +10,12 @@
   "homepage": null,
   "preferGlobal": null,
   "repository": null,
-  "keywords": null,
+  "keywords": [
+    "azure",
+    "app service",
+    "web app",
+    "generator-azure-web-app"
+  ],
   "scripts": {
     "postinstall": "cd lib && npm install --production && cd .. && gulp build"
   },
