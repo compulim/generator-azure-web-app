@@ -127,7 +127,8 @@ module.exports = function (gulp) {
       }),
       new Webpack.optimize.UglifyJsPlugin({
         compress: {
-          warnings: false
+          screw_ie8: false,
+          warnings : false
         }
       })
     );
@@ -160,7 +161,11 @@ module.exports = function (gulp) {
 
       workflow = workflow
         .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(uglify())
+        .pipe(uglify({
+          compress: {
+            screw_ie8: false
+          }
+        }))
         .pipe(sourcemaps.write('.'));
     } else {
       workflow = workflow.pipe(uglify());
