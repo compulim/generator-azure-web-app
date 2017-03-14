@@ -95,8 +95,17 @@ module.exports = class extends Generator {
     this.fs.write(this.destinationPath('.gitignore'), ['dist', '**/node_modules', 'npm*.log*', '*.PublishSettings'].join('\n'));
 
     const generatorPackageJSON = this.fs.readJSON(this.templatePath('package.json'));
-    const overridePackageJSON = this.fs.readJSON(this.templatePath('generators/app/overridePackage.json'));
-    const rootPackageJSON = merge(generatorPackageJSON, overridePackageJSON);
+    const rootPackageJSON = this.fs.readJSON(this.templatePath('generators/app/overridePackage.json'));
+
+    rootPackageJSON.dependencies = merge(
+      generatorPackageJSON.dependencies,
+      rootPackageJSON.dependencies
+    );
+
+    rootPackageJSON.scripts = merge(
+      generatorPackageJSON.scripts,
+      rootPackageJSON.scripts
+    );
 
     rootPackageJSON.description = rootPackageJSON.description
       .replace(/\$\{\s*packageName\s*\}/g, generatorPackageJSON.name)
