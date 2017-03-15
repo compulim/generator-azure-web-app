@@ -29,7 +29,7 @@ module.exports = {
       test   : /\.jsx?$/,
       exclude: /(node_modules|bower_components)/,
       loaders: [
-        'babel?' + qs.stringify(BABEL_OPTIONS, { arrayFormat: 'brackets', encode: false })
+        'babel-loader?' + qs.stringify(BABEL_OPTIONS, { arrayFormat: 'brackets', encode: false })
       ]
     }]
   }
