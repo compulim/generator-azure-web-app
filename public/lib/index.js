@@ -1,11 +1,6 @@
 'use strict';
 
-// import React, { Component } from 'react';
-// import { render } from 'react-dom';
-
 import Summation from './ui/summation';
-
-// import './index.less';
 
 class Index extends React.Component {
   constructor(props) {
@@ -47,7 +42,16 @@ class Index extends React.Component {
   }
 }
 
-ReactDOM.render(
+const rootInstance = ReactDOM.render(
   <Index />,
   document.getElementById('reactRoot')
 );
+
+if (process.env.NODE_ENV !== 'production' && module.hot) {
+  require('react-hot-loader/Injection').RootInstanceProvider.injectProvider({
+    getRootInstances: function () {
+      // Help React Hot Loader figure out the root component instances on the page:
+      return [rootInstance];
+    }
+  });
+}
