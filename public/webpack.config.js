@@ -25,18 +25,12 @@ module.exports = {
     publicPath: `/${ basename(config.DEST_WEBSITE_BUNDLE_DIR) }/`
   },
   module: {
-    loaders: [
-      // {
-      //   test  : /\.(c|le)ss$/,
-      //   loader: 'style!css!less'
-      // },
-      {
-        test   : /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
-        loaders: [
-          'babel?' + qs.stringify(BABEL_OPTIONS, { arrayFormat: 'brackets', encode: false })
-        ]
-      }
-    ]
+    loaders: [{
+      test   : /\.jsx?$/,
+      exclude: /(node_modules|bower_components)/,
+      loaders: [
+        'babel?' + qs.stringify(BABEL_OPTIONS, { arrayFormat: 'brackets', encode: false })
+      ]
+    }]
   }
 };
