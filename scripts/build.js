@@ -123,6 +123,10 @@ module.exports = function (gulp) {
 
     const WEBPACK_CONFIG = require(config.SOURCE_WEBPACK_CONFIG_FILE);
 
+    WEBPACK_CONFIG.module.loaders.forEach(loader => {
+      loader.loaders = loader.loaders.filter(loader => !/^react-hot-loader/.test(loader));
+    });
+
     log('build:webpack', 'Bundling with entrypoints:', WEBPACK_CONFIG.entry.map(entry => prettyPath(entry)).join(', '));
     log('build:webpack', `Will output to ${ prettyPath(config.DEST_WEBSITE_BUNDLE_FILE) }`);
 

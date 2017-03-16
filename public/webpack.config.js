@@ -30,6 +30,7 @@ module.exports = {
       test   : /\.jsx?$/,
       exclude: /(node_modules|bower_components)/,
       loaders: [
+        'react-hot-loader',
         'babel-loader?' + qs.stringify(BABEL_OPTIONS, { arrayFormat: 'brackets', encode: false })
       ]
     }, {
