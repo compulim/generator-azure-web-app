@@ -237,6 +237,17 @@ We tried very hard to bring hot module replacement to IE8 but it deemed impossib
 * Getter/setter were referenced by [`webpack/lib/HotModuleReplacement.runtime.js`](https://github.com/webpack/webpack/blob/master/lib/HotModuleReplacement.runtime.js)
   * Getter/setter are not supported in IE8 and Babel
 
+We need to modify `index.html` and use the following IE8-compatible libraries.
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-sham.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/console-polyfill/0.2.3/index.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.2/sockjs.js"></script>
+<script src="https://unpkg.com/react@0.14/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@0.14/dist/react-dom.min.js"></script>
+```
+
 # FAQs
 
 1. After deploying to Azure Web App, it say directory browsing is not allowed.
