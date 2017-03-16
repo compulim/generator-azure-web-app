@@ -192,6 +192,7 @@ These are items we are working on or under consideration:
   * [x] ~~Uglify Webpack build~~
 * [x] Steps to deploy from [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
 * [x] ~~Try out on [App Service for Linux](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-linux-intro)~~
+* [ ] Upgrade to [Webpack 2](https://github.com/webpack/webpack)
 * [ ] Include [Jest](https://facebook.github.io/jest/) and `npm test` script
 * [ ] Consider [glamor](https://npmjs.com/package/glamor) for CSS bundling
 * [ ] Consider [restify](https://restify.com) in addition to [Express](https://expressjs.com)
@@ -218,6 +219,19 @@ Originally, we planned to have a single `package.json` and packages for server c
   * `--ignore-scripts` broke some packages, e.g. `optipng-bin`
 
 Thus, we decided to have two `package.json`, one in [root](package.json) for browser code (e.g. Babel + React), another in [`lib`](lib/packages.json) for server code.
+
+## Roadblock on enabling hot module replacement on Internet Explorer 8
+
+We tried very hard to bring hot module replacement to IE8 but it deemed impossible. We learnt a few things though:
+
+* Babel plugins are required to pre-process `node_modules/**/*.js` because some JavaScript files include reserved in IE8, e.g. `default`, `catch`, etc
+  * [`webpack/hot/only-dev-server.js`](https://github.com/webpack/webpack/blob/master/hot/only-dev-server.js) refer to `Promise.catch()` which need to be escaped as `Promise['catch']()`
+  * Plugins to use:
+    * [`transform-es3-member-expression-literals`](https://npmjs.com/packages/transform-es3-member-expression-literals)
+    * [`transform-es3-property-literals`](https://npmjs.com/packages/transform-es3-property-literals)
+    * Optionally, [`transform-node-env-inline`](https://npmjs.com/packages/transform-node-env-inline), for downsizing the codebase
+* Getter/setter were referenced by [`webpack/lib/HotModuleReplacement.runtime.js`](https://github.com/webpack/webpack/blob/master/lib/HotModuleReplacement.runtime.js)
+  * Getter/setter are not supported in IE8 and Babel
 
 # FAQs
 
