@@ -243,7 +243,6 @@ We need to modify `index.html` and use the following IE8-compatible libraries.
 <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-sham.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/console-polyfill/0.2.3/index.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.2/sockjs.js"></script>
 <script src="https://unpkg.com/react@0.14/dist/react.min.js"></script>
 <script src="https://unpkg.com/react-dom@0.14/dist/react-dom.min.js"></script>
 ```
