@@ -225,6 +225,7 @@ Thus, we decided to have two `package.json`, one in [root](package.json) for bro
 We tried very hard to bring hot module replacement to IE8 but it deemed impossible. We learnt a few things though:
 
 * For [`react`](https://npmjs.com/packages/react) and [`react-dom`](https://npmjs.com/packages/react-dom), use `^0.14` instead of `>=15.0` because React discontinued IE8 support in `15.0`
+* Because we use and prefer CDN version of React to reduce size of `bundle.js`, we need to add [`es5-shim`](https://github.com/es-shims/es5-shim) and [`es5-sham`](https://github.com/es-shims/es5-shim), and optionally, [`console-polyfill`](https://github.com/paulmillr/console-polyfill)
 * JavaScript files under `node_modules/**/*.js` might use reserved keywords, e.g. `default`, `catch`, etc
   * [`webpack/hot/only-dev-server.js`](https://github.com/webpack/webpack/blob/master/hot/only-dev-server.js) refer to `Promise.catch()` which need to be escaped as `Promise['catch']()`
   * We need to use Babel with the following plugins:
