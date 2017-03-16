@@ -226,7 +226,7 @@ We tried very hard to bring hot module replacement to IE8 but it deemed impossib
 
 * For [`react`](https://npmjs.com/packages/react) and [`react-dom`](https://npmjs.com/packages/react-dom), use `^0.14` instead of `>=15.0` because React discontinued IE8 support in `15.0`
 * Because we prefer CDN version of React to reduce the size of `bundle.js`, we need to add [`es5-shim`](https://github.com/es-shims/es5-shim) and [`es5-sham`](https://github.com/es-shims/es5-shim), and optionally, [`console-polyfill`](https://github.com/paulmillr/console-polyfill)
-* [UglifyJS](https://github.com/mishoo/UglifyJS) will break IE8 unless `{ "screw_ie8": false }` in both `compress` and `mangle` section
+* [UglifyJS](https://github.com/mishoo/UglifyJS) will break IE8 unless `{ "screw_ie8": false }` in `compress`, `mangle`, and `output` section
   * Even we set `screw_ie8` in `mangle`, sometimes, mangle will still break IE8
 * JavaScript files under `node_modules/**/*.js` might use reserved keywords, e.g. `default`, `catch`, etc
   * [`webpack/hot/only-dev-server.js`](https://github.com/webpack/webpack/blob/master/hot/only-dev-server.js) refer to `Promise.catch()` which need to be escaped as `Promise['catch']()`

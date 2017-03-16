@@ -19,6 +19,19 @@ const { magenta, red }                           = require('colors');
 const { basename, join, relative }               = require('path');
 const { globIgnoreNodeModules, log, prettyPath } = require('./util');
 
+const UGLIFY_OPTIONS = {
+  compress: {
+    screw_ie8: false,
+    warnings : false
+  },
+  mangle: {
+    screw_ie8: false
+  },
+  output: {
+    screw_ie8: false
+  }
+}
+
 module.exports = function (gulp) {
   gulp.task('build', [
     'build:asset',
@@ -125,15 +138,7 @@ module.exports = function (gulp) {
           NODE_ENV: JSON.stringify('production')
         }
       }),
-      new Webpack.optimize.UglifyJsPlugin({
-        compress: {
-          screw_ie8: false,
-          warnings : false
-        },
-        mangle: {
-          screw_ie8: false
-        }
-      })
+      new Webpack.optimize.UglifyJsPlugin(UGLIFY_OPTIONS)
     );
 
     return gulp
@@ -164,14 +169,7 @@ module.exports = function (gulp) {
 
       workflow = workflow
         .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(uglify({
-          compress: {
-            screw_ie8: false
-          },
-          mangle: {
-            screw_ie8: false
-          }
-        }))
+        .pipe(uglify(UGLIFY_OPTIONS))
         .pipe(sourcemaps.write('.'));
     } else {
       workflow = workflow.pipe(uglify());
