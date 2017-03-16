@@ -224,9 +224,10 @@ Thus, we decided to have two `package.json`, one in [root](package.json) for bro
 
 We tried very hard to bring hot module replacement to IE8 but it deemed impossible. We learnt a few things though:
 
-* Babel plugins are required to pre-process `node_modules/**/*.js` because some JavaScript files include reserved in IE8, e.g. `default`, `catch`, etc
+* For [`react`](https://npmjs.com/packages/react) and [`react-dom`](https://npmjs.com/packages/react-dom), use `^0.14` instead of `>=15.0` because React discontinued IE8 support in `15.0`
+* JavaScript files under `node_modules/**/*.js` might use reserved keywords, e.g. `default`, `catch`, etc
   * [`webpack/hot/only-dev-server.js`](https://github.com/webpack/webpack/blob/master/hot/only-dev-server.js) refer to `Promise.catch()` which need to be escaped as `Promise['catch']()`
-  * Plugins to use:
+  * We need to use Babel with the following plugins:
     * [`transform-es3-member-expression-literals`](https://npmjs.com/packages/transform-es3-member-expression-literals)
     * [`transform-es3-property-literals`](https://npmjs.com/packages/transform-es3-property-literals)
     * Optionally, [`transform-node-env-inline`](https://npmjs.com/packages/transform-node-env-inline), for downsizing the codebase
