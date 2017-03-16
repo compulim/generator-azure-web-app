@@ -30,7 +30,7 @@ const UGLIFY_OPTIONS = {
   output: {
     screw_ie8: false
   }
-}
+};
 
 module.exports = function (gulp) {
   gulp.task('build', [
