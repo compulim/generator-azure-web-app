@@ -129,6 +129,9 @@ module.exports = function (gulp) {
         compress: {
           screw_ie8: false,
           warnings : false
+        },
+        mangle: {
+          screw_ie8: false
         }
       })
     );
@@ -163,6 +166,9 @@ module.exports = function (gulp) {
         .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify({
           compress: {
+            screw_ie8: false
+          },
+          mangle: {
             screw_ie8: false
           }
         }))
