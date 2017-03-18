@@ -192,9 +192,11 @@ These are items we are working on or under consideration:
   * [x] ~~Uglify Webpack build~~
 * [x] Steps to deploy from [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
 * [x] ~~Try out on [App Service for Linux](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-linux-intro)~~
-* [ ] Upgrade to [Webpack 2](https://github.com/webpack/webpack)
-* [ ] Move to a better configuration package, e.g. [config](https://npmjs.com/package/config)
+* [x] ~~Upgrade to [Webpack 2](https://github.com/webpack/webpack)~~
 * [ ] Move development server code out of `/dist`
+* [ ] Reduce the codebase
+  * [ ] Move to a popular configuration package, e.g. [config](https://npmjs.com/package/config)
+  * [ ] Consider remove `gulp clean` and `gulp rebuild`
 * [ ] Include [Jest](https://facebook.github.io/jest/) and `npm test` script
 * [ ] Consider [glamor](https://npmjs.com/package/glamor) for CSS bundling
 * [ ] Consider [restify](https://restify.com) in addition to [Express](https://expressjs.com)
