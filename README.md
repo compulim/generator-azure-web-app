@@ -82,7 +82,7 @@ Run `npm run build`, to bundle JavaScript files, crush images, etc. It outputs t
 
 Instead of [Webpack](https://webpack.github.io/) used in development, you can opt for [Rollup](https://rollupjs.org/) as bundler for production, it has better tree-shaking mechanism, thus smaller output file size.
 
-> Using rollup as bundler is experimental. Please file us [issue](https://github.com/compulim/generator-azure-web-app/issues) if you run into any problems.
+> Using rollup as bundler is experimental. Please file us an [issue](https://github.com/compulim/generator-azure-web-app/issues) if you run into any problems.
 
 There are few ways to select your bundler:
 
@@ -143,7 +143,7 @@ If you use CI/CD tools other than Azure and VSTS, you may want to integrate with
 1. Run `npm run build` to build the project
 2. Run `npm run pack` to pack the deployment as a MSDeploy ZIP file
 3. Download publish settings file, either from [Azure Dashboard](https://portal.azure.com/) or using [Azure PowerShell](https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx)
-4. Run `npm run deploy --publish-settings=yoursite.PublishSettings` to deploy with MSDeploy
+4. Run `npm run deploy -- --publish-settings=yoursite.PublishSettings` to deploy with MSDeploy
 
 > To use a specific version of Node.js, don't forget to modify [`iisnode.yml`](iisnode.yml) manually.
 
