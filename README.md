@@ -206,8 +206,8 @@ Some NPM packages are not IE8 friendly. For example, [`fetch`](https://npmjs.com
 Moreoever, some packages might be pre-transpiled, they might not have reserved keywords properly escaped. There are two ways to tackle this issue:
 
 * Contact package developer and kindly ask them to either
-  * Escape reserved keywords properly, or,
-  * Add [`module`](https://github.com/rollup/rollup/wiki/pkg.module) in `package.json` and reference to non-transpiled version of code
+  * Add [`module`](https://github.com/rollup/rollup/wiki/pkg.module) in `package.json` and reference to non-transpiled version of code, or,
+  * Escape reserved keywords during transpilation
 * Use Webpack instead of Rollup: our Webpack workflow is configured to escape reserved keywords even in `node_modules/` folder
 
 # Roadmap
