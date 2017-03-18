@@ -190,7 +190,7 @@ These are items we are working on or under consideration:
 * [x] ~~Uglify production `bundle.js`~~
   * [x] ~~Uglify Rollup build~~
   * [x] ~~Uglify Webpack build~~
-* [x] Steps to deploy from [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
+* [x] ~~Steps to deploy from [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)~~
 * [x] ~~Try out on [App Service for Linux](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-linux-intro)~~
 * [x] ~~Upgrade to [Webpack 2](https://github.com/webpack/webpack)~~
 * [ ] Move development server code out of `/dist`
