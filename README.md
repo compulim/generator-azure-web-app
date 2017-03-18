@@ -195,7 +195,7 @@ These are items we are working on or under consideration:
 * [x] ~~Upgrade to [Webpack 2](https://github.com/webpack/webpack)~~
 * [ ] Move development server code out of `/dist`
 * [ ] Reduce the codebase
-  * [ ] Move to a popular configuration package, e.g. [config](https://npmjs.com/package/config)
+  * [x] ~~Move to a popular configuration package, e.g. [config](https://npmjs.com/package/config)~~
   * [ ] Consider remove `gulp clean` and `gulp rebuild`
 * [ ] Include [Jest](https://facebook.github.io/jest/) and `npm test` script
 * [ ] Consider [glamor](https://npmjs.com/package/glamor) for CSS bundling
