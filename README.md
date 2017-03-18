@@ -232,6 +232,7 @@ These are items we are working on or under consideration:
 * [ ] Reduce the codebase
   * [x] ~~Move to a popular configuration package, e.g. [config](https://npmjs.com/package/config)~~
   * [ ] Consider remove `gulp clean` and `gulp rebuild`
+* [ ] Sample code for server-side rendering
 * [ ] Include [Jest](https://facebook.github.io/jest/) and `npm test` script
 * [ ] Consider [glamor](https://npmjs.com/package/glamor) for CSS bundling
 * [ ] Consider [restify](https://restify.com) in addition to [Express](https://expressjs.com)
