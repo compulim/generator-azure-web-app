@@ -251,7 +251,7 @@ Originally, we planned to have a single `package.json` and packages for server c
 
 * We want to separate list of server-only packages
   * This helps minimize the final output file size, i.e. no Webpack or Babel in server-only packages
-* Azure Web App deployment script (a.k.a. `deploy.cmd`) will run `npm install --production` only
+* But the problem is, Azure Web App deployment script (a.k.a. `deploy.cmd`) will run `npm install --production` only
   * We don't want to customize deployment script and maintain versions of `deploy.cmd`
   * We need to build browser code and we need to run `npm install --only=development` on `postinstall`
   * Thus, we need to use `--ignore-scripts` to hack
