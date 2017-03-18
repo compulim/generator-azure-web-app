@@ -181,7 +181,7 @@ We update our scaffold from time to time. To update your existing project:
 
 ## Support Internet Explorer 8
 
-Although the marketshare of IE8 is fading, in some cases, you may still need to support older browsers.
+Although the user base of IE8 is fading, in some cases, you may still need to support older browsers.
 
 ### Disable hot module replacement on development server
 
