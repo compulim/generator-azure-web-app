@@ -78,7 +78,11 @@ Run `npm start`, the development server will listen to port 80 and available at 
 
 Run `npm run build`, to bundle JavaScript files, crush images, etc. It outputs to `dist/website/`.
 
-> Instead of [Webpack](https://webpack.github.io/) used in development, you can opt for [Rollup](https://rollupjs.org/) as bundler for production, it has better tree-shaking mechanism, thus smaller output file size.
+### Optional: Using Rollup as bundler in production mode
+
+Instead of [Webpack](https://webpack.github.io/) used in development, you can opt for [Rollup](https://rollupjs.org/) as bundler for production, it has better tree-shaking mechanism, thus smaller output file size.
+
+> Using rollup as bundler is experimental. Please file us [issue](https://github.com/compulim/generator-azure-web-app/issues) if you run into any problems.
 
 There are few ways to select your bundler:
 
@@ -174,6 +178,37 @@ We update our scaffold from time to time. To update your existing project:
 2. `yo azure-web-app` to update the scaffold
 
 > Don't worry, Yeoman will prompt to overwrite a file if it should be replaced.
+
+## Support Internet Explorer 8
+
+Although the marketshare of IE8 is fading, in some cases, you may still need to support older browsers.
+
+### Disable hot module replacement on development server
+
+Run `npm start -- --hot false` to start a development server without hot module replacement.
+
+### Use `react@^0.14` and add `es5-shim`
+
+You can copy the following code into `index.html`.
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-sham.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/console-polyfill/0.2.3/index.min.js"></script>
+<script src="https://unpkg.com/react@0.14/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@0.14/dist/react-dom.min.js"></script>
+```
+
+### Look for IE8-friendly NPM packages
+
+Some NPM packages are not IE8 friendly. For example, [`fetch`](https://npmjs.com/package/fetch) does not support IE8. You may need to use [`fetch-ie8`](https://www.npmjs.com/package/fetch-ie8) instead.
+
+Moreoever, some packages might be pre-transpiled, they might not have reserved keywords properly escaped. There are two ways to tackle this issue:
+
+* Contact package developer and kindly ask them to either
+  * Escape reserved keywords properly, or,
+  * Add [`module`](https://github.com/rollup/rollup/wiki/pkg.module) in `package.json` and reference to non-transpiled version of code
+* Use Webpack instead of Rollup: our Webpack workflow is configured to escape reserved keywords even in `node_modules/` folder
 
 # Roadmap
 
