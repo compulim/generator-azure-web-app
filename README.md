@@ -284,7 +284,7 @@ We tried very hard to bring hot module replacement to IE8 but it deemed impossib
    * During first deployment, do not browse to the web site until the deployment is ready. Otherwise, it will show 404, until you restart the server.
 2. How about CSS/LESS/SASS?
    * We believe bundler should only bundle JS files and not CSS or other assets. Thus, we did not preconfigure with [`style-loader`](https://www.npmjs.com/package/style-loader)
-   * For modern CSS inlining, we prefer [`glamor`](https://npmjs.com/package/glamor) or [`aphrodite`](https://npmjs.com/package/aphrodite)
+   * For modern CSS inlining, we prefer [`glamor`](https://npmjs.com/package/glamor) or [`aphrodite`](https://npmjs.com/package/aphrodite). Please note that IE8 might not work with these modern CSS inliners
 
 # Contributions
 
