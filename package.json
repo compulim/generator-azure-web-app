@@ -10,10 +10,12 @@
     "name": "William Wong",
     "url": "https://github.com/compulim"
   },
-  "contributors": [{
-    "name": "Ping Yip",
-    "url": "https://github.com/spyip"
-  }],
+  "contributors": [
+    {
+      "name": "Ping Yip",
+      "url": "https://github.com/spyip"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/compulim/generator-azure-web-app/issues"
   },
@@ -37,6 +39,8 @@
     "clean": "gulp clean",
     "deploy": "gulp deploy",
     "pack": "gulp pack",
+    "postinstall": "if-env APPSETTING_RUNNING_ON_AZURE=true && npm run postinstall:azure || echo>nul",
+    "postinstall:azure": "cd lib && npm install --production && cd .. && gulp build",
     "rebuild": "gulp rebuild",
     "repack": "gulp repack",
     "start": "node lib/app.js"
@@ -67,6 +71,7 @@
     "gulp-sourcemaps": "^2.4.0",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
+    "if-env": "^1.0.0",
     "inquirer-npm-name": "^2.0.0",
     "mkdirp": "^0.5.1",
     "react": "^15.4.2",

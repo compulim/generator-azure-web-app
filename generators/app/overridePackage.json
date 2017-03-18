@@ -12,7 +12,8 @@
     "generator-azure-web-app"
   ],
   "scripts": {
-    "postinstall": "cd lib && npm install --production && cd .. && gulp build"
+    "postinstall": "cd lib && npm install --production && cd .. && gulp build",
+    "postinstall:azure": null
   },
   "dependencies": {
     "inquirer-npm-name": null,

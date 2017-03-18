@@ -93,6 +93,7 @@
           ],
           "properties": {
             "NPM_CONFIG_BUNDLER": "rollup",
+            "RUNNING_ON_AZURE": "true",
             "WEBSITE_NODE_DEFAULT_VERSION": "6.9.1"
           }
         },
