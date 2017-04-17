@@ -2,7 +2,7 @@ FROM node
 
 ENV NODE_ENV production
 
-ADD . /home/www
+ADD dist/website /home/www
 WORKDIR /home/www
 
 ENTRYPOINT node lib

@@ -2,7 +2,7 @@ FROM compulim/nanoserver-node
 
 ENV NODE_ENV production
 
-ADD . C:\site
-WORKDIR C:\site
+ADD dist/website C:\\site
+WORKDIR C:\\site
 
 ENTRYPOINT node lib
