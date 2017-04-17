@@ -83,7 +83,7 @@ module.exports = class extends Generator {
       );
     });
 
-    ['iisnode.yml', 'web.config', 'doc', 'public', 'scripts'].forEach(filename => {
+    ['.dockerignore', 'iisnode.yml', 'web.config', 'doc', 'public', 'scripts'].forEach(filename => {
       this.fs.copy(
         this.templatePath(filename),
         this.destinationPath(filename)
