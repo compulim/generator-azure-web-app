@@ -44,6 +44,7 @@ But everyone build and promote their own build process. There are few reasons yo
 5. Deploy to target servers
    * Standalone Node.js
    * [Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/)
+   * Node.js on Docker
    * On-premise or hosted IIS
 6. Update the scaffolding
 
@@ -100,6 +101,7 @@ The project supports multiple deployment scenarios, we will cover each separatel
   * Thru [continuous deployment](https://azure.microsoft.com/en-us/blog/using-app-service-web-apps-continuous-deployment-with-github-organizations/)
   * Thru [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
   * Thru [MSDeploy](https://azure.microsoft.com/en-us/blog/simple-azure-websites-deployment/)
+* Node.js on [Docker](https://docker.com/)
 * IIS with [iisnode](https://github.com/tjanczuk/iisnode)
 
 > Don't forget to build your project before deployment, run `npm run build`.
@@ -146,6 +148,17 @@ If you use CI/CD tools other than Azure and VSTS, you may want to integrate with
 4. Run `npm run deploy -- --publish-settings=yoursite.PublishSettings` to deploy with MSDeploy
 
 > To use a specific version of Node.js, don't forget to modify [`iisnode.yml`](iisnode.yml) manually.
+
+### Deploy to Docker
+
+If you use Docker for deployment, depends on your scenario, you can select one of the supported Docker image types:
+
+* [Official Node.js](https://hub.docker.com/r/_/node/)
+* [Official Node.js](https://hub.docker.com/r/_/node/) on [Alpine Linux](https://hub.docker.com/r/_/alpine/)
+* [Windows Server 2016 Nano Server](https://hub.docker.com/r/compulim/nanoserver-node) with bare Node.js
+* [Windows Server 2016 Server Core](https://hub.docker.com/r/compulim/iisnode) with Node.js and iisnode
+
+Run `docker build .` at the project root to build your docker image.
 
 ### Deploy to IIS
 
