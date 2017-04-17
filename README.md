@@ -306,12 +306,12 @@ Like us? [Star](https://github.com/compulim/generator-azure-web-app/stargazers) 
 
 Want to make it better? File an [issue](https://github.com/compulim/generator-azure-web-app/issues) to us.
 
-## Working on this scaffold
+## Working on this scaffolding
 
-If you want to develop or debug this scaffold, follow these steps:
+If you want to develop or debug this scaffolding, follow these steps:
 
 1. Run `npm uninstall generator-azure-web-app -g` to uninstall any installed scaffold
 2. Run `git clone https://github.com/compulim/generator-azure-web-app.git` to clone the repository
-3. Run `npm link .` to link-install this copy, instead of the one from npm registry
+3. Run `npm link .` to link-install this copy, instead of the official one from npm registry
 
-Next time, when you run Yeoman to generate a new `azure-web-app` project, it will use the copy of scaffold you cloned.
+Next time, when you run Yeoman to generate a new `azure-web-app` project, it will use your copy of scaffolding you cloned.
