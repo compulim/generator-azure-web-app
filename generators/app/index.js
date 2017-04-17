@@ -83,12 +83,22 @@ module.exports = class extends Generator {
       );
     });
 
-    ['iisnode.yml', 'web.config', 'doc', 'lib', 'public', 'scripts'].forEach(filename => {
+    ['iisnode.yml', 'web.config', 'doc', 'public', 'scripts'].forEach(filename => {
       this.fs.copy(
         this.templatePath(filename),
         this.destinationPath(filename)
       );
     });
+
+    this.fs.copy(
+      this.templatePath('lib'),
+      this.destinationPath('lib'),
+      {
+        globOptions: {
+          ignore: '**/node_modules/**'
+        }
+      }
+    );
 
     this.props.dockerfile && this.fs.copy(
       this.templatePath(`generators/app/Dockerfile.${ this.props.dockerfile }`),
