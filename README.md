@@ -156,8 +156,8 @@ If you use Docker for deployment, depends on your scenario, you can select one o
 
 * [Official Node.js](https://hub.docker.com/r/_/node/)
 * [Official Node.js](https://hub.docker.com/r/_/node/) on [Alpine Linux](https://hub.docker.com/r/_/alpine/)
-* [Windows Server 2016 Nano Server](https://hub.docker.com/r/compulim/nanoserver-node) with bare Node.js
-* [Windows Server 2016 Server Core](https://hub.docker.com/r/compulim/iisnode) with Node.js and iisnode
+* [Windows Server 2016 Nano Server](https://hub.docker.com/r/compulim/nanoserver-node/) with bare Node.js
+* [Windows Server 2016 Server Core](https://hub.docker.com/r/compulim/iisnode/) with Node.js and iisnode
 
 Run `docker build .` at the project root to build your docker image.
 
