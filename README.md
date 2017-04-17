@@ -25,6 +25,7 @@ But everyone build and promote their own build process. There are few reasons yo
     * Thru [continuous deployment](https://azure.microsoft.com/en-us/blog/using-app-service-web-apps-continuous-deployment-with-github-organizations/)
     * Thru [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
     * Thru [MSDeploy](https://azure.microsoft.com/en-us/blog/simple-azure-websites-deployment/)
+  * Node.js on [Docker](https://docker.com/)
   * On-premise or hosted IIS
 
 # Try it out in 3 easy steps
