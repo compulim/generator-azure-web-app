@@ -33,17 +33,39 @@ module.exports = class extends Generator {
       }, {
         name   : 'bundler',
         message: 'Use Webpack or rollup.js as production bundler',
-        default: 'rollup',
+        default: 'webpack',
         type   : 'list',
         choices: [{
-          name: 'Rollup',
-          value: 'rollup'
-        }, {
-          name: 'Webpack',
+          name : 'Webpack',
           value: 'webpack'
+        }, {
+          name : 'Rollup (Experimental)',
+          value: 'rollup'
+        }]
+      }, {
+        name   : 'dockerfile',
+        message: '(Docker) Generate Dockerfile',
+        default: null,
+        type   : 'list',
+        choices: [{
+          name : `Don't generate any Dockerfile`,
+          value: null
+        }, {
+          name : 'Official Node.js',
+          value: 'node'
+        }, {
+          name : 'Official Node.js (Alpine Linux)',
+          value: 'alpine'
+        }, {
+          name : 'Windows Server 2016 Nano Server with bare Node.js',
+          value: 'nanoserver'
+        }, {
+          name : 'Windows Server 2016 Server Core with Node.js and iisnode',
+          value: 'iisnode'
         }]
       }]).then(otherAnswers => {
         this.props.bundler               = otherAnswers.bundler;
+        this.props.dockerfile            = otherAnswers.dockerfile;
         this.props.enableStickySession   = otherAnswers.enableStickySession;
         this.props.name                  = nameAnswers.name;
         this.props.use64BitWorkerProcess = otherAnswers.use64BitWorkerProcess;
@@ -67,6 +89,11 @@ module.exports = class extends Generator {
         this.destinationPath(filename)
       );
     });
+
+    this.props.dockerfile && this.fs.copy(
+      this.templatePath(`generators/app/Dockerfile.${ this.props.dockerfile }`),
+      this.destinationPath('Dockerfile')
+    );
 
     const azureDeployJSON = this.fs.readJSON(this.templatePath('azuredeploy.json'));
 
