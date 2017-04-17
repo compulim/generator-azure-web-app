@@ -51,7 +51,7 @@ But everyone build and promote their own build process. There are few reasons yo
 
 ## Create a new Web App Project
 
-> For the very first time, run `npm install -g yo generator-azure-web-app` to install [Yeoman](https://yeoman.io/) and our scaffold.
+> For the very first time, run `npm install -g yo generator-azure-web-app` to install [Yeoman](https://yeoman.io/) and our scaffolding.
 
 Run `yo azure-web-app` to create a new project.
 
@@ -91,7 +91,7 @@ There are few ways to select your bundler:
 * Run `npm run build -- --bundler rollup` for one-time switch
 * Set environment variable `NPM_CONFIG_BUNDLER` to `rollup` or `webpack`
 * Modify [`.npmrc`](.npmrc) and set `bundler = "rollup"`
-* During Yeoman scaffolding, set bundler to `rollup`
+* During Yeoman scaffold, set bundler to `rollup`
 
 ## Deployment
 
@@ -184,12 +184,9 @@ The following MSDeploy command-line switches can be used to deploy the package t
   -setParam:name="IIS Web Application Name",value="<appname>"
 ```
 
-## Update the scaffold
+## Update the scaffolding
 
-We update our scaffold from time to time. To update your existing project:
-
-1. `npm install generator-azure-web-app` to update to latest version of scaffold
-2. `yo azure-web-app` to update the scaffold
+We update our scaffolding from time to time. To update your existing project, rerun `yo azure-web-app` and scaffold again. Yeoman will automatically the scaffolding from npm.
 
 > Don't worry, Yeoman will prompt to overwrite a file if it should be replaced.
 
@@ -297,7 +294,7 @@ We tried very hard to bring hot module replacement to IE8 but it deemed impossib
 1. After deploying to Azure Web App, it say directory browsing is not allowed.
    * During first deployment, do not browse to the web site until the deployment is ready. Otherwise, it will show 404, until you restart the server.
 2. How about CSS/[LESS](http://lesscss.org)/[SASS](http://sass-lang.com/)?
-   * We believe bundler should only bundle JS files and not CSS or other assets. Thus, we did not preconfigure the scaffold with [`style-loader`](https://www.npmjs.com/package/style-loader)
+   * We believe bundler should only bundle JS files and not CSS or other assets. Thus, we did not preconfigure the scaffolding with [`style-loader`](https://www.npmjs.com/package/style-loader)
    * For modern CSS inlining, we prefer [`glamor`](https://npmjs.com/package/glamor) or [`aphrodite`](https://npmjs.com/package/aphrodite). Please note that IE8 might not work with these modern CSS inliners
 
 # Contributions
@@ -310,7 +307,7 @@ Want to make it better? File an [issue](https://github.com/compulim/generator-az
 
 If you want to develop or debug this scaffolding, follow these steps:
 
-1. Run `npm uninstall generator-azure-web-app -g` to uninstall any installed scaffold
+1. Run `npm uninstall generator-azure-web-app -g` to uninstall any installed scaffolding
 2. Run `git clone https://github.com/compulim/generator-azure-web-app.git` to clone the repository
 3. Run `npm link .` to link-install this copy, instead of the official one from npm registry
 
