@@ -79,6 +79,7 @@ module.exports = function (gulp) {
         [
           'config.js',
           'iisnode.yml',
+          'index.js',
           'web.config'
         ].map(filename => join(config.SOURCE_DIR, filename))
       )

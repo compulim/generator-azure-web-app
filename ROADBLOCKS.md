@@ -48,3 +48,16 @@ We tried very hard to bring hot module replacement to IE8 but it deemed impossib
 * Getter/setter were used by [`webpack/lib/HotModuleReplacement.runtime.js`](https://github.com/webpack/webpack/blob/master/lib/HotModuleReplacement.runtime.js)
   * We guess HMR use getter/setter intensively to keep the internal state of the object away from the object, so the object can be easily replaced without resetting the internal state
   * Getter/setter are not supported in IE8 and Babel
+
+## Roadblock on putting app.js inside /lib
+
+We originally, put `app.js` under `/lib/`.
+
+* `iisnode` consumes the `iisnode.yml` at the same directory level of the entrypoint as specified by `package.json/scripts.start`, thus, at `/lib/iisnode.yml`
+* But Project Kudu will only update `/iisnode.yml` at the project root
+
+Thus, if we put `app.js` under `/lib/`, the `iisnode.yml` updated by Project Kudu will not be consumed by iisnode.
+
+### Workaround
+
+We put a thin entrypoint at `/index.js` and it points to `/lib/app.js`.
