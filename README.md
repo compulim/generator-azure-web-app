@@ -109,7 +109,7 @@ The project supports multiple deployment scenarios, we will cover each separatel
 
 ### Deploy as a standalone Node.js
 
-Run `node dist/website/app.js` to run as a standalone Node.js.
+Run `node dist/website/index.js` to run as a standalone Node.js.
 
 > To deploy to your SaaS provider, copy everything under `dist/website/` to your provider.
 
