@@ -188,7 +188,7 @@ The following MSDeploy command-line switches can be used to deploy the package t
 
 ## Update the scaffolding
 
-We update our scaffolding from time to time. To update your existing project, rerun `yo azure-web-app` and scaffold again. Yeoman will automatically the scaffolding from npm.
+We update our scaffolding from time to time. To update your existing project, rerun `yo azure-web-app` and scaffold again. Yeoman will automatically download the latest scaffolding from npm.
 
 > Don't worry, Yeoman will prompt to overwrite a file if it should be replaced.
 
