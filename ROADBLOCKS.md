@@ -51,13 +51,14 @@ We tried very hard to bring hot module replacement to IE8 but it deemed impossib
 
 ## Roadblock on putting app.js inside /lib
 
-We originally, put `app.js` under `/lib/`.
+We originally put our entrypoint, `app.js`, under `/lib/`.
 
-* `iisnode` consumes the `iisnode.yml` at the same directory level of the entrypoint as specified by `package.json/scripts.start`, thus, it read `iisnode.yml` from `/lib/`
-* But Project Kudu will only update `/iisnode.yml` at the project root
-  * Project Kudu update only if `package.json/engines/nodejs` is set, which in our case, we do
+* `iisnode` consumes the `iisnode.yml` at the same directory level of the entrypoint as specified by `package.json/scripts.start`, i.e. it read `iisnode.yml` from `/lib/`
+  * Or maybe it find out the entrypoint from `package.json/main`, or `web.config`, we don't know yet
+* Due to a [bug](https://github.com/projectkudu/kudu/issues/2411) in Project Kudu, it only update `iisnode.yml` at the project root level
+  * More on that, Project Kudu update `iisnode.yml` if `package.json/engines/nodejs` is set, which in our case, we did set
 
-Thus, if we put `app.js` under `/lib/`, Project Kudu will not able to update `/lib/iisnode.yml`.
+Thus, if we put `app.js` under `/lib/`, Project Kudu will not be able to update `/lib/iisnode.yml`.
 
 ### Workaround
 
