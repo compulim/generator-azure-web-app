@@ -123,7 +123,7 @@ Azure Web App comes with handy [continuous deployment](https://azure.microsoft.c
 
 Follow steps below for first time setup for GitHub deployment.
 
-1. Commit your project to GitHub
+1. Commit your project to GitHub as a public repository
 2. Browse on GitHub
 3. Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
@@ -131,11 +131,11 @@ Follow steps below for first time setup for GitHub deployment.
 
 > Because the build is done on Azure, we modified the virtual path from `/site/wwwroot` to `/site/wwwroot/dist/website`. This is done by customizing [`azuredeploy.json`](azuredeploy.json).
 
-> It seems the "Deploy to Azure" service did not setup webhooks on GitHub automatically, thus, new commits do not re-sync automatically. To enable continuous deployment, go to Azure Portal and re-add GitHub deployment option.
+> Currently, the "Deploy to Azure" service will not automatically setup webhooks on GitHub, thus, new commits do not re-sync automatically. To enable continuous deployment, go to Azure Portal and re-add GitHub deployment option.
 
 #### Thru Visual Studio Team Services
 
-Deploy thru Azure [continuous deployment](https://azure.microsoft.com/en-us/blog/using-app-service-web-apps-continuous-deployment-with-github-organizations/) is limited and asynchronous. This makes the option not ideal for medium or large teams.
+Deploy thru Azure [continuous deployment](https://azure.microsoft.com/en-us/blog/using-app-service-web-apps-continuous-deployment-with-github-organizations/) is limited and asynchronous. This makes the option unideal for medium or large teams.
 
 We recommend [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx) for advanced deployment, it also comes with [BVTs](https://en.wikipedia.org/wiki/Build_verification_test), performance tests, approval process, rollback, etc.
 
@@ -154,7 +154,7 @@ If you use CI/CD tools other than Azure and VSTS, you may want to integrate with
 
 ### Deploy to Docker
 
-If you use Docker for deployment, depends on your scenario, you can select one of the supported Docker image types:
+We have prepared Dockerfile for deploying to Docker. Depends on your scenario, you can select one of the supported image types:
 
 * [Official Node.js](https://hub.docker.com/r/_/node/)
 * [Official Node.js](https://hub.docker.com/r/_/node/) on [Alpine Linux](https://hub.docker.com/r/_/alpine/)
