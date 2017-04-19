@@ -130,11 +130,11 @@ Follow steps below for first time setup for GitHub deployment.
 2. Browse on GitHub
 3. Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-> When deploying using continuous deployment, the project will build on Azure via [Project Kudu](https://github.com/projectkudu/kudu).
+> When deploying using continuous deployment, the project will be build on Azure with [Project Kudu](https://github.com/projectkudu/kudu). And the build output will be at `/site/wwwroot/dist/website`.
+>
+> We customized [`azuredeploy.json`](azuredeploy.json) to modify the application virtual path from `/site/wwwroot` to `/site/wwwroot/dist/website`.
 
-> Because the build is done on Azure, we modified the virtual path from `/site/wwwroot` to `/site/wwwroot/dist/website`. This is done by customizing [`azuredeploy.json`](azuredeploy.json).
-
-> Currently, the "Deploy to Azure" service will not automatically setup webhooks on GitHub, thus, new commits do not re-sync automatically. To enable continuous deployment, go to Azure Portal and re-add GitHub deployment option.
+> Currently, the "Deploy to Azure" service will not automatically setup webhooks on GitHub, thus, new commits do not re-sync back to Azure automatically. To enable continuous deployment, go to Azure Portal and re-add GitHub deployment option.
 
 #### Thru Visual Studio Team Services
 
