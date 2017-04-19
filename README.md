@@ -126,15 +126,14 @@ Azure Web App comes with handy [continuous deployment](https://azure.microsoft.c
 
 Follow steps below for first time setup for GitHub deployment.
 
-1. Commit your project to GitHub as a public repository
-2. Browse on GitHub
-3. Click [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+1. Commit your project to GitHub
+2. Click [here](https://portal.azure.com/#create/Microsoft.WebSite) to create a new Web App using Azure Portal
+3. Update the Deployment Option
+4. Point it to your GitHub repository
 
 > When deploying using continuous deployment, the project will be build on Azure with [Project Kudu](https://github.com/projectkudu/kudu). And the build output will be at `/site/wwwroot/dist/website`.
 >
 > We customized [`azuredeploy.json`](azuredeploy.json) to modify the application virtual path from `/site/wwwroot` to `/site/wwwroot/dist/website`.
-
-> Currently, the "Deploy to Azure" service will not automatically setup webhooks on GitHub, thus, new commits do not re-sync back to Azure automatically. To enable continuous deployment, go to Azure Portal and re-add GitHub deployment option.
 
 #### Thru Visual Studio Team Services
 
