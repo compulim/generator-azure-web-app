@@ -132,7 +132,7 @@ Follow steps below for first time setup for GitHub deployment.
 3. Update the Deployment Option
 4. Point it to your GitHub repository
 
-> When deploying using continuous deployment, the project will be build on Azure with [Project Kudu](https://github.com/projectkudu/kudu). And the build output will be at `/site/wwwroot/dist/website`.
+> When deploying using continuous deployment, the project will be build on Azure using [Project Kudu](https://github.com/projectkudu/kudu). The build output will be at `/site/wwwroot/dist/website`.
 >
 > We customized [`azuredeploy.json`](azuredeploy.json) to modify the application virtual path from `/site/wwwroot` to `/site/wwwroot/dist/website`.
 
