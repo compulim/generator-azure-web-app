@@ -195,36 +195,9 @@ We update our scaffolding from time to time. To update your existing project, re
 
 > Don't worry, Yeoman will prompt to overwrite a file if it should be replaced.
 
-## Support Internet Explorer 8
+# Support of Internet Explorer 8
 
-Although the user base of IE8 is fading, in some cases, you may still need to support older browsers.
-
-### Disable hot module replacement on development server
-
-Run `npm start -- --hot false` to start a development server without hot module replacement.
-
-### Use `react@^0.14` and add `es5-shim`
-
-Copy the following code to `index.html`.
-
-```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-sham.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/console-polyfill/0.2.3/index.min.js"></script>
-<script src="https://unpkg.com/react@0.14/dist/react.min.js"></script>
-<script src="https://unpkg.com/react-dom@0.14/dist/react-dom.min.js"></script>
-```
-
-### Look for IE8-friendly NPM packages
-
-Some NPM packages are not IE8 friendly. For example, [`fetch`](https://npmjs.com/package/fetch) does not support IE8. You may need to use [`fetch-ie8`](https://www.npmjs.com/package/fetch-ie8) instead.
-
-Moreoever, some packages might be pre-transpiled, they might not have reserved keywords properly escaped. There are two ways to tackle this issue:
-
-* Contact package developer and kindly ask them to either
-  * Add [`module`](https://github.com/rollup/rollup/wiki/pkg.module) in `package.json` and reference to non-transpiled version of code, or,
-  * Escape reserved keywords during transpilation
-* Use Webpack instead of Rollup: our Webpack workflow is configured to escape reserved keywords even in `node_modules/` folder
+Although the user base of IE8 is fading, in some cases, you may still need to support older browsers. Follow the steps [here](doc/IE8.md) to enable support of Internet Explorer 8.
 
 # Roadmap
 
@@ -255,7 +228,7 @@ These are items we are working on or under consideration:
 
 # Roadblocks
 
-It is not an easy task to build a scaffolding that support lots of deployment scenarios. You can find all the [roadblocks](ROADBLOCKS.md) here.
+It is not an easy task to build a scaffolding that support lots of deployment scenarios. You can find all the [roadblocks](doc/ROADBLOCKS.md) here.
 
 # FAQs
 
