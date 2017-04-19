@@ -199,7 +199,7 @@ We update our scaffolding from time to time. To update your existing project, re
 
 # Support of Internet Explorer 8
 
-Although the user base of IE8 is fading, in some cases, you may still need to support older browsers. Follow the steps [here](doc/IE8.md) to enable support of Internet Explorer 8.
+Although the user base of IE8 is fading, in some cases, you may still need to support older browsers. Follow the steps [here](doc/IE8.md) to enable support of IE8.
 
 # Roadmap
 
@@ -219,6 +219,7 @@ These are items we are working on or under consideration:
 * [x] ~~Steps to deploy from [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)~~
 * [x] ~~Try out on [App Service for Linux](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-linux-intro)~~
 * [x] ~~Upgrade to [Webpack 2](https://github.com/webpack/webpack)~~
+* [ ] Move IE8 support into a Yeoman switch
 * [ ] Move development server code out of `/dist`
 * [ ] Reduce the codebase
   * [x] ~~Move to a popular configuration package, e.g. [config](https://npmjs.com/package/config)~~
