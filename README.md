@@ -6,7 +6,7 @@
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-Minimalist Azure Web App generator: [Webpack](https://webpack.github.io/)/[Rollup](https://rollupjs.org/) + [React](https://facebook.github.io/react/) + [Express](https://expressjs.com/), deployable to standalone [Node.js](https://nodejs.org/), [Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/), and IIS.
+Minimalist Azure Web App generator: [Webpack](https://webpack.github.io/)/[Rollup](https://rollupjs.org/) + [React](https://facebook.github.io/react/) + [Express](https://expressjs.com/), deployable to standalone [Node.js](https://nodejs.org/), [Azure App Service](https://azure.microsoft.com/en-us/services/app-service/web/), [Docker](https://docker.com/), and IIS.
 
 # Why us?
 
@@ -18,7 +18,7 @@ But everyone build and promote their own build process. There are few reasons yo
 * Choose your own faith: we only include [React](https://facebook.github.io/react/)
 * Bundle with the *best* bundler
   * [Webpack](https://webpack.github.io/) for development, hot module replacement means less page refresh
-  * Optionally, [Rollup](https://rollupjs.org/) for production, better tree-shaking algorithm means smaller file size
+  * Experimental support with [Rollup](https://rollupjs.org/)
 * Support multiple deployment scenarios
   * Standalone Node.js
   * [Azure Web App](https://azure.microsoft.com/en-us/services/app-service/web/)
@@ -26,6 +26,9 @@ But everyone build and promote their own build process. There are few reasons yo
     * Thru [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx)
     * Thru [MSDeploy](https://azure.microsoft.com/en-us/blog/simple-azure-websites-deployment/)
   * Node.js on [Docker](https://docker.com/)
+    * Official Node.js on Linux
+    * Barebone Node.js on Windows Server 2016 Nano Server
+    * Node.js with iisnode on Windows Server 2016 Server Core
   * On-premise or hosted IIS
 
 # Try it out in 3 easy steps
@@ -82,13 +85,13 @@ Run `npm run build`, to bundle JavaScript files, crush images, etc. It outputs t
 
 ### Optional: Using Rollup as bundler in production mode
 
-Instead of [Webpack](https://webpack.github.io/) used in development, you can opt for [Rollup](https://rollupjs.org/) as bundler for production, it has better tree-shaking mechanism, thus smaller output file size.
+Instead of using [Webpack](https://webpack.github.io/) for bundling, you can use [Rollup](https://rollupjs.org/) instead.
 
 > Using rollup as bundler is experimental. Please file us an [issue](https://github.com/compulim/generator-azure-web-app/issues) if you run into any problems.
 
 There are few ways to select your bundler:
 
-* Run `npm run build -- --bundler rollup` for one-time switch
+* Run `npm run build -- --bundler rollup`
 * Set environment variable `NPM_CONFIG_BUNDLER` to `rollup` or `webpack`
 * Modify [`.npmrc`](.npmrc) and set `bundler = "rollup"`
 * During Yeoman scaffold, set bundler to `rollup`
@@ -137,9 +140,9 @@ Follow steps below for first time setup for GitHub deployment.
 
 Deploy thru Azure [continuous deployment](https://azure.microsoft.com/en-us/blog/using-app-service-web-apps-continuous-deployment-with-github-organizations/) is limited and asynchronous. This makes the option unideal for medium or large teams.
 
-We recommend [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx) for advanced deployment, it also comes with [BVTs](https://en.wikipedia.org/wiki/Build_verification_test), performance tests, approval process, rollback, etc.
+We recommend [VSTS Release Management](https://www.visualstudio.com/en-us/features/release-management-vs.aspx) for advanced deployment. During the deployment, you can also add [BVTs](https://en.wikipedia.org/wiki/Build_verification_test), performance tests, approval process, rollback, etc.
 
-You can follow steps for VSTS [here](doc/VSTS.md) for advanced deployment scenario.
+Follow steps for VSTS [here](doc/VSTS.md) for advanced deployment scenario.
 
 #### Thru MSDeploy
 
@@ -202,7 +205,7 @@ Run `npm start -- --hot false` to start a development server without hot module 
 
 ### Use `react@^0.14` and add `es5-shim`
 
-You can copy the following code into `index.html`.
+Copy the following code to `index.html`.
 
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
