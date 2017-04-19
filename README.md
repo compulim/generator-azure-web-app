@@ -99,6 +99,8 @@ There are few ways to select your bundler:
 
 ## Deployment
 
+> Before doing any deployment, don't forget to build your project by running `npm run build`.
+
 The project supports multiple deployment scenarios, we will cover each separately.
 
 * Standalone Node.js
@@ -108,8 +110,6 @@ The project supports multiple deployment scenarios, we will cover each separatel
   * Thru [MSDeploy](https://azure.microsoft.com/en-us/blog/simple-azure-websites-deployment/)
 * Node.js on [Docker](https://docker.com/)
 * IIS with [iisnode](https://github.com/tjanczuk/iisnode)
-
-> Don't forget to build your project before deployment, run `npm run build`.
 
 ### Deploy as a standalone Node.js
 
