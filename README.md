@@ -157,7 +157,7 @@ If you use CI/CD tools other than Azure and VSTS, you may want to integrate with
 
 ### Deploy to Docker
 
-We have prepared Dockerfile for deploying to Docker. Depends on your scenario, you can select one of the supported image types:
+We have prepared Dockerfile for deploying to Docker. During Yeoman scaffold, you can select one of the supported image types:
 
 * [Official Node.js](https://hub.docker.com/r/_/node/)
 * [Official Node.js](https://hub.docker.com/r/_/node/) on [Alpine Linux](https://hub.docker.com/r/_/alpine/)
@@ -165,6 +165,8 @@ We have prepared Dockerfile for deploying to Docker. Depends on your scenario, y
 * [Windows Server 2016 Server Core](https://hub.docker.com/r/compulim/iisnode/) with Node.js and iisnode
 
 Run `docker build .` at the project root to build your docker image.
+
+> Before building a Docker image, don't forget to run `npm run build` to build your website
 
 ### Deploy to IIS
 
