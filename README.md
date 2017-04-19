@@ -76,8 +76,9 @@ Run `npm start`, the development server will listen to port 80 and available at 
 * Server side
   * Add new REST API at [`lib/controllers/api.js`](lib/controllers/api.js)
     * Packages should be saved to [`lib/package.json`](lib/package.json) as *direct dependencies*, for example, `cd lib && npm install mongodb --save`
+  * Add new configurations at [`lib/config/`](lib/config/), we use [`config`](https://npmjs.com/package/config)
 
-> If you added new packages or modified server code, don't forget to restart the development server to pick up new changes.
+> After adding new packages or modifying server code, don't forget to restart the development server to pick up new changes.
 
 ## Prepare for production deployment
 
